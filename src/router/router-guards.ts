@@ -2,9 +2,8 @@ import {isNavigationFailure, Router} from 'vue-router'
 import store from '@/store'
 import NProgress from 'nprogress' // progress bar
 import {ACCESS_TOKEN} from '@/store/mutation-types'
-import {createStorage} from '@/utils/Storage'
-
-const Storage = createStorage()
+import {storage} from '@/utils/Storage'
+import {AsyncRouteActionTypes} from '@/store/modules/async-route/actions'
 import {debounce} from '@/utils/lodashChunk'
 
 NProgress.configure({showSpinner: false}) // NProgress Configuration
@@ -16,7 +15,7 @@ const defaultRoutePath = '/dashboard'
 
 // 是否需要从后端获取菜单
 const isGetMenus = debounce(({to, from, next, hasRoute}) => {
-    store.dispatch('async-router/GenerateRoutes').then(() => {
+    store.dispatch(AsyncRouteActionTypes.GenerateRoutes).then(() => {
         // 根据roles权限生成可访问的路由表
         // 动态添加可访问路由表
         if (allowList.includes(to.name as string)) return
@@ -38,7 +37,7 @@ const isGetMenus = debounce(({to, from, next, hasRoute}) => {
 export function createRouterGuards(router: Router) {
     router.beforeEach((to, from, next) => {
         NProgress.start() // start progress bar
-        const token = Storage.get(ACCESS_TOKEN)
+        const token = storage.get(ACCESS_TOKEN)
         if (token) {
             if (to.name === 'login') {
                 next({path: defaultRoutePath})

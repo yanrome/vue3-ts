@@ -27,7 +27,7 @@ import {
 import {Menu} from 'ant-design-vue';
 import MenuItem from './menu-item.vue'
 import {useRoute, useRouter} from "vue-router";
-import {useStore} from 'vuex'
+import {useStore} from '@/store'
 import {routes} from "@/router";
 
 export default defineComponent({

@@ -5,6 +5,7 @@ import {routes} from "@/router/index";
 import {notFound} from '@/router/modules/error'
 import {Empty} from 'ant-design-vue'
 import common from "@/router/common";
+import {RouteRecordRaw} from "vue-router";
 
 
 /**
@@ -51,7 +52,7 @@ const list2tree = (items, parentId = -1, arr = []) => {
  * @param token
  * @returns {Promise<Router>}
  */
-export const generatorDynamicRouter = () => {
+export const generatorDynamicRouter = (): Promise<RouteRecordRaw[]> => {
     return new Promise((resolve, reject) => {
         adminMenus().then(result => {
             console.log('result', result)

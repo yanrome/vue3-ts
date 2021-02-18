@@ -16,8 +16,7 @@ import {RequestOptions, Result} from './types';
 const isDev = process.env.NODE_ENV === 'development'
 import router from '@/router'
 import store from '@/store'
-import {createStorage} from "@/utils/Storage";
-const storage = createStorage()
+import {storage} from "@/utils/Storage";
 /**
  * @description: 数据处理，方便区分多种处理方式
  * axios封装使用了https://github.com/anncwb/vue-vben-admin/tree/main/src/utils/http/axios
@@ -150,7 +149,7 @@ const transform: AxiosTransform = {
      */
     requestInterceptors: (config) => {
         // 请求之前处理config
-        const token = store.getters.token;
+        const token = store.state.user.token;
         if (token) {
           // jwt token
           config.headers.token = token;

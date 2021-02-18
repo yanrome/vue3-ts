@@ -15,9 +15,6 @@ export default defineComponent({
         path: '/' + (Array.isArray(path) ? path.join('/') : path),
         query,
       });
-      // const { openPageLoading } = appStore.getProjCfg;
-      // if (openPageLoading) {
-      // }
     });
     return () => <Empty />;
   },

@@ -58,8 +58,10 @@ import {useRouter, useRoute} from 'vue-router'
 import components from "@/layout/header/components";
 import {message, Modal} from 'ant-design-vue'
 import {QuestionCircleOutlined} from '@ant-design/icons-vue'
-import {useStore} from 'vuex'
+import {useStore} from '@/store'
 import {TABS_ROUTES} from "@/store/mutation-types";
+import {LockscreenMutationType} from "@/store/modules/lockscreen/mutations";
+import {UserActionTypes} from "@/store/modules/user/actions";
 
 export default defineComponent({
   name: "PageHeader",
@@ -90,7 +92,7 @@ export default defineComponent({
         onOk: () => {
           console.log(router, '退出登录')
           // logout({})
-          store.dispatch('user/Logout').then(res => {
+          store.dispatch(UserActionTypes.Logout).then(res => {
             message.success('成功退出登录')
             // 移除标签页
             localStorage.removeItem(TABS_ROUTES)
@@ -143,7 +145,7 @@ export default defineComponent({
         icon: 'LockOutlined',
         tips: '锁屏',
         eventObject: {
-          click: () => store.commit('lockscreen/setLock', true)
+          click: () => store.commit(LockscreenMutationType.SetLock, true)
         }
       },
     ]

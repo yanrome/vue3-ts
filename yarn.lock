@@ -1886,10 +1886,10 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
-ant-design-vue@^2.0.0-rc.9:
-  version "2.0.0-rc.9"
-  resolved "https://registry.npm.taobao.org/ant-design-vue/download/ant-design-vue-2.0.0-rc.9.tgz#9f4d89b02bf2c6f3295633048001b2e13c229f1e"
-  integrity sha1-n02JsCvyxvMpVjMEgAGy4Twinx4=
+ant-design-vue@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npm.taobao.org/ant-design-vue/download/ant-design-vue-2.0.0.tgz?cache=0&sync_timestamp=1612620390789&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fant-design-vue%2Fdownload%2Fant-design-vue-2.0.0.tgz#d30ec06938dc3b43b08a117818fab91d7b083e5f"
+  integrity sha1-0w7AaTjcO0OwihF4GPq5HXsIPl8=
   dependencies:
     "@ant-design-vue/use" "^0.0.1-0"
     "@ant-design/icons-vue" "^6.0.0"
@@ -3054,7 +3054,7 @@ core-js-compat@^3.6.5, core-js-compat@^3.8.0:
     browserslist "^4.16.1"
     semver "7.0.0"
 
-core-js@^3.6.5, core-js@^3.8.0:
+core-js@^3.6.5, core-js@^3.8.0, core-js@^3.8.3:
   version "3.8.3"
   resolved "https://registry.npm.taobao.org/core-js/download/core-js-3.8.3.tgz?cache=0&sync_timestamp=1611040749668&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcore-js%2Fdownload%2Fcore-js-3.8.3.tgz#c21906e1f14f3689f93abcc6e26883550dd92dd0"
   integrity sha1-whkG4fFPNon5OrzG4miDVQ3ZLdA=
@@ -9234,10 +9234,10 @@ vue@^3.0.0, vue@^3.0.5:
     "@vue/runtime-dom" "3.0.5"
     "@vue/shared" "3.0.5"
 
-vuex@^4.0.0-rc.2:
-  version "4.0.0-rc.2"
-  resolved "https://registry.npm.taobao.org/vuex/download/vuex-4.0.0-rc.2.tgz#3681c84eb6f5171b039edaa17cc78105e20724f3"
-  integrity sha1-NoHITrb1FxsDntqhfMeBBeIHJPM=
+vuex@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npm.taobao.org/vuex/download/vuex-4.0.0.tgz#ac877aa76a9c45368c979471e461b520d38e6cf5"
+  integrity sha1-rId6p2qcRTaMl5Rx5GG1INOObPU=
 
 warning@^4.0.0:
   version "4.0.3"

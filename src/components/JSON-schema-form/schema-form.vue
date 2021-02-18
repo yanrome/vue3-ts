@@ -148,6 +148,11 @@ export default defineComponent({
       } else if (formItem.rules?.trigger) { // 如果是对象
         const trigger = formItem.rules?.trigger
         events[trigger] = setTriggerEvent({field, trigger})
+        if (Array.isArray(trigger)) {
+          trigger.forEach(triggerItem => events[triggerItem] = setTriggerEvent({field, trigger: triggerItem}))
+        } else if (isString(trigger)) {
+          events[trigger] = setTriggerEvent({field, trigger: trigger})
+        }
       }
       return events
     }

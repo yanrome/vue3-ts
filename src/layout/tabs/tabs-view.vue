@@ -87,22 +87,13 @@ import {defineComponent, reactive, computed, toRefs, unref, provide, watch} from
 import {useRoute, useRouter} from "vue-router";
 import components from "@/layout/tabs/components";
 import {RouterTransition} from '@/components/transition'
-import {createStorage} from '@/utils/Storage'
+import {storage} from '@/utils/Storage'
 import {TABS_ROUTES} from '@/store/mutation-types'
-import {createNamespacedHelpers, useStore} from 'vuex'
+import {useStore} from "@/store";
+import {RouteItem} from '@/store/modules/tabs-view/state'
+import {TabsViewMutationType} from '@/store/modules/tabs-view/mutations'
 
-const { mapState, mapMutations } = createNamespacedHelpers('tabs-view')
 import {message} from 'ant-design-vue'
-
-interface RouteItem {
-  fullPath: string;
-  hash?: any;
-  meta?: any;
-  name?: string;
-  params?: any;
-  path?: string;
-  query?: any;
-}
 
 export default defineComponent({
   name: "tabs-view",
@@ -113,7 +104,6 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const store = useStore()
-    const storage = createStorage()
     // const tabsViewMutations = mapMutations(['addTabs','closeLeftTabs','closeRightTabs','closeOtherTabs','initTabs','closeCurrentTabs','closeAllTabs'])
 
     // 获取简易的路由对象
@@ -132,14 +122,14 @@ export default defineComponent({
     }
 
     // 初始化标签页
-    store.commit('tabs-view/initTabs', routes)
+    store.commit(TabsViewMutationType.InitTabs, routes)
     // tabsViewMutations.initTabs(routes)
 
     const state = reactive({
       activeKey: route.fullPath
     })
 
-    const tabsList = computed(() => store.getters.tabsList)
+    const tabsList = computed(() => store.state.tabsView.tabsList)
     console.log(tabsList.value, 'tabsList')
 
     const whiteList = ['Redirect', 'login']
@@ -148,7 +138,7 @@ export default defineComponent({
       if (whiteList.includes(route.name as string)) return
       state.activeKey = to
       // tabsViewMutations.addTabs(getSimpleRoute(route))
-      store.commit('tabs-view/addTabs', getSimpleRoute(route))
+      store.commit(TabsViewMutationType.AddTabs, getSimpleRoute(route))
     }, {immediate: true})
 
     // 在页面关闭或刷新之前，保存数据
@@ -162,7 +152,7 @@ export default defineComponent({
         return message.warning('这已经是最后一页，不能再关闭了！')
       }
       // tabsViewMutations.closeCurrentTabs(route)
-      store.commit('tabs-view/closeCurrentTabs', route)
+      store.commit(TabsViewMutationType.CloseCurrentTabs, route)
       // 如果关闭的是当前页
       if (state.activeKey === route.fullPath) {
         const currentRoute = tabsList.value[Math.max(0, tabsList.value.length - 1)]
@@ -194,7 +184,7 @@ export default defineComponent({
     // 关闭左侧
     const closeLeft = (route, index) => {
       // tabsViewMutations.closeLeftTabs(route)
-      store.commit('tabs-view/closeLeftTabs', route)
+      store.commit(TabsViewMutationType.CloseLeftTabs, route)
       state.activeKey = route.fullPath
       router.replace(route.fullPath)
     }
@@ -202,7 +192,7 @@ export default defineComponent({
     // 关闭右侧
     const closeRight = (route, index) => {
       // tabsViewMutations.closeRightTabs(route)
-      store.commit('tabs-view/closeRightTabs', route)
+      store.commit(TabsViewMutationType.CloseRightTabs, route)
       state.activeKey = route.fullPath
       router.replace(route.fullPath)
     }
@@ -210,7 +200,7 @@ export default defineComponent({
     // 关闭其他
     const closeOther = (route) => {
       // tabsViewMutations.closeOtherTabs(route)
-      store.commit('tabs-view/closeOtherTabs', route)
+      store.commit(TabsViewMutationType.CloseOtherTabs, route)
       state.activeKey = route.fullPath
       router.replace(route.fullPath)
     }
@@ -219,7 +209,7 @@ export default defineComponent({
     const closeAll = () => {
       localStorage.removeItem('routes')
       // tabsViewMutations.closeAllTabs()
-      store.commit('tabs-view/closeAllTabs')
+      store.commit(TabsViewMutationType.CloseAllTabs)
       router.replace('/')
     }
 

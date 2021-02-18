@@ -5,7 +5,7 @@
     </router-view>
   </config-provider>
   <transition name="slide-up">
-    <lock-screen v-if="isLock"/>
+    <lock-screen v-if="isLock && $route.name != 'login'"/>
   </transition>
 </template>
 
@@ -14,8 +14,9 @@ import {defineComponent, computed, ref, onMounted, onUnmounted} from 'vue';
 import zhCN from 'ant-design-vue/es/locale/zh_CN';
 import {ConfigProvider} from 'ant-design-vue'
 import {LockScreen} from '@/components/lockscreen'
-import {useStore} from 'vuex'
+import {useStore} from '@/store'
 import {useRoute} from "vue-router";
+import {LockscreenMutationType} from '@/store/modules/lockscreen/mutations'
 
 export default defineComponent({
   name: 'App',
@@ -33,15 +34,15 @@ export default defineComponent({
       clearInterval(timer)
       if (route.name == 'login' || isLock.value) return
       // 设置不锁屏
-      store.commit('lockscreen/setLock', false)
+      store.commit(LockscreenMutationType.SetLock, false)
       // 重置锁屏时间
-      store.commit('lockscreen/setLockTime')
+      store.commit(LockscreenMutationType.SetLockTime)
       timer = setInterval(() => {
         // 锁屏倒计时递减
-        store.commit('lockscreen/setLockTime', lockTime.value - 1)
+        store.commit(LockscreenMutationType.SetLockTime, lockTime.value - 1)
         if (lockTime.value <= 0) {
           // 设置锁屏
-          store.commit('lockscreen/setLock', true)
+          store.commit(LockscreenMutationType.SetLock, true)
           return clearInterval(timer)
         }
         // console.log(lockTime.value, '锁屏倒计时')
