@@ -1,12 +1,12 @@
 import { WsAxios } from './WsAxios'
 
 /**
- * @description 主要用于客服一问一答
+ * @description 将websocket封装成类似axios的用法
  * @type {WsAxios}
  */
 const wsAxios = new WsAxios({
   url: process.env.VUE_APP_WEBSOCKET_API,
-  time: 60000,
+  time: 6000,
   ping: () => ({
     source: 'h5',
     userid: sessionStorage.getItem('yzkf_userid'),

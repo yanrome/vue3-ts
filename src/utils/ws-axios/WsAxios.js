@@ -66,10 +66,14 @@ export class WsAxios {
         console.error(`onmessage parse error: message:${data}, ${error.message}`)
         return
       }
+      // 根据请求时传给后端的requestId，取出相应的回调函数
       const callback = this.#callbacks[resObj.requestId]
       try {
+        // 主动请求后端时，调用请求前的回调
         callback(resObj)
       } catch (error) {
+        // 被动接收后端数据
+        WsAxios[requestAfter](resObj)
         console.error(`onmessage have some error: ${error.message}, message:${message}`)
       } finally {
         delete this.#callbacks[resObj.requestId]
@@ -88,12 +92,14 @@ export class WsAxios {
   sendCommand(params) {
     // 发送命令
     const requestId = ++this.#requestId
+    //TODO 本次请求的id，后端响应的时候需要带上本次请求的requestId，用于callbacks回调队列对应函数
+    params['requestId'] = requestId
+    //请求前调用拦截钩子
     params = { ...params, ...WsAxios[requestBefore](params) }
     const reqMsg = JSON.stringify(params)
     return new Promise((resolve, reject) => {
       this.#callbacks[requestId] = (resObj) => {
-        //TODO 本次请求的id，后端响应的时候需要带上本次请求的requestId，用于callbacks回调队列对应函数
-        resObj['requestId'] = requestId
+        //响应后调用拦截钩子
         resolve(WsAxios[requestAfter](resObj))
       }
       //添加状态判断，当为OPEN时，发送消息

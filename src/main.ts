@@ -1,9 +1,9 @@
 // import './publicPath'
 import { createApp } from 'vue'
 import App from './App.vue'
-import router, {setupRouter} from './router/'
+import router, {setupRouter} from './router'
 import {setupStore} from '@/store'
-import {setupAntd, setupDirectives, setupGlobalMethods,setupCustomComponents} from '@/plugins/'
+import {setupAntd, setupDirectives, setupGlobalMethods,setupCustomComponents} from '@/plugins'
 const app = createApp(App)
 
 // 注册全局常用的ant-design-vue组件

@@ -1,7 +1,7 @@
 import {createRouter, createWebHashHistory, RouteRecordRaw} from 'vue-router'
 
 import {createRouterGuards} from './router-guards'
-import 'nprogress/nprogress.css' // 进度条样式
+import 'nprogress/css/nprogress.css' // 进度条样式
 
 import shared from './modules/shared'
 import {errorRoutes, notFound} from './modules/error'
