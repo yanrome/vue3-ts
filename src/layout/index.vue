@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, h, computed} from 'vue'
+import  {defineComponent, ref, h, computed} from 'vue'
 import {Layout, message} from 'ant-design-vue'
 import Logo from './logo/index.vue'
 import {TabsView} from './tabs'

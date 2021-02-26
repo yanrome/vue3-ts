@@ -140,7 +140,7 @@ export default defineComponent({
     [Card.name]: Card,
     [Select.name]: Select,
     [Popconfirm.name]: Popconfirm,
-    [Select.Option.name]: Select.Option
+    Option: Select.Option
   },
   setup(props: Props, {attrs, emit, slots}) {
     const {pageOption} = usePages()

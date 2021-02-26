@@ -15,7 +15,7 @@ const routes: Array<RouteRecordRaw> = [{
         {
             path: '',
             name: 'Redirect',
-            component: require('@/views/shared/redirect/index.vue').default,
+            component: import('@/views/shared/redirect/index.vue'),
             meta: {
                 title: '重定向',
                 hidden: true,
