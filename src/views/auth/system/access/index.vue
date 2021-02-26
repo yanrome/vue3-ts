@@ -56,7 +56,7 @@ export default defineComponent({
         content: '您确定要删除所有选中吗？',
         onOk: async () => {
           await delAdminAccess(state.rowSelection.selectedRowKeys.toString())
-          tableRef.value.refreshTableData()
+          await tableRef.value.refreshTableData()
           state.rowSelection.selectedRowKeys = []
         }
       })

@@ -14,7 +14,6 @@ interface Options {
 }
 
 export const useCreateModal = (component: Component, options?: Options, app?: App): ModalInstance => {
-    // 单例模式
     let _instance: any = null
     // if (!_instance) {
     // const container = document.createDocumentFragment()
