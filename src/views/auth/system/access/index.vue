@@ -77,14 +77,16 @@ export default defineComponent({
     const expand = async (expanded, record) => {
       const expandItemEl = state.itemRefs[record.id]
       // 点击展开图标loading
-      const {data} = await useExpandLoading({
+      const result = await useExpandLoading({
         expanded,
         record,
         expandItemEl,
         asyncFunc: getAdminAccess,
         params: {id: record.id, limit: 100}
       })
-      record.children = data
+      if (result?.data) {
+        record.children = result.data
+      }
     }
 
     return {
