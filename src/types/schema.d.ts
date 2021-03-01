@@ -3,7 +3,7 @@ import {RuleObject} from 'ant-design-vue/lib/form/interface'
 import {FormItemProps} from 'ant-design-vue/lib/form/FormItem'
 import {FormProps, ValidationRule} from 'ant-design-vue/lib/form/Form'
 
-declare interface OptionItem {
+interface OptionItem {
     label: string;
     value: string | number;
     [key: string]: any;
@@ -13,7 +13,7 @@ type Rule = ValidationRule | {
     trigger?: 'blur' | 'change' | string['blur' | 'change'];
 }
 
-declare interface FormItem extends Partial<typeof FormItemProps>{
+interface FormItem extends Partial<typeof FormItemProps>{
     type?: 'input' | 'textarea' | 'select' | 'radio' | 'checkbox' | 'input-number' | 'inputRange' | 'switch' | VNode;
     label?: string; // 表单标签
     field: string; // 表单字段
@@ -29,7 +29,7 @@ declare interface FormItem extends Partial<typeof FormItemProps>{
     placeholder?: string;
 }
 
-declare interface FormSchema extends Partial<typeof FormProps>{
+interface FormSchema extends Partial<typeof FormProps>{
     style?: object; // 表单样式
     formItemLayout?: object; // 表单布局
     watchKeys?: string[];

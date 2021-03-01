@@ -11,7 +11,7 @@
     "test prod cors": "http-server dist --cors --gzip -P http://29135jo738.zicp.vip"
   },
   "dependencies": {
-    "ant-design-vue": "^2.0.0",
+    "ant-design-vue": "^2.0.1",
     "axios": "^0.21.1",
     "blueimp-md5": "^2.18.0",
     "dayjs": "^1.8.35",
