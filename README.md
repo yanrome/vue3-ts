@@ -1,11 +1,11 @@
 # vue3-antd
 基于vue-cli / vite + vue3.0 + antd2.0 + ts4.0 的后台管理系统模板
 - 账号：admin，密码：123456
-- 在线预览：http://buqiyuan.gitee.io/vue3-antd-admin/
-- API文档：http://29135jo738.zicp.vip/api/v1/docs/
-- 后台地址：https://github.com/buqiyuan/nestjs-mysql-api
-- vue-cli版：https://github.com/buqiyuan/vue3-antd-admin/tree/main （推荐）
-- vite踩坑版：https://github.com/buqiyuan/vue3-antd-admin/tree/vite-version 
+- [在线预览](http://buqiyuan.gitee.io/vue3-antd-admin/)
+- [API文档](http://s0.s100.vip:26887/api/v1/docs/)
+- [后台地址](https://github.com/buqiyuan/nestjs-mysql-api)
+- [vue-cli版](https://github.com/buqiyuan/vue3-antd-admin)
+- [vite踩坑版](https://github.com/buqiyuan/vite-vue3-admin)
 > 系统模块数据是从后端获取来的真实数据，路由也是从后端动态获取的，而后端是通过内网穿透提供访问的，难免会有访问失败的情况
 > 所以如果进入页面时提示网络错误，则需要再次刷新页面请求接口
 
@@ -55,7 +55,3 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
-## 感谢 JetBrains 免费的开源授权
-
-<a href="https://www.jetbrains.com/?from=Mybatis-PageHelper" target="_blank">
-<img src="https://user-images.githubusercontent.com/1787798/69898077-4f4e3d00-138f-11ea-81f9-96fb7c49da89.png" height="200"/></a>
