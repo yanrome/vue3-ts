@@ -14,14 +14,14 @@ interface Options {
 }
 
 export const useCreateModal = (component: Component, options?: Options, app?: App): ModalInstance => {
-    let _instance: any = null
+    let _instance
     // if (!_instance) {
     // const container = document.createDocumentFragment()
     const container = document.createElement('div')
     // 移除组件
     const remove = () => {
-        render(null, container)
         _instance = null
+        render(null, container)
         container.remove()
     }
     // 点击body移除组件

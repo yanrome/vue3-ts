@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="huawei-charge">
     <div class="number">{{ battery.level }}%</div>
     <div class="contrast">
       <div class="circle"></div>
@@ -43,7 +43,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.container {
+.huawei-charge {
   position: absolute;
   left: 50vw;
   bottom: 20vh;
@@ -126,44 +126,43 @@ export default defineComponent({
     text-align: center;
     font-size: 20px;
   }
+
+  @for $i from 0 through 15 {
+    li:nth-child(#{$i}) {
+      $width: 15 + random(15) + px;
+      left: 15 + random(70) + px;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: $width;
+      height: $width;
+      animation: moveToTop #{random(6) + 3}s ease-in-out -#{random(5000)/1000}s infinite;
+    }
+  }
+
+  @keyframes rotate {
+    50% {
+      border-radius: 45% / 42% 38% 58% 49%;
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(720deg);
+    }
+  }
+
+  @keyframes moveToTop {
+    90% {
+      opacity: 1;
+    }
+    100% {
+      opacity: .1;
+      transform: translate(-50%, -180px);
+    }
+  }
+
+  @keyframes hueRotate {
+    100% {
+      filter: contrast(15) hue-rotate(360deg);
+    }
+  }
+
 }
-
-
-@for $i from 0 through 15 {
-  li:nth-child(#{$i}) {
-    $width: 15 + random(15) + px;
-    left: 15 + random(70) + px;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: $width;
-    height: $width;
-    animation: moveToTop #{random(6) + 3}s ease-in-out -#{random(5000)/1000}s infinite;
-  }
-}
-
-@keyframes rotate {
-  50% {
-    border-radius: 45% / 42% 38% 58% 49%;
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(720deg);
-  }
-}
-
-@keyframes moveToTop {
-  90% {
-    opacity: 1;
-  }
-  100% {
-    opacity: .1;
-    transform: translate(-50%, -180px);
-  }
-}
-
-@keyframes hueRotate {
-  100% {
-    filter: contrast(15) hue-rotate(360deg);
-  }
-}
-
 </style>

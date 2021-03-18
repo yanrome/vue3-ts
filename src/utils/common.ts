@@ -24,6 +24,19 @@ export const importAllModule = (context: RequireContext, reg = /\.vue$/) => {
 }
 
 /**
+ * @description 异步导入组件
+ * @param cateName 组件的分类
+ * @param compName 组件名称
+ * @return {Promise<*>}
+ */
+export const getAsyncComp = async (cateName, compName = "index.vue") => {
+    const result = await import(
+        /* webpackChunkName: "[request]" */ `@/components/${cateName}/${compName}`
+        );
+    return result.default;
+};
+
+/**
  * @description 随机生成颜色
  * @param {string} type
  * @return {string}

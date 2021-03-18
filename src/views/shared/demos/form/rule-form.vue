@@ -22,7 +22,7 @@
 <script lang="ts">
 import {defineComponent, reactive, ref, toRefs} from 'vue'
 import {Alert,Card} from 'ant-design-vue'
-import {AButton} from '@/components/button'
+import {AButton} from '@/components/button/'
 import {SchemaForm} from '@/components/JSON-schema-form'
 import {getFormSchema} from './form-schema'
 

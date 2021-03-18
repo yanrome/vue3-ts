@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="xiaomi-charge">
     <div v-for="i in 3" :key="i" class="outer">
       <div class="circle" :style="{transform: `scale(${1.01 - 0.04 * (i - 1)})`}"></div>
     </div>
@@ -40,7 +40,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.container {
+.xiaomi-charge {
   position: absolute;
   left: 50vw;
   bottom: 0;
@@ -49,212 +49,211 @@ export default defineComponent({
   transform: translateX(-50%);
   width: 300px;
   height: 400px;
-}
-
-.circle {
-  position: absolute;
-  width: 286px;
-  height: 286px;
-  border-radius: 50%;
-  background: linear-gradient(#c71ff1, #2554ea);
-  padding: 2px;
-}
-
-.circle::after {
-  display: block;
-  content: ' ';
-  border-radius: 50%;
-  background: #000;
-  width: 100%;
-  height: 100%;
-}
-
-.circle-blur {
-  filter: blur(5px);
-  animation: rotate 5s linear infinite;
-}
-
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
+  .circle {
+    position: absolute;
+    width: 286px;
+    height: 286px;
+    border-radius: 50%;
+    background: linear-gradient(#c71ff1, #2554ea);
+    padding: 2px;
   }
-  100% {
-    transform: rotate(360deg);
+
+  .circle::after {
+    display: block;
+    content: ' ';
+    border-radius: 50%;
+    background: #000;
+    width: 100%;
+    height: 100%;
   }
-}
 
-.circle-white {
-  position: absolute;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  border-top: solid 1px rgba(255, 255, 255, .06);
-  border-bottom: solid 1px rgba(255, 255, 255, .08);
-  animation: rotate 500ms linear infinite;
-}
-
-.outer {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  bottom: 400px;
-}
-
-.line-box {
-  position: absolute;
-  width: 80px;
-  height: 400px;
-  bottom: 0;
-  background: #000;
-  overflow: hidden;
-}
-
-.line-left {
-  position: absolute;
-  left: -15px;
-  width: 30px;
-  bottom: 0;
-  height: 267px;
-  border-right: solid 2px #2554ea;
-  border-top: solid 2px #2554ea;
-  box-sizing: border-box;
-  border-top-right-radius: 40px;
-}
-
-.line-left::before {
-  position: absolute;
-  left: 0;
-  top: -8px;
-  width: 30px;
-  height: 100%;
-  border-right: solid 2px #2554ea;
-  border-top: solid 2px #2554ea;
-  box-sizing: border-box;
-  border-top-right-radius: 50px;
-  content: '';
-  transform-origin: center top;
-  transform: scaleY(.96);
-}
-
-.line-left::after {
-  position: absolute;
-  left: 0;
-  top: -14px;
-  width: 30px;
-  height: 100%;
-  border-right: solid 2px #2554ea;
-  border-top: solid 2px #2554ea;
-  box-sizing: border-box;
-  border-top-right-radius: 60px;
-  content: '';
-  transform-origin: center top;
-  transform: scaleY(.92);
-}
-
-.line-right {
-  transform-origin: 55px;
-  transform: scaleX(-1);
-}
-
-.line-center {
-  position: absolute;
-  left: 39px;
-  top: 0;
-  height: 100%;
-  width: 2px;
-  background: #231779;
-}
-
-.line-center::before {
-  position: absolute;
-  bottom: 10px;
-  content: '';
-  width: 2px;
-  height: 80px;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
-  background: linear-gradient(#79ccea, transparent);
-  animation: up 700ms linear infinite;
-}
-
-.line-center-left-1 {
-  transform: translateX(-9px);
-}
-
-.line-center-left-2 {
-  transform: translateX(-18px);
-}
-
-.line-center-right-1 {
-  transform: translateX(9px);
-}
-
-.line-center-right-2 {
-  transform: translateX(18px);
-}
-
-.line-center-left-1::before {
-  animation-delay: -200ms;
-}
-
-.line-center-left-2::before {
-  animation-delay: -400ms;
-}
-
-.line-center-right-1::before {
-  animation-delay: -300ms;
-}
-
-.line-center-right-2::before {
-  animation-delay: -500ms;
-}
-
-@keyframes up {
-  0% {
-    transform: translateY(80px);
+  .circle-blur {
+    filter: blur(5px);
+    animation: rotate 5s linear infinite;
   }
-  100% {
-    transform: translateY(-400px);
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
-}
 
-.text {
-  position: absolute;
-  width: 200px;
-  height: 80px;
-  font-size: 70px;
-  line-height: 80px;
-  color: turquoise;
-  text-align: center;
-}
-
-.sub {
-  font-size: 30px;
-}
-
-.light {
-  position: absolute;
-  width: 300px;
-  height: 350px;
-  bottom: -150px;
-  border-radius: 50%;
-  animation: light 1.2s linear 1 forwards;
-  background: radial-gradient(#2554ea, transparent 60%);
-}
-
-@keyframes light {
-  0% {
-    transform: scale(.3);
-    opacity: .3;
+  .circle-white {
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    border-top: solid 1px rgba(255, 255, 255, .06);
+    border-bottom: solid 1px rgba(255, 255, 255, .08);
+    animation: rotate 500ms linear infinite;
   }
-  40% {
-    transform: scale(1);
-    opacity: .6;
+
+  .outer {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 400px;
   }
-  100% {
-    transform: scale(.3);
-    opacity: 0;
+
+  .line-box {
+    position: absolute;
+    width: 80px;
+    height: 400px;
+    bottom: 0;
+    background: #000;
+    overflow: hidden;
+  }
+
+  .line-left {
+    position: absolute;
+    left: -15px;
+    width: 30px;
+    bottom: 0;
+    height: 267px;
+    border-right: solid 2px #2554ea;
+    border-top: solid 2px #2554ea;
+    box-sizing: border-box;
+    border-top-right-radius: 40px;
+  }
+
+  .line-left::before {
+    position: absolute;
+    left: 0;
+    top: -8px;
+    width: 30px;
+    height: 100%;
+    border-right: solid 2px #2554ea;
+    border-top: solid 2px #2554ea;
+    box-sizing: border-box;
+    border-top-right-radius: 50px;
+    content: '';
+    transform-origin: center top;
+    transform: scaleY(.96);
+  }
+
+  .line-left::after {
+    position: absolute;
+    left: 0;
+    top: -14px;
+    width: 30px;
+    height: 100%;
+    border-right: solid 2px #2554ea;
+    border-top: solid 2px #2554ea;
+    box-sizing: border-box;
+    border-top-right-radius: 60px;
+    content: '';
+    transform-origin: center top;
+    transform: scaleY(.92);
+  }
+
+  .line-right {
+    transform-origin: 55px;
+    transform: scaleX(-1);
+  }
+
+  .line-center {
+    position: absolute;
+    left: 39px;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background: #231779;
+  }
+
+  .line-center::before {
+    position: absolute;
+    bottom: 10px;
+    content: '';
+    width: 2px;
+    height: 80px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    background: linear-gradient(#79ccea, transparent);
+    animation: up 700ms linear infinite;
+  }
+
+  .line-center-left-1 {
+    transform: translateX(-9px);
+  }
+
+  .line-center-left-2 {
+    transform: translateX(-18px);
+  }
+
+  .line-center-right-1 {
+    transform: translateX(9px);
+  }
+
+  .line-center-right-2 {
+    transform: translateX(18px);
+  }
+
+  .line-center-left-1::before {
+    animation-delay: -200ms;
+  }
+
+  .line-center-left-2::before {
+    animation-delay: -400ms;
+  }
+
+  .line-center-right-1::before {
+    animation-delay: -300ms;
+  }
+
+  .line-center-right-2::before {
+    animation-delay: -500ms;
+  }
+
+  @keyframes up {
+    0% {
+      transform: translateY(80px);
+    }
+    100% {
+      transform: translateY(-400px);
+    }
+  }
+
+  .text {
+    position: absolute;
+    width: 200px;
+    height: 80px;
+    font-size: 70px;
+    line-height: 80px;
+    color: turquoise;
+    text-align: center;
+  }
+
+  .sub {
+    font-size: 30px;
+  }
+
+  .light {
+    position: absolute;
+    width: 300px;
+    height: 350px;
+    bottom: -150px;
+    border-radius: 50%;
+    animation: light 1.2s linear 1 forwards;
+    background: radial-gradient(#2554ea, transparent 60%);
+  }
+
+  @keyframes light {
+    0% {
+      transform: scale(.3);
+      opacity: .3;
+    }
+    40% {
+      transform: scale(1);
+      opacity: .6;
+    }
+    100% {
+      transform: scale(.3);
+      opacity: 0;
+    }
   }
 }
 </style>

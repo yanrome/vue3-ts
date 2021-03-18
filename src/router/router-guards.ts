@@ -71,6 +71,7 @@ export function createRouterGuards(router: Router) {
     })
 
     router.afterEach((to, from, failure) => {
+        document.title = to?.meta?.title as string || document.title
         if (isNavigationFailure(failure)) {
             console.log('failed navigation', failure)
         }

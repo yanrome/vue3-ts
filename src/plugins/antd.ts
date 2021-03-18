@@ -1,6 +1,6 @@
 import type { App } from 'vue';
 
-import {AButton} from '@/components/button/'
+import {AButton} from '@/components/button/index'
 
 import {Modal, Table, Menu, Input, Form,Card, Checkbox, Radio} from 'ant-design-vue';
 

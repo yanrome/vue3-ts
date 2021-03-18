@@ -20,7 +20,7 @@
 <script lang="ts">
 import {defineComponent, reactive, toRefs} from 'vue'
 import {Alert,Card} from 'ant-design-vue'
-import {AButton} from '@/components/button'
+import {AButton} from '@/components/button/index'
 
 /**
  * @description 扩展ant-design-vue模态框功能
