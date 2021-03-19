@@ -42,7 +42,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .huawei-charge {
   position: absolute;
   left: 50vw;
@@ -86,7 +86,7 @@ export default defineComponent({
         height: 200px;
         background-color: #00ff6f;
         border-radius: 42% 38% 62% 49% / 45%;
-        animation: rotate 10s infinite linear;
+        animation: trotate 10s infinite linear;
       }
 
       &::before {
@@ -139,7 +139,7 @@ export default defineComponent({
     }
   }
 
-  @keyframes rotate {
+  @keyframes trotate {
     50% {
       border-radius: 45% / 42% 38% 58% 49%;
     }

@@ -39,7 +39,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .xiaomi-charge {
   position: absolute;
   left: 50vw;
