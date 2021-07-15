@@ -110,7 +110,7 @@ export const IS_DEV = ["development"].includes(process.env.NODE_ENV);
  * @description 格式化日期
  * @param time
  */
-export const formatDate = (time) => dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+export const formatDate = (time,str='YYYY-MM-DD HH:mm:ss') => dayjs(time).format(str)
 
 /**
  *  @description 将一维数组转成树形结构数据

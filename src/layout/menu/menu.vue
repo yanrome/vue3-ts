@@ -3,11 +3,10 @@
       v-model:open-keys="openKeys"
       v-model:selected-keys="selectedKeys"
       mode="inline"
-      theme="dark"
       :inline-collapsed="collapsed"
       @click="clickMenuItem"
   >
-    <template v-for="item in menus" :key="item.name">
+    <template v-for="item in menus"  :key="item.name">
       <menu-item :menu-info="item"/>
     </template>
   </a-menu>
@@ -64,6 +63,9 @@ export default defineComponent({
 
     const menus = computed(() => store.getters.menus.length > 0 ? store.getters.menus : routes.find(item => item.name == 'Layout')!.children)
 
+    console.log('isMenu',menus)
+
+
     // 监听菜单收缩状态
     watch(() => props.collapsed, (newVal) => {
       state.openKeys = newVal ? [] : getOpenKeys()
@@ -79,7 +81,9 @@ export default defineComponent({
 
     // 点击菜单
     const clickMenuItem = ({item, key, keyPath}) => {
-      router.push({name: key})
+      // router.push({path:keyPath[0],name: key})
+      console.log('key',key)
+      router.push({name:key})
     }
 
     return {

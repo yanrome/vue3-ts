@@ -2,7 +2,7 @@ import http from '@/utils/http/axios';
 import {RequestEnum} from '@/enums/httpEnum'
 
 enum Api {
-  adminRole = '/admin/role',
+  adminRole = '/system/role/list',
   adminRoleAccess = '/admin/role_access',
 }
 
@@ -24,7 +24,7 @@ export function getAdminRoleAccess(id?: string | number) {
 export function getAdminRole(params) {
   return http.request({
     url: Api.adminRole,
-    method: RequestEnum.GET,
+    method: RequestEnum.POST,
     params,
   });
 }

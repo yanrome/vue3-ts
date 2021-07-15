@@ -1,9 +1,14 @@
-import {message as Message} from "ant-design-vue";
+import {message, message as Message} from "ant-design-vue";
 import router from '@/router'
+
 import {createStorage} from '@/utils/Storage'
+import {useStore} from '@/store'
+
+import {UserActionTypes} from "@/store/modules/user/actions";
+import {TABS_ROUTES} from "@/store/mutation-types";
 
 const storage = createStorage()
-
+const store = useStore()
 const error = Message.error!;
 
 export function checkStatus(status: number, msg: string): void {
@@ -19,6 +24,22 @@ export function checkStatus(status: number, msg: string): void {
             // store.dispatch('user/loginOut', {
             //   goLogin: true,
             // });
+            // debugger
+            // console.log('router',router.)
+            // store.dispatch(UserActionTypes.Logout).then(res => {
+            //
+            //     message.success('成功退出登录')
+            //     // 移除标签页
+            //     localStorage.removeItem(TABS_ROUTES)
+            //     router.replace({
+            //         name: 'login',
+            //         query: {
+            //             redirect: router.currentRoute.value.fullPath
+            //         }
+            //     })
+            //     storage.clear()
+            // })
+
             break;
         case 403:
             error('用户得到授权，但是访问是被禁止的。!');

@@ -3,6 +3,7 @@ import {createStore, useStore as baseUseStore, createLogger} from 'vuex'
 import {App, InjectionKey} from "vue";
 import {store as asyncRoute, AsyncRouteStore, State as AsyncRouteState} from '@/store/modules/async-route';
 import {store as user, UserStore, State as UserState} from '@/store/modules/user';
+import {store as order,OrderStore, State as OrderState } from '@/store/modules/order'
 import {store as lockscreen, LockscreenStore, State as LockscreenState} from '@/store/modules/lockscreen';
 import {store as tabsView, TabsViewStore, State as TabsViewState} from '@/store/modules/tabs-view';
 import {LockscreenMutationType} from "@/store/modules/lockscreen/mutations";
@@ -14,6 +15,7 @@ export type RootState = {
     user: UserState;
     lockscreen: LockscreenState;
     tabsView: TabsViewState;
+    order:OrderState;
 };
 
 export type Store =
@@ -21,6 +23,7 @@ export type Store =
     & UserStore<Pick<RootState, 'user'>>
     & LockscreenStore<Pick<RootState, 'lockscreen'>>
     & TabsViewStore<Pick<RootState, 'tabsView'>>
+    & OrderStore<Pick<RootState, 'order'>>
 
 // 在开发环境中开启logger
 const debug = process.env.NODE_ENV !== 'production';
@@ -42,7 +45,8 @@ const store = createStore<RootState>({
         asyncRoute,
         user,
         lockscreen,
-        tabsView
+        tabsView,
+        order
     }
 })
 

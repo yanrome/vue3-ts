@@ -129,6 +129,7 @@ export class VAxios {
   /**
    * @description:   请求方法
    */
+
   request<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
     let conf: AxiosRequestConfig = cloneDeep(config);
     const transform = this.getTransform();
@@ -145,16 +146,23 @@ export class VAxios {
       this.axiosInstance
           .request<any, AxiosResponse<Result>>(conf)
           .then((res: AxiosResponse<Result>) => {
+
             // 请求是否被取消
             const isCancel = axios.isCancel(res)
+            // console.log('transformRequestData',transformRequestData)
             if (transformRequestData && isFunction(transformRequestData) && !isCancel) {
+
               const ret = transformRequestData(res, opt);
+              // debugger
               // ret !== undefined ? resolve(ret) : reject(new Error('request error!'));
               return resolve(ret)
+
             }
+
             reject((res as unknown) as Promise<T>);
           })
           .catch((e: Error) => {
+            console.log('请求错误',Error)
             if (requestCatch && isFunction(requestCatch)) {
               reject(requestCatch(e));
               return;

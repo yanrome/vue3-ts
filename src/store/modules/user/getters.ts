@@ -10,6 +10,8 @@ export type Getters = {
     nickname(state: State): string;
     roles(state: State): any[];
     userInfo(state: State): any;
+    hotel(state:State):any;
+    hotelId(state:State):any;
 }
 
 export const getters: GetterTree<State, RootState> & Getters = {
@@ -18,4 +20,6 @@ export const getters: GetterTree<State, RootState> & Getters = {
     nickname: (state) => state.name,
     roles: (state) => state.roles,
     userInfo: (state) => state.info,
+    hotel: (state) => state.hotel,
+    hotelId: (state) => state.hotelId,
 };

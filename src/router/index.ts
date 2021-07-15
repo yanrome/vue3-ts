@@ -18,7 +18,7 @@ export const routes: Array<RouteRecordRaw> = [
             title: '首页'
         },
         children: [
-            ...common
+            ...common,
         ]
     },
     ...shared,
@@ -33,6 +33,7 @@ const router = createRouter({
 
 export function setupRouter(app: App) {
     app.use(router)
+    console.log('2312',routes)
     // 创建路由守卫
     createRouterGuards(router)
 }

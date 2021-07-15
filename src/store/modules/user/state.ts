@@ -1,5 +1,5 @@
 import {createStorage} from '@/utils/Storage'
-import {ACCESS_TOKEN, CURRENT_USER} from "@/store/mutation-types";
+import {ACCESS_TOKEN, CURRENT_USER,HOTEL_USER} from "@/store/mutation-types";
 const Storage = createStorage({storage: localStorage})
 
 export type State = {
@@ -9,6 +9,8 @@ export type State = {
     avatar: string;
     roles: any[];
     info: any;
+    hotel:any;
+    hotelId:any
 };
 
 export const state: State = {
@@ -17,5 +19,7 @@ export const state: State = {
     welcome: '',
     avatar: '',
     roles: [],
-    info: Storage.get(CURRENT_USER, {})
+    info: Storage.get(CURRENT_USER, {}),
+    hotel:Storage.get(HOTEL_USER,{}),
+    hotelId: null
 };

@@ -75,7 +75,7 @@ import {
 import {useRouter, useRoute} from "vue-router";
 import {useOnline} from '@/hooks/useOnline'
 import {useTime} from '@/hooks/useTime'
-// import md5 from 'blueimp-md5'
+import AES from '@/utils/AesPassword'
 import HuaweiCharge from './huawei-charge.vue'
 import XiaomiCharge from './xiaomi-charge.vue'
 import {useBattery} from '@/hooks/useBattery'
@@ -113,6 +113,7 @@ export default defineComponent({
       loginLoading: false, // 正在登录
       loginForm: {
         username: store.getters.userInfo.username,
+        validateCode:'aiyoyoufang',
         password: '',
       }
     })
@@ -124,19 +125,20 @@ export default defineComponent({
     const onLogin = async () => {
       if (state.loginForm.password.trim() == '') return message.warn('请填写密码')
       const params = {...state.loginForm}
+      params.password = AES.generatekey(params.password)
       state.loginLoading = true
       // params.password = md5(params.password)
-      const {code, result, message: msg} = await store.dispatch(UserActionTypes.Login, params).finally(() => {
+      const res = await store.dispatch(UserActionTypes.Login, params).finally(() => {
         state.loginLoading = false
         message.destroy()
       })
-      if (code == 0) {
+      if (res.status == 1) {
         Modal.destroyAll()
         message.success('登录成功！')
         unLockLogin(false)
         store.commit(LockscreenMutationType.SetLock, false)
       } else {
-        message.info(msg || '登录失败')
+        message.info(res.msg || '登录失败')
       }
       state.loginLoading = false
     }

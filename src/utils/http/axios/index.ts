@@ -13,10 +13,12 @@ import {setObjToUrlParams} from '@/utils/urlUtils'
 
 import {RequestOptions, Result} from './types';
 
+axios.defaults.withCredentials = true
 const isDev = process.env.NODE_ENV === 'development'
 import router from '@/router'
 import store from '@/store'
 import {storage} from "@/utils/Storage";
+
 /**
  * @description: 数据处理，方便区分多种处理方式
  * axios封装使用了https://github.com/anncwb/vue-vben-admin/tree/main/src/utils/http/axios
@@ -26,19 +28,20 @@ const transform: AxiosTransform = {
      * @description: 处理请求数据
      */
     transformRequestData: (res: AxiosResponse<Result>, options: RequestOptions) => {
-        const {isTransformRequestResult, isShowMessage = true,isShowErrorMessage, isShowSuccessMessage, successMessageText, errorMessageText} = options;
+        const {isTransformRequestResult, isShowMessage = true, isShowErrorMessage, isShowSuccessMessage, successMessageText, errorMessageText} = options;
 
         const reject = Promise.reject
 
         const {data} = res;
         //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-        const {code, result, message} = data;
+        const {ret: code, data: result, msg: message} = data;
         // 请求成功
-        const hasSuccess = data && Reflect.has(data, 'code') && code === ResultEnum.SUCCESS;
+        const hasSuccess = data && Reflect.has(data, 'ret') && code === ResultEnum.SUCCESS;
+
         // 是否显示提示信息
         if (isShowMessage) {
             if (hasSuccess && (successMessageText || isShowSuccessMessage)) { // 是否显示自定义信息提示
-                Message.success(successMessageText || message ||  '操作成功！')
+                Message.success(successMessageText || message || '操作成功！')
             } else if (!hasSuccess && (errorMessageText || isShowErrorMessage)) { // 是否显示自定义信息提示
                 Message.error(message || errorMessageText || '操作失败！')
             } else if (!hasSuccess && options.errorMessageMode === 'modal') { // errorMessageMode=‘custom-modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
@@ -58,12 +61,12 @@ const transform: AxiosTransform = {
 
         // 接口请求成功，直接返回结果
         if (code === ResultEnum.SUCCESS) {
-            return result;
+            return data //result;
         }
         // 接口请求错误，统一提示错误信息
         if (code === ResultEnum.ERROR) {
             if (message) {
-                Message.error(data.message);
+                Message.error(data.msg);
                 Promise.reject(new Error(message));
             } else {
                 const msg = '操作失败,系统异常!';
@@ -97,7 +100,7 @@ const transform: AxiosTransform = {
 
         // 这里逻辑可以根据项目进行修改
         if (!hasSuccess) {
-            return reject(new Error(message));
+            return reject({});
         }
 
         return data;
@@ -151,8 +154,8 @@ const transform: AxiosTransform = {
         // 请求之前处理config
         const token = store.state.user.token;
         if (token) {
-          // jwt token
-          config.headers.token = token;
+            // jwt token
+            config.headers.token = token;
         }
         return config;
     },
@@ -161,6 +164,7 @@ const transform: AxiosTransform = {
      * @description: 响应错误处理
      */
     responseInterceptorsCatch: (error: any) => {
+
         const {response, code, message} = error || {};
         const msg: string =
             response && response.data && response.data.error ? response.data.error.message : '';
@@ -184,6 +188,21 @@ const transform: AxiosTransform = {
         const isCancel = axios.isCancel(error)
         if (!isCancel) {
             checkStatus(error.response && error.response.status, msg);
+            if (error.response.status == 401 || error.response.status == 302) {
+                Modal.warning({
+                    title: '提示',
+                    content: '登录身份已失效,请重新登录!',
+                    onOk: () => {
+                        router.replace({
+                            name: 'login',
+                            query: {
+                                redirect: router.currentRoute.value.fullPath
+                            }
+                        })
+                        storage.clear()
+                    }
+                });
+            }
         } else {
             console.warn(error, '请求被取消！')
         }
@@ -194,7 +213,7 @@ const transform: AxiosTransform = {
 const Axios = new VAxios({
     timeout: 15 * 1000,
     // 基础接口地址
-    // baseURL: globSetting.apiUrl,
+    // baseURL:  process.env.VUE_APP_API_URL1,
     // 接口可能会有通用的地址部分，可以统一抽取出来
     // prefixUrl: prefix,
     headers: {'Content-Type': ContentTypeEnum.FORM_URLENCODED},
@@ -213,7 +232,7 @@ const Axios = new VAxios({
         // 消息提示类型
         errorMessageMode: 'none',
         // 接口地址
-        apiUrl: process.env.VUE_APP_API_URL1,
+        // apiUrl: process.env.VUE_APP_API_URL1,
     },
     withCredentials: false
 });

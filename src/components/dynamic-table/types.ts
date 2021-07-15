@@ -13,4 +13,5 @@ export interface Props extends Omit<TableProps, 'columns'>{
     rowKey: string | ((record: any) => string);
     pageOption: pageOption;
     getListFunc: (prams) => any;
+    listType:string;
 }

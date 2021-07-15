@@ -7,7 +7,7 @@ import {
 } from './model/userModel';
 
 enum Api {
-  login = '/admin/login',
+  login = '/login',
   logout = '/login/logout',
 }
 

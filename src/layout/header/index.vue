@@ -1,29 +1,30 @@
 <template>
   <ALayoutHeader class="layout-header">
     <div class="left-options">
-      <span @click="() => $emit('update:collapsed', !collapsed)" class="menu-fold">
-        <component :is="collapsed ? 'menu-unfold-outlined' : 'menu-fold-outlined'" />
-    </span>
-      <a-breadcrumb>
-        <template v-for="routeItem in route.matched" :key="routeItem.name">
-          <a-breadcrumb-item>
-            <a>{{ routeItem.meta.title }}</a>
-            <template v-slot:overlay>
-              <a-menu v-if="routeItem.children.length">
-                <template v-for="childItem in routeItem.children">
-                  <a-menu-item v-if="!childItem.meta.hidden" :key="childItem.name">
-                    <router-link :to="{name: childItem.name}">
-                      {{ childItem.meta.title }}
-                    </router-link>
-                  </a-menu-item>
-                </template>
-              </a-menu>
-            </template>
-          </a-breadcrumb-item>
-        </template>
-      </a-breadcrumb>
+<!--      <span @click="() => $emit('update:collapsed', !collapsed)" class="menu-fold">-->
+<!--        <component :is="collapsed ? 'menu-unfold-outlined' : 'menu-fold-outlined'" />-->
+<!--    </span>-->
+<!--      <a-breadcrumb>-->
+<!--        <template  v-for="routeItem in route.matched" :key="routeItem.name">-->
+<!--          <a-breadcrumb-item style="color:#ffffff;">-->
+<!--            <a>{{ routeItem.meta.title }}</a>-->
+<!--            <template v-slot:overlay>-->
+<!--              <a-menu v-if="routeItem.children.length">-->
+<!--                <template v-for="childItem in routeItem.children">-->
+<!--                  <a-menu-item v-if="!childItem.meta.hidden" :key="childItem.name">-->
+<!--                    <router-link :to="{name: childItem.name}">-->
+<!--                      {{ childItem.meta.title }}-->
+<!--                    </router-link>-->
+<!--                  </a-menu-item>-->
+<!--                </template>-->
+<!--              </a-menu>-->
+<!--            </template>-->
+<!--          </a-breadcrumb-item>-->
+<!--        </template>-->
+<!--      </a-breadcrumb>-->
     </div>
     <div class="right-options">
+
       <template v-for="item in iconList" :key="item.icon.name">
         <a-tooltip placement="bottom">
           <template #title>
@@ -34,6 +35,31 @@
       </template>
 <!--      切换全屏-->
       <component :is="fullscreenIcon" @click="toggleFullScreen" />
+      <Dropdown>
+<!--        <a class="ant-dropdown-link" @click.prevent>-->
+<!--          切换酒店-->
+        <a-select
+                v-model:value="hotelId"
+                show-search
+                placeholder="Select a person"
+                option-filter-prop="children"
+                style="width: 200px;color: #ffffff"
+                :bordered="false"
+                :filter-option="filterOption"
+                @focus="handleFocus"
+                @blur="handleBlur"
+                @change="handleChange"
+        >
+          <a-select-option v-for="item in hotel" :key="item.id" v-bind:id="item.id" v-bind:name="item.hotelName" :value="item.id">{{item.hotelName}}</a-select-option>
+        </a-select>
+          <DownOutlined />
+<!--        </a>-->
+        <template #overlay>
+
+        </template>
+      </Dropdown>
+
+
       <Dropdown>
         <a-avatar>{{ username }}</a-avatar>
         <template v-slot:overlay>
@@ -53,36 +79,52 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, toRefs, createVNode} from 'vue'
+import {defineComponent, reactive, toRefs, createVNode,ref} from 'vue'
 import {useRouter, useRoute} from 'vue-router'
 import components from "@/layout/header/components";
 import {message, Modal} from 'ant-design-vue'
-import {QuestionCircleOutlined} from '@ant-design/icons-vue'
+import {QuestionCircleOutlined,DownOutlined} from '@ant-design/icons-vue'
 import {useStore} from '@/store'
 import {TABS_ROUTES} from "@/store/mutation-types";
 import {LockscreenMutationType} from "@/store/modules/lockscreen/mutations";
 import {UserActionTypes} from "@/store/modules/user/actions";
-
+import {MutationType} from "@/store/modules/user/mutations"
+import {TabsViewMutationType} from "@/store/modules/tabs-view/mutations";
+import {storage} from "@/utils/Storage";
+import {HOTEL_USER,HOTEL_USER_ID} from "@/store/mutation-types";
 export default defineComponent({
   name: "PageHeader",
-  components: {...components},
+  components: {...components,DownOutlined},
   props: {
     collapsed: {
       type: Boolean,
     }
   },
   setup() {
-    const store = useStore()
 
+
+    const filterOption = (input: string, option: any) => {
+      return option.props.name.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    };
+
+    const store = useStore()
+    console.log('12312312',store.getters.hotel)
+    //初始化获取酒店列表
+    store.commit(MutationType.SetHotel,storage.get(HOTEL_USER))
+    store.commit(MutationType.setHotelId,storage.get(HOTEL_USER_ID))
+    // commit(MutationType.setHotelId,result[0].id)
     const state = reactive({
       username: store.getters.userInfo.username,
+      hotel:store.getters.hotel,
+      hotelId:store.getters.hotelId,
       fullscreenIcon: 'FullscreenOutlined'
     })
-
+    console.log('state',state)
     const router = useRouter()
     const route = useRoute()
-    console.log(route.matched)
-    console.log(router.getRoutes(), 'currentRoute')
+
+      // console.log(route.matched)
+    // console.log(router.getRoutes(), 'currentRoute')
 
     // 退出登录
     const doLogout = () => {
@@ -127,21 +169,6 @@ export default defineComponent({
     // 图标列表
     const iconList = [
       {
-        icon: 'SearchOutlined',
-        tips: '搜索'
-      },
-      {
-        icon: 'GithubOutlined',
-        tips: 'github',
-        eventObject: {
-          click: () => window.open('https://github.com/buqiyuan/vue3-antd')
-        }
-      },
-      {
-        icon:  'SettingOutlined',
-        tips: '网站设置'
-      },
-      {
         icon: 'LockOutlined',
         tips: '锁屏',
         eventObject: {
@@ -149,11 +176,25 @@ export default defineComponent({
         }
       },
     ]
-
+    const handleChange = (value: any) => {
+      console.log(`selected`,value );
+      store.commit(MutationType.setHotelId,value)
+      console.log('selectedselected',store.getters.hotelId)
+    };
+    const handleBlur = () => {
+      console.log('blur');
+    };
+    const handleFocus = () => {
+      console.log('focus');
+    };
     return {
       ...toRefs(state),
+      filterOption,
       iconList,
       toggleFullScreen,
+      handleBlur,
+      handleFocus,
+      handleChange,
       doLogout,
       route
     }
@@ -169,16 +210,17 @@ export default defineComponent({
   position: sticky;
   top: 0;
   z-index: 10;
-  background-color: #fff;
+  background-color: #001529;
   padding: 0;
   height: $header-height;
-
+  color: #FFFFFF;
   .left-options {
     display: flex;
     align-items: center;
 
     .menu-fold {
       padding: 0 24px;
+      color: #fff;
       cursor: pointer;
     }
   }

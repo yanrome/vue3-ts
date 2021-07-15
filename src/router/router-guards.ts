@@ -6,6 +6,9 @@ import {storage} from '@/utils/Storage'
 import {AsyncRouteActionTypes} from '@/store/modules/async-route/actions'
 import {debounce} from '@/utils/lodashChunk'
 
+import {UserActionTypes} from "@/store/modules/user/actions";
+import {message} from "ant-design-vue";
+
 NProgress.configure({showSpinner: false}) // NProgress Configuration
 
 const allowList = ['login', 'icons', 'error', 'error-404'] // no redirect whitelist
@@ -15,7 +18,11 @@ const defaultRoutePath = '/dashboard'
 
 // 是否需要从后端获取菜单
 const isGetMenus = debounce(({to, from, next, hasRoute}) => {
+
+
     store.dispatch(AsyncRouteActionTypes.GenerateRoutes).then(() => {
+
+
         // 根据roles权限生成可访问的路由表
         // 动态添加可访问路由表
         if (allowList.includes(to.name as string)) return
@@ -31,8 +38,18 @@ const isGetMenus = debounce(({to, from, next, hasRoute}) => {
             }
         }
 
-    }).catch(() => next({path: defaultRoutePath}))
-}, 1800, {leading: true})
+    }).catch(() =>{
+        next({path: defaultRoutePath})
+    } )
+}, 1800, {leading: true});
+
+//查询酒店列表
+// const getHotel = debounce(({to,from,next}) => {
+//     from.name = 'getHotel'
+//     store.dispatch(UserActionTypes.GetHotel,'').then(() => {
+//         next({path: defaultRoutePath})
+//     }).catch(() => next({path: defaultRoutePath}))
+// }, 1800, {leading: true})
 
 export function createRouterGuards(router: Router) {
     router.beforeEach((to, from, next) => {
@@ -42,12 +59,13 @@ export function createRouterGuards(router: Router) {
             if (to.name === 'login') {
                 next({path: defaultRoutePath})
                 NProgress.done()
-            } else {
+            }else {
+
                 const hasRoute = router.hasRoute(to.name!)
-                // 如果不需要每次切换路由获取最新的动态路由，可把下面注释放开
-                // if (store.getters.addRouters.length === 0) {
-                // generate dynamic router
-                // 防抖获取菜单
+                // // 如果不需要每次切换路由获取最新的动态路由，可把下面注释放开
+                // // if (store.getters.addRouters.length === 0) {
+                // // generate dynamic router
+                // // 防抖获取菜单
                 isGetMenus({to, from, next, hasRoute})
 
                 if (allowList.includes(to.name as string) || hasRoute) {

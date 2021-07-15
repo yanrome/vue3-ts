@@ -35,8 +35,10 @@ export interface RequestOptions {
 }
 
 export interface Result<T = any> {
-  code: number;
-  type?: 'success' | 'error' | 'warning';
-  message: string;
-  result?: T;
+  ret:number;
+  data?:T;
+  // code: number;
+  // type?: 'success' | 'error' | 'warning';
+  msg: string;
+  // result?: T;
 }

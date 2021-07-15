@@ -16,4 +16,6 @@ export interface Meta {
     frameSrc?: string;
     // 外链跳转地址
     externalLink?: string;
+    //是否表现在menu上
+    isMenu?: boolean
 }

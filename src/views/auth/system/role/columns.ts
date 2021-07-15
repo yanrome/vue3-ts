@@ -7,30 +7,30 @@ import {getFormSchema} from "./form-schema";
 export const columns: TableColumn[] = [ // 角色列表
     {
         title: '角色名称',
-        dataIndex: 'title'
+        dataIndex: 'roleName'
     },
-    {
-        title: '描述',
-        dataIndex: 'description',
-    },
-    {
-        title: '创建时间',
-        dataIndex: 'createdAt',
-        slots: {
-            customRender: 'createdAt'
-        },
-        slotsType: 'format',
-        slotsFunc: (val) => formatDate(val)
-    },
-    {
-        title: '最后更新时间',
-        dataIndex: 'updatedAt',
-        slots: {
-            customRender: 'updatedAt'
-        },
-        slotsType: 'format',
-        slotsFunc: (val) => formatDate(val)
-    },
+    // {
+    //     title: '描述',
+    //     dataIndex: 'description',
+    // },
+    // {
+    //     title: '创建时间',
+    //     dataIndex: 'createdAt',
+    //     slots: {
+    //         customRender: 'createdAt'
+    //     },
+    //     slotsType: 'format',
+    //     slotsFunc: (val) => formatDate(val)
+    // },
+    // {
+    //     title: '最后更新时间',
+    //     dataIndex: 'updatedAt',
+    //     slots: {
+    //         customRender: 'updatedAt'
+    //     },
+    //     slotsType: 'format',
+    //     slotsFunc: (val) => formatDate(val)
+    // },
     {
         title: '操作',
         dataIndex: 'action',

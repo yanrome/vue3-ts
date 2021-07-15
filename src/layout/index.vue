@@ -1,6 +1,6 @@
 <template>
   <a-layout class="layout">
-    <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible class="layout-sider">
+    <a-layout-sider v-model:collapsed="collapsed" :theme="'light'" :trigger="null" collapsible class="layout-sider">
       <!--      网站logo start-->
       <logo :collapsed="collapsed"/>
       <!--      网站logo end-->

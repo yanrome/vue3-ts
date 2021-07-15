@@ -38,3 +38,64 @@
   opacity: 0;
   transform: scale(1.03);
 }
+
+
+//自定义
+.flex-bet{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.z-flex{
+  display: flex;
+}
+.z-flex-justify{
+  justify-items: center;
+}
+.z-flex-align{
+  align-items: center;
+}
+.z-flex-sub1{
+  flex: 1;
+}
+
+.w100{
+  width: 100%;
+}
+.z-margin-center{
+  margin: 0 auto;
+}
+
+.z-text-center{
+  text-align: center;
+}
+.fontsize14{
+  font-size: 14px;
+}
+.fontsize16{
+  font-size: 16px;
+}
+.fontsize18{
+  font-size: 18px;
+}
+.fontsize20{
+  font-size: 20px;
+}
+.fontsize22{
+  font-size: 22px;
+}
+.fontsize24{
+  font-size: 24px;
+}
+.fontcolor00085{
+  color: rgba(0,0,0,0.85);
+}
+.fontcolor00025{
+  color: rgba(0,0,0,0.25);
+}
+.fontcolor00045{
+  color: rgba(0,0,0,0.45);
+}
+.fontcolor00065{
+  color: rgba(0,0,0,0.65);
+}
