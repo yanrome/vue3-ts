@@ -3,7 +3,22 @@ import {RequestEnum} from '@/enums/httpEnum'
 
 enum Api {
   adminDictConfig = '/admin/dict_config',
+  systemDictDataByType = `/system/dict/data/byType`
+
 }
+
+/**
+ * @description 数据字典
+ * */
+export function getSystemDictDataByType(param) {
+  return http.request({
+    url: Api.systemDictDataByType,
+    method: RequestEnum.GET,
+    params:param
+  })
+}
+
+
 
 /**
  * 获取账号管理列表

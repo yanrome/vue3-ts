@@ -4,7 +4,7 @@ import {TableColumn} from "@/types/tableColumn";
 import {useFormModal} from "@/hooks/useFormModal";
 // import {getFormSchema} from "./form-schema";
 
-export const columns: TableColumn[] = [ // 角色列表
+export const columns: TableColumn[] = [
     {
         title: '订单编号',
         dataIndex: 'orderId',

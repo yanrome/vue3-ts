@@ -14,7 +14,7 @@
                     订单渠道:
                 </div>
                 <div class="details-top-item fontsize14 fontcolor00045">
-                    渠道订单号：
+                    渠道订单号：{{uRoute.query.id}}
                 </div>
             </div>
             <div>
@@ -25,20 +25,14 @@
 
         <a-tabs v-model:activeKey="activeKey">
             <a-tab-pane key="1" tab="订单信息">
-                <a-descriptions :column="2" layout="vertical" title="订单信息">
-                    <a-descriptions-item  :labelStyle="{color:'#fff'}" :contentStyle="{
-                        color:'#fff'
-                    }" label="预订人">预订人</a-descriptions-item>
-                    <a-descriptions-item label="房型名称">1810000000</a-descriptions-item>
-                    <a-descriptions-item label="入住日期">Hangzhou, Zhejiang</a-descriptions-item>
-                    <a-descriptions-item label="房间数量">empty</a-descriptions-item>
-                    <a-descriptions-item label="备注">
-                        No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
-                    </a-descriptions-item>
-                </a-descriptions>
+                <order-msg :order-room-msg="orderRoomMsg"></order-msg>
             </a-tab-pane>
-            <a-tab-pane key="2" tab="房间客人" force-render>Content of Tab Pane 2</a-tab-pane>
-            <a-tab-pane key="3" tab="操作日志">Content of Tab Pane 3</a-tab-pane>
+            <a-tab-pane key="2" tab="房间客人" >
+                <order-user></order-user>
+            </a-tab-pane>
+            <a-tab-pane key="3" tab="操作日志">
+                <order-log></order-log>
+            </a-tab-pane>
         </a-tabs>
 
 
@@ -49,6 +43,9 @@
     import {GetBusinessOrderRoomOrderRoomId} from '@/api/system/order/index'
     import {defineComponent, reactive, toRefs, ref} from 'vue'
     import {useRoute} from "vue-router";
+    import OrderMsg from './order-msg.vue'
+    import OrderLog from './order-log.vue'
+    import OrderUser from './order-user.vue'
     import {Card, Tag, Divider, Tabs, Descriptions} from "ant-design-vue";
 
     export default defineComponent({
@@ -61,6 +58,9 @@
             [Descriptions.name]: Descriptions,
             aTabPane: Tabs.TabPane,
             aDescriptionsItem: Descriptions.Item,
+            OrderMsg,
+            OrderLog,
+            OrderUser
         },
         setup() {
             const uRoute = useRoute()
@@ -83,7 +83,8 @@
             getBusinessDetails()
 
             return {
-                ...toRefs(state)
+                ...toRefs(state),
+                uRoute
             }
         },
     })

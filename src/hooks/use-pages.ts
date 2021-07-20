@@ -1,14 +1,14 @@
 import {ref} from "vue"
 import {PaginationProps} from 'ant-design-vue/lib/pagination/Pagination'
 
-export interface PageOption extends Partial<typeof PaginationProps>{
+export interface PageOption extends Partial<PaginationProps>{
     current?: number;
     pageSize?: number;
     total?: number;
     pageSizeOptions?: string[]; // 指定每页可以显示多少条
     showSizeChanger?: boolean; // 显示可改变每页数量
     showQuickJumper?: boolean; // 是否显示跳转
-    showTotal?: (total) => any; // 显示总数
+    showTotal?: number; // 显示总数
     onChange?: (current, pageSize) => any; // 页码改变
     onShowSizeChange?: (current, pageSize) => any; // pageSize变化
     pageChange?: (current, pageSize) => any; // 页码或pageSize变化触发

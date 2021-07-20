@@ -3,7 +3,8 @@ import {RequestEnum} from '@/enums/httpEnum'
 
 enum Api {
     businessHotelList = '/business/orderroom/list',
-    businessOrderRoomOrderRoomId = `/business/orderroom`
+    businessOrderRoomOrderRoomId = `/business/orderroom`,
+    businessOrderOperLogByOrderRoomOrderRoomId = `/business/order/oper/log/byorderroom`,
 }
 
 /**
@@ -31,3 +32,13 @@ export function GetBusinessOrderRoomOrderRoomId(params) {
     })
 }
 
+/**
+ * 查询订单操作日志
+ * */
+export  function getBusinessOrderLogByOrderRoomOrderRoomId(params) {
+    return http.request({
+        url:`${Api.businessOrderOperLogByOrderRoomOrderRoomId}/${params.orderRoomId}`,
+        method:RequestEnum.GET,
+        params
+    })
+}

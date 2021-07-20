@@ -8,7 +8,7 @@
                 size="middle"
                 :data-source="data"
                 :pagination="pageOption"
-                bordered
+                :bordered="bordered"
                 :customRow="customRow"
                 @change="paginationChange"
                 v-bind="{...$props, ...$attrs}"
@@ -22,7 +22,7 @@
 
             <!--    是否有自定义显示slots start-->
             <template v-for="slotItem in columns.filter(item => item.slots)"
-                      :key="slotItem.dataIndex || slotItem.slots.customRender"
+                      :key="slotItem.createdAtdataIndex || slotItem.slots.customRender"
                       v-slot:[slotItem.slots.customRender]="slotProps">
 
                 <!--        自定义渲染start-->
@@ -169,7 +169,7 @@
 </template>
 
 <script lang="ts">
-    import {defineComponent, reactive, PropType, watch, toRefs} from 'vue'
+    import {defineComponent, reactive, PropType, watch, toRefs,onMounted} from 'vue'
     import {Card, Select, Table, Popconfirm, List, Button, Dropdown, Menu,  message} from 'ant-design-vue'
     import {DownOutlined} from '@ant-design/icons-vue';
     import {TableProps} from 'ant-design-vue/lib/table/interface'
@@ -179,7 +179,7 @@
     import {formatDate} from '@/utils/common'
     import router from "@/router";
 
-    export default defineComponent({
+    export default ({
         name: 'dynamic-table',
         props: {
             columns: {
@@ -202,6 +202,10 @@
                 type: String as PropType<string>,
                 default: "table"
             },
+            bordered:{
+                type:Boolean as PropType<boolean>,
+                default:true
+            }
         },
         components: {
             [Table.name]: Table,
@@ -218,6 +222,8 @@
             DownOutlined,
         },
         setup(props: Props, {attrs, emit, slots}) {
+
+            ////
             const {pageOption} = Object.assign(usePages({
                 pageChangeFn: (data) => {
                     state.pageOption = {

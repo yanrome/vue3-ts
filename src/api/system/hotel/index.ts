@@ -2,7 +2,8 @@ import http from '@/utils/http/axios';
 import {RequestEnum} from '@/enums/httpEnum'
 
 enum Api {
-    businessHotelList = '/business/hotel/list'
+    businessHotelList = '/business/hotel/list' ,
+    businessHotelHotelId = `/business/hotel`
 }
 
 /**
@@ -16,5 +17,16 @@ export function getBusinessHotelList(searchValue) {
     }, {
         isTransformRequestResult: false
     });
+}
+
+/**
+ * @description 根据酒店id获取酒店信息
+ * @param params
+ * */
+export function getBusinessHotelHotelId(param){
+    return http.request({
+        url:`${Api.businessHotelHotelId}/${param.hotelId}`,
+        method:RequestEnum.GET
+    })
 }
 

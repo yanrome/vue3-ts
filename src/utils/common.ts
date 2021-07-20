@@ -1,5 +1,19 @@
 import dayjs from "dayjs";
 import RequireContext = __WebpackModuleApi.RequireContext
+import defaultResult from "ant-design-vue/es/_util/isMobile";
+import any = defaultResult.any;
+
+/**
+ * @description 处理数据字典
+ * */
+export const changeDict = (emun,isObj:boolean = true) =>{
+    const returns = {}
+    emun.map(item =>{
+        returns[item['dictValue']] = item['dictLabel']
+        return returns
+    })
+    return isObj ? returns : emun
+}
 
 /**
  * @description 处理首字母大写 abc => Abc
