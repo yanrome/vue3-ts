@@ -5,14 +5,19 @@ import any = defaultResult.any;
 
 /**
  * @description 处理数据字典
+ * @param isArray 如果传true，传回处理好的数据
+ * @param isObj XX累赘，待改进
  * */
-export const changeDict = (emun,isObj:boolean = true) =>{
+export const changeDict = (emun, isArray: boolean = false, isObj: boolean = true) => {
     const returns = {}
-    emun.map(item =>{
+    const list = emun.map(item => {
         returns[item['dictValue']] = item['dictLabel']
-        return returns
+        return !isArray ? item : {
+            label: item['dictLabel'],
+            value: item['dictValue']
+        }
     })
-    return isObj ? returns : emun
+    return (isObj && !isArray) ? returns : list
 }
 
 /**
@@ -114,6 +119,22 @@ export const toJSON = (obj) => {
     })
 }
 
+/**
+ * @description 将字符串/对象 转为数组
+ * @param {any}
+ * */
+export const toObj = (obj: string | object , toArray: boolean = false) => {
+    if(!obj) return
+    obj = typeof obj === "string" ? JSON.parse(obj) : obj
+    if(toArray && obj){
+        obj = Object.entries(obj).map(item=>{
+          return   {label:item[1],value:item[0]}
+        })
+    }
+    return  obj
+}
+
+
 /***
  * @description 是否是生产环境
  */
@@ -124,7 +145,7 @@ export const IS_DEV = ["development"].includes(process.env.NODE_ENV);
  * @description 格式化日期
  * @param time
  */
-export const formatDate = (time,str='YYYY-MM-DD HH:mm:ss') => dayjs(time).format(str)
+export const formatDate = (time, str = 'YYYY-MM-DD HH:mm:ss') => dayjs(time).format(str)
 
 /**
  *  @description 将一维数组转成树形结构数据
@@ -151,3 +172,6 @@ const encryption = (plaintext: string) => isBase64(plaintext) ? plaintext : wind
  * @param {string} ciphertext
  */
 const decryption = (ciphertext: string) => isBase64(ciphertext) ? window.decodeURIComponent(window.atob(ciphertext)) : ciphertext
+
+
+

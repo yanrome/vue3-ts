@@ -25,17 +25,22 @@
         components:{
             DynamicTable
         },
-        setup() {
-            const uRoute = useRoute()
+        props:{
+            id:{
+                type:Number
+            }
+        },
+        setup(props) {
+            // const uRoute = useRoute()
             const state = reactive({
                 orderUser: {},
                 pageOption:{
-                    orderRoomId: uRoute.query.id
+                    orderRoomId: props.id
                 }
             })
             const getOrderRoomUser = async () => {
                 const params = {
-                    orderRoomId: uRoute.query.id
+                    orderRoomId: props.id
                 }
 
                 const {data} = await getBusinessOrderRoomUser(params)

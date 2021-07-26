@@ -109,7 +109,12 @@
                 <a-list-item class="u-alist-item">
                     <div class="u-alist-title">
                         <div class="u-alt-start">订单号：{{item.orderId}}</div>
-                        <div>订单来源</div>
+                        <div class="u-alt-from">
+                            订单来源:
+<!--                            {{orderSource[item.orderType]['icon']}}-->
+                            <img v-if="orderSource?.[item.orderType]?.['icon']" :src="orderSource?.[item.orderType]?.['icon']" alt="">
+                            <span v-else > {{ orderSource?.[item.orderType]?.['label']}}</span>
+                        </div>
                         <div class="u-alt-end">创建时间:{{item.order.orderTime}}</div>
                     </div>
                     <div class="w100 u-a-item-main flex-bet">
@@ -205,6 +210,9 @@
             bordered:{
                 type:Boolean as PropType<boolean>,
                 default:true
+            },
+            orderSource:{
+                type:Object
             }
         },
         components: {
@@ -303,7 +311,8 @@
 
             //查看详情
             const navDetails = (id)=>{
-                router.push({name:'/business/details',query:{id:id}})
+                emit('callbackMore',id)
+                // router.push({name:'/business/details',query:{id:id}})
             }
 
             return {
@@ -348,6 +357,12 @@
 
             .u-alt-start {
                 margin-right: 24px;
+            }
+            .u-alt-from{
+                img{
+                    width: 20px;
+                    height: 20px;
+                }
             }
 
             .u-alt-end {
