@@ -3,6 +3,16 @@ export const accountType = {
     3: '支付宝账户'
 }
 
+//订单房间状态
+export const businessOrderroomStatus = {
+    1:'待入住',
+    2:'已入住',
+    3:'已取消',
+    4:'已退房',
+    7:'已完成'
+}
+
+
 export const statusColor = {
     1: '#6CC178',
     2: '#5A7EF8',

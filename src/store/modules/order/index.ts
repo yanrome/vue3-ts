@@ -8,7 +8,7 @@ import {RootState} from '@/store';
 import {state} from './state';
 import {getters, Getters} from './getters';
 import {mutations, Mutations} from './mutations';
-
+import {actions} from './actions';
 import type {State} from './state';
 
 export {State};
@@ -36,5 +36,6 @@ export const store: Module<State, RootState> = {
     state,
     mutations,
     getters,
+    actions
 };
 

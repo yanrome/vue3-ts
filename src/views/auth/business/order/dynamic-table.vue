@@ -1,109 +1,5 @@
 <template>
-    <div v-if="listType==='table'">
-        <a-table
-                :columns="columns"
-                :loading="loading"
-                :rowSelection="rowSelection"
-                :rowKey="rowKey"
-                size="middle"
-                :data-source="data"
-                :pagination="pageOption"
-                :bordered="bordered"
-                :customRow="customRow"
-                @change="paginationChange"
-                v-bind="{...$props, ...$attrs}"
-        >
-            <!--  自定义slots start-->
-            <template v-for="(value, key) in $slots" v-slot:[key]="slotProps">
-                <slot :name="key" v-bind="slotProps"></slot>
-            </template>
-
-            <!--    自定义slots end-->
-
-            <!--    是否有自定义显示slots start-->
-            <template v-for="slotItem in columns.filter(item => item.slots)"
-                      :key="slotItem.createdAtdataIndex || slotItem.slots.customRender"
-                      v-slot:[slotItem.slots.customRender]="slotProps">
-
-                <!--        自定义渲染start-->
-                <slot v-if="$slots[slotItem.slots.customRender]" :name="slotItem.slots.customRender"
-                      v-bind="slotProps"></slot>
-                <!--        自定义渲染end-->
-
-                <!--     非自定义渲染start -->
-                <template v-else>
-                    <!--        非操作 start-->
-                    <template v-if="slotItem.slots.customRender !== 'action'">
-                        <!--        使用自定义组件格式化显示start-->
-                        <template v-if="slotItem.slotsType == 'component'">
-                            <component :is="slotItem.slotsFunc(slotProps.record)"/>
-                        </template>
-                        <!--        使用自定义组件格式化显示end-->
-                        <!--        使用自定义函数格式化显示-->
-                        <template v-if="slotItem.slotsType == 'format'">
-                            {{ slotItem.slotsFunc(slotProps.record[slotItem.dataIndex || slotItem.key],
-                            slotProps.record) }}
-                        </template>
-                        <!--        链接用于跳转-->
-                        <template v-if="slotItem.slotsType == 'link'">
-                            <router-link :to="slotItem.linkPath + slotProps.record[slotItem.linkId]">{{ slotProps.text
-                                }}
-                            </router-link>
-                        </template>
-                    </template>
-                    <!--      非操作 end-->
-
-                    <!--        操作start-->
-                    <div v-if="slotItem.slots.customRender == 'action'" :key="slotItem.slots.customRender"
-                         class="actions">
-                        <!--        对表格的操作动作start-->
-                        <template v-for="(action, index) in actions">
-                            <template v-if="action.type == 'select'">
-                                <!--              下拉选择器-->
-                                <a-select
-                                        v-model:value="slotProps.record[action.key]"
-                                        :key="index"
-                                        size="small"
-                                >
-                                    <Option v-for="option in action.options" :value="option.value" :key="option.value">
-                                        {{ option.label }}
-                                    </Option>
-                                </a-select>
-                            </template>
-                            <!--            编辑按钮-->
-                            <template v-if="action.type ==  'button'">
-                                <a-button v-permission="action.permission"
-                                          v-bind="{...buttonProps,...action.props}"
-                                          @click="actionEvent(slotProps.record, action.func)"
-                                          :key="index">
-                                    {{ action.text }}
-                                </a-button>
-                            </template>
-                            <!--            删除按钮 气泡确认框-->
-                            <template v-if="action.type == 'popconfirm'">
-                                <a-popconfirm :key="index" placement="leftTop"
-                                              @confirm="actionEvent(slotProps.record, action.func, 'del')">
-                                    <template v-slot:title>
-                                        您确定要删除吗？
-                                    </template>
-                                    <a-button v-bind="{...buttonProps,...action.props}">
-                                        {{ action.text }}
-                                    </a-button>
-                                </a-popconfirm>
-                            </template>
-                        </template>
-                        <!--        对表格的操作动作end-->
-                    </div>
-                    <!--      操作end-->
-                </template>
-                <!--      非自定义渲染end-->
-            </template>
-            <!--    是否有自定义显示slots end-->
-        </a-table>
-    </div>
-
-
-    <div v-if="listType === 'list'">
+    <div>
         <a-list item-layout="vertical" size="small" :data-source="data" :pagination="pageOption" class="w100">
             <template class="dd" #renderItem="{ item }">
                 <a-list-item class="u-alist-item">
@@ -144,7 +40,9 @@
                         <div class="u-aim-item u-aim-group-item z-text-center">
                             <div class="z-text-center">
 <!--                                <a-button type="primary">办理入住</a-button>-->
-                                <handle></handle>
+                                <handle :orderRoomMsg="item" :list = "buttonList.filter(list=>{
+                                    return list.table &&  list.table.includes(item.status)
+                                })"></handle>
                             </div>
                             <div class="u-aim-more">
                                 <a-button class="u-aim-more-btn u-aim-before" @click="navDetails(item.id)" type="link">
@@ -153,9 +51,7 @@
                                 <a-dropdown class="u-aim-more-btn">
                                     <template #overlay>
                                         <a-menu>
-                                            <a-menu-item key="1">1st item</a-menu-item>
-                                            <a-menu-item key="2">2nd item</a-menu-item>
-                                            <a-menu-item key="3">3rd item</a-menu-item>
+                                            <a-menu-item key="1"></a-menu-item>
                                         </a-menu>
                                     </template>
                                     <a-button type="link">
@@ -164,7 +60,6 @@
                                     </a-button>
                                 </a-dropdown>
                             </div>
-
                         </div>
                     </div>
                 </a-list-item>
@@ -180,17 +75,18 @@
     import {DownOutlined} from '@ant-design/icons-vue';
     import {TableProps} from 'ant-design-vue/lib/table/interface'
     import {usePages} from "@/hooks";
-    import {useDraggable, useDragCol} from './hooks'
-    import {Columns, pageOption, Props} from './types'
+    // import {useDraggable, useDragCol} from './hooks'
+    // import {Columns, pageOption, Props} from './types'
     import {formatDate} from '@/utils/common'
     import handle from '@/views/auth/business/order/components/handle'
     import router from "@/router";
+    import {buttonList} from './utils/btn-type'
 
     export default ({
         name: 'dynamic-table',
         props: {
             columns: {
-                type: Object as PropType<Columns[]>
+                type: Object
             },
             getListFunc: { // 获取列表数据函数API
                 type: Function
@@ -202,7 +98,7 @@
                 type: [String, Function] as PropType<string | ((record: any) => string)>,
             },
             pageOption: { // 分页参数
-                type: Object as PropType<pageOption>,
+                type: Object ,
                 default: () => ({})
             },
             listType: {
@@ -232,7 +128,7 @@
             handle,
             DownOutlined,
         },
-        setup(props: Props, {attrs, emit, slots}) {
+        setup(props, {attrs, emit, slots}) {
 
             ////
             const {pageOption} = Object.assign(usePages({
@@ -246,7 +142,7 @@
             }))
 
             // 开启表格伸缩列
-            useDragCol(props.columns)
+            // useDragCol(props.columns)
 
             const state = reactive({
                 formatDate: formatDate,
@@ -267,9 +163,10 @@
                 }
                 state.loading = true
                 const {data, msg, ret, total} = await props.getListFunc(params).finally(() => state.loading = false)
-                Object.assign(state.pageOption, {total: ~~total})
+
+                Object.assign(state.pageOption, {total: total})
                 state.data = data
-                state.customRow = useDraggable<any>(state.data)!;
+                // state.customRow = useDraggable<any>(state.data)!;
             }
 
             refreshTableData()
@@ -322,6 +219,7 @@
             return {
                 ...toRefs(state),
                 buttonProps,
+                buttonList,
                 navDetails,
                 actionEvent,
                 refreshTableData,

@@ -19,7 +19,7 @@
             <!--   产品房型         -->
             <div class="m-room-item" v-for="roomScale in rooms.value">
                 <div class="top-item">{{roomScale.scaleName}}</div>
-                <div class="top-item" v-for="item in roomScale.stateAndPrice">
+                <div class="top-item" @click="open({id:roomScale.roomScaleId,title:'修改房态房价'})" v-for="item in roomScale.stateAndPrice">
                     <a-tooltip :title="item.day">
                     <div class="s-num">{{(item.maxSaleCount - item.virtualRoomBook) < (item.roomCount - item.roomBook) ?
                         (item.maxSaleCount - item.virtualRoomBook) : (item.maxSaleCount - item.virtualRoomBook)}} 间 </div>
@@ -39,6 +39,7 @@
     import {useStore} from "@/store";
     import {getRoomStatePriceByHotel} from '@/api/system/hotel/room'
     import {dataConversion} from './utils'
+    import {open} from "@/views/auth/room-state/price/openModal";
     import {Card,Tooltip, Checkbox, Space} from "ant-design-vue";
     import searchGroup from "@/views/auth/room-state/state/search-group.vue";
 
@@ -75,7 +76,8 @@
             })
 
             return {
-                ...toRefs(state)
+                ...toRefs(state),
+                open
             }
         },
 
@@ -123,6 +125,7 @@
             overflow: hidden;
             vertical-align: middle;
             text-align: center;
+            padding: 0 12px;
             background: #ffffff;
             .s-num{
                 color: #0091FF;
@@ -130,6 +133,10 @@
             }
             .s-price{
                 padding-bottom: 8px;
+            }
+            p{
+                padding: 12px 0;
+                margin-bottom: 0;
             }
         }
     }

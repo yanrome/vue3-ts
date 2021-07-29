@@ -16,6 +16,7 @@
                     </div>
                     <div class="details-top-item fontsize14 fontcolor00045">
                         订单渠道:
+
                         <img v-if="orderSource?.[orderRoomMsg?.orderType]?.['icon']"
                              :src="orderSource?.[orderRoomMsg?.orderType]?.['icon']" alt="">
                         <span v-else> {{ orderSource?.[orderRoomMsg?.orderType]?.['label']}}</span>
@@ -25,7 +26,7 @@
                     </div>
                 </div>
                 <div>
-                    <a-button type="primary">办理入住</a-button>
+<!--                    <a-button type="primary">办理入住</a-button>-->
                 </div>
             </div>
             <a-divider/>
@@ -146,3 +147,5 @@
         }
     }
 </style>
+
+　　

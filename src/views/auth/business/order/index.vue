@@ -30,7 +30,7 @@
 
     </a-card>
     <a-card class="w100 mtp8 g-card">
-        <dynamic-table ref="tableRef" :listType="'list'" :orderSource="orderSource" @callbackMore="callbackMore"  :columns="columns" :pageOption="pageOption"
+        <dynamic-table ref="tableRef"  :listType="'list'" :orderSource="orderSource" @callbackMore="callbackMore"  :columns="columns" :pageOption="pageOption"
                        :get-list-func="postBusinessOrderRoomList" rowKey="id">
             <template v-slot:title>
             </template>
@@ -41,8 +41,8 @@
 </template>
 <script lang="ts">
     import {defineComponent, reactive, ref, toRefs, watch} from 'vue';
-    import {columns} from "./columns";
-    import {DynamicTable} from '@/components/dynamic-table'
+    import {columns} from "./utils/columns";
+    import DynamicTable from './dynamic-table.vue'
     import {OrderList} from '@/components/order-list'
     import {postBusinessOrderRoomList} from '@/api/system/order'
     import {useStore} from "@/store";
