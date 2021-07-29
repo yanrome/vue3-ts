@@ -30,7 +30,7 @@
 
     </a-card>
     <a-card class="w100 mtp8 g-card">
-        <dynamic-table ref="tableRef"  :listType="'list'" :orderSource="orderSource" @callbackMore="callbackMore"  :columns="columns" :pageOption="pageOption"
+        <dynamic-table ref="tableRef"  :listType="'list'" :orderSource="orderSource" @change="callbackMore"  :columns="columns" :pageOption="pageOption"
                        :get-list-func="postBusinessOrderRoomList" rowKey="id">
             <template v-slot:title>
             </template>
@@ -69,7 +69,7 @@
             const store = useStore()
 
 
-            let orderRoomStatus = ref(store.getters.orderRoomStatus || '1')
+            let orderRoomStatus = ref(store.getters.orderRoomStatus || '')
             let state = reactive({
                 pageOption: {
                     hotelId: store.getters.hotelId,
