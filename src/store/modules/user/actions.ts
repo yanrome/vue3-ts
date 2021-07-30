@@ -110,7 +110,7 @@ export const actions: ActionTree<State, RootState> & Actions = {
         try {
             const response = await getBusinessHotelList(searchValue)
             const [ msg,status,result] =[response.msg,response.ret,response.data]
-            console.log('status',status)
+            console.log('获取酒店列表status',status)
             if(status == 1){
                 storage.set(HOTEL_USER,result,7 * 24 * 60 * 60 * 1000)
                 storage.set(HOTEL_USER_ID,result[0].id,7 * 24 * 60 * 60 * 1000)

@@ -2,11 +2,23 @@ import http from '@/utils/http/axios';
 import {RequestEnum} from '@/enums/httpEnum'
 
 enum Api {
+  // 数据字典
+  adminDict = `/system/dict/list`,
+  adminDictAdd = `/system/dict/add`,
+  adminDictEdit = `/system/dict/edit`,
+  adminDictRemove = `/system/dict/remove`,
+  systemDictDataByType = `/system/dict/data/byType`,
   adminDictConfig = '/admin/dict_config',
-  systemDictDataByType = `/system/dict/data/byType`
+  // 字典数据
+  adminDataDict = `/system/dict/data/list`,
+  adminDataDictAdd = `/system/dict/data/add`,
+  adminDataDictEdit = `/system/dict/data/edit`,
+  adminDataDictRemove = `/system/dict/data/remove`,
 
 }
 
+
+/*************************   数据字典  *****************************/ 
 /**
  * @description 数据字典
  * */
@@ -18,28 +30,26 @@ export function getSystemDictDataByType(param) {
   })
 }
 
-
-
 /**
- * 获取账号管理列表
+ * 获取数据字典管理列表
  * @param params
  */
-export function getAdminDictConfig(params) {
+export function adminDict(params) {
   return http.request({
-    url: Api.adminDictConfig,
-    method: RequestEnum.GET,
+    url: Api.adminDict,
+    method: RequestEnum.POST,
     params,
   });
 }
 
 /**
- * 删除账号
+ * 删除数据字典
  * @param params
  */
-export function delAdminDictConfig(id: string) {
+export function adminDictRemove(id: string) {
   return http.request({
-    url: [Api.adminDictConfig, id].join('/'),
-    method: RequestEnum.DELETE,
+    url: [Api.adminDictRemove, id].join('/'),
+    method: RequestEnum.POST,
   }, {
     isShowErrorMessage: true, // 是否显示错误提示信息
     successMessageText: '删除成功'
@@ -47,13 +57,13 @@ export function delAdminDictConfig(id: string) {
 }
 
 /**
- * 修改账号
+ * 修改数据字典
  * @param params
  */
-export function patchAdminDictConfig(id, params) {
+export function adminDictEdit(params) {
   return http.request({
-    url: [Api.adminDictConfig, id].join('/'),
-    method: RequestEnum.PATCH,
+    url: Api.adminDictEdit,
+    method: RequestEnum.POST,
     params,
   }, {
     isShowErrorMessage: true, // 是否显示错误提示信息
@@ -63,12 +73,70 @@ export function patchAdminDictConfig(id, params) {
 
 
 /**
- * 新建账号
+ * 新建数据字典
  * @param params
  */
-export function postAdminDictConfig(params) {
+export function adminDictAdd(params) {
   return http.request({
-    url: Api.adminDictConfig,
+    url: Api.adminDictAdd,
+    method: RequestEnum.POST,
+    params,
+  }, {
+    isShowErrorMessage: true, // 是否显示错误提示信息
+    successMessageText: '创建成功'
+  });
+}
+
+/*************************   字典数据  *****************************/ 
+/**
+ * 获取数据字典管理列表
+ * @param params
+ */
+ export function adminDataDict(params) {
+  return http.request({
+    url: Api.adminDataDict,
+    method: RequestEnum.POST,
+    params,
+  });
+}
+
+/**
+ * 删除数据字典
+ * @param params
+ */
+export function adminDataDictRemove(id: string) {
+  return http.request({
+    url: [Api.adminDictRemove, id].join('/'),
+    method: RequestEnum.POST,
+  }, {
+    isShowErrorMessage: true, // 是否显示错误提示信息
+    successMessageText: '删除成功'
+  });
+}
+
+/**
+ * 修改数据字典
+ * @param params
+ */
+export function adminDataDictEdit(params) {
+  return http.request({
+    url: Api.adminDataDictEdit,
+    method: RequestEnum.POST,
+    params,
+  }, {
+    isShowErrorMessage: true, // 是否显示错误提示信息
+    successMessageText: '修改成功'
+  });
+}
+
+
+/**
+ * 新建数据字典
+ * @param params
+ */
+export function adminDataDictAdd(params) {
+  return http.request({
+    url: Api.adminDataDictAdd,
     method: RequestEnum.POST,
     params,
   }, {

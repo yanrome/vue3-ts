@@ -42,22 +42,30 @@ export const columns: TableColumn[] = [ // 字典表格
                 props: {
                     type: 'warning'
                 },
-                func: ({record}, refreshTableData) => useFormModal({
-                    title: '编辑字典',
-                    fields: record,
-                    formSchema: getFormSchema(),
-                    handleOk: async (modelRef, state) => await adminDictEdit(modelRef).then(_ => refreshTableData())
-                })
+                func:({record}, refreshTableData)=>{
+                    router.push({ 
+                        name: '/system-details',
+                        query: {
+                            id:'111'
+                        } 
+                    })
+                }
+                // func: ({record}, refreshTableData) => useFormModal({
+                //     title: '编辑字典',
+                //     fields: {category:'123121' ,label:1111},
+                //     formSchema: getFormSchema(),
+                //     handleOk: async (modelRef, state) => await adminDictEdit(modelRef).then(_ => refreshTableData())
+                // })
             },
             {
                 type: 'button', // 控制类型，默认为a,可选： select | button | text
-                text: '列表',
+                text: '列表1',
                 props: {
                     type: 'warning'
                 },
                 func:({record}, refreshTableData)=>{
                     router.push({ 
-                        name: '/system/list',
+                        name: '/system-list',
                         query: {
                             id:'111'
                         } 

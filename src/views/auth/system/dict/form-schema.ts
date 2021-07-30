@@ -1,45 +1,45 @@
-import {FormSchema} from "@/types/schema";
+import { FormSchema } from "@/types/schema";
 
 // 与vue2的里面的data一样，函数返回新对象防止多处共用同一对象,造成数据混乱
 export const getFormSchema = (): FormSchema => ({
     formItem: [
         {
             type: "input",
-            label: "label值",
-            field: "label",
+            label: "字典名称",
+            field: "dictName",
             value: '',
             props: {
-                placeholder: "请输入label值"
+                placeholder: "请输入字典名称"
             },
             rules: [
                 {
                     required: true,
-                    message: "label值不能为空"
+                    message: "字典名称不能为空"
                 }
             ]
         },
         {
             type: "input",
-            label: "分类",
-            field: "category",
+            label: "字典类型",
+            field: "dictType",
             value: "",
             props: {
-                placeholder: "请输入分类"
+                placeholder: "请输入字典类型"
             },
             rules: [
                 {
                     "required": true,
-                    "message": "分类不能为空"
+                    "message": "字典类型不能为空"
                 }
             ]
         },
         {
             type: "textarea",
-            label: "描述",
-            field: "description",
+            label: "备注",
+            field: "remark",
             value: "",
             props: {
-                placeholder: "描述信息"
+                placeholder: "备注信息"
             }
         },
     ]
