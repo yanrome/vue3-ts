@@ -21,5 +21,6 @@ export declare interface buttonType extends Types {
     name: 'send-coupons' | 'room-rate-discount' | 'check-out' | 'check-in' | 'exchange' | 'resend-password' | 'resend-code' | 'cancel',
     author?:string,
     table?:string,
-    fun:(order:any)=>any
+    fun:(order:any)=>any,
+    callBackFun?:(order:any)=>any
 }

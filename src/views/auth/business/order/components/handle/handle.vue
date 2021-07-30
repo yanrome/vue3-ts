@@ -1,7 +1,7 @@
 <template>
     <div>
         <a-button class="m-btn"
-                  @click="handleOk(btn)"
+                  @click="btn.callBackFun(orderRoomMsg)"
                   v-for="btn in list"
                   v-show="btn.fun(orderRoomMsg)"
                   :type="btn.type">
@@ -39,7 +39,6 @@
                     case 'send-coupons':
                         //发送优惠券
                         sendCoupons()
-                        // openModal('sendCoupons')
                         break
                     case 'check-out' :
                         //退房
@@ -48,6 +47,10 @@
                     case 'exchange':
                         //换房
                         openModal('exchange','办理换房')
+                        break
+                    case 'resend-code':
+                        resendCode()
+                        break
                     default:
                         break
                 }
@@ -68,13 +71,12 @@
 
 
             //发送优惠券
-            const sendCoupons = ()=>{}
+            const sendCoupons = ()=> {}
 
-
-
+            //重现发送短信
+            const  resendCode = () => {}
 
             watch(() => props.list, (val) => {
-                console.log('val',val)
             },{deep:true})
             return {
                 handleOk

@@ -30,8 +30,15 @@
 
     </a-card>
     <a-card class="w100 mtp8 g-card">
-        <dynamic-table ref="tableRef"  :listType="'list'" :orderSource="orderSource" @change="callbackMore"  :columns="columns" :pageOption="pageOption"
-                       :get-list-func="postBusinessOrderRoomList" rowKey="id">
+        <dynamic-table ref="tableRef"
+                       :listType="'list'"
+                       :orderSource="orderSource"
+                       @change="callbackMore"
+                       @watchChange="emitSon"
+                       :columns="columns"
+                       :pageOption="pageOption"
+                       :get-list-func="postBusinessOrderRoomList"
+                       rowKey="id">
             <template v-slot:title>
             </template>
         </dynamic-table>
@@ -67,8 +74,7 @@
         },
         setup() {
             const store = useStore()
-
-
+            const tableRef = ref<any>(null)
             let orderRoomStatus = ref(store.getters.orderRoomStatus || '')
             let state = reactive({
                 pageOption: {
@@ -96,10 +102,18 @@
             }
             getDictFn()
 
+           const emitSon = () =>{
+               tableRef.value.refreshTableData()
+           }
+
             //watch监听
             watch(() => store.getters.hotelId, (val) => {
                 state.pageOption.hotelId = val
+                emitSon()
             })
+            watch(state.pageOption, (newProps, oldProps) => {
+                emitSon()
+            },{deep:true});
 
             //重置筛选条件
             const reset = () =>{
@@ -125,7 +139,9 @@
                 postBusinessOrderRoomList,
                 ...toRefs(state),
                 orderRoomStatus,
+                tableRef,
                 reset,
+                emitSon,
                 orderRoomStatusChange,
                 callbackMore,
             };

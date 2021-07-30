@@ -1,6 +1,10 @@
 //订单房间状态
 import {buttonType} from '../types'
 import * as common from "./common";
+import { useCreateModal } from '@/hooks'
+import {checkInModal,checkoutModal,exchangeModal} from '../components/handle/modal'
+
+
 
 
 export const buttonList: buttonType[] = [
@@ -9,7 +13,7 @@ export const buttonList: buttonType[] = [
         type: 'default',
         name: 'send-coupons',
         author: '7',
-        fun:(item)=>common['btnCheckIn'](item)
+        fun:(item)=>common['btnCheckIn'](item),
     }
     ,
     {
@@ -18,7 +22,13 @@ export const buttonList: buttonType[] = [
         name: 'check-in',
         author: '1,2,3,4',
         table:"1,2",
-        fun:(item)=>common['btnCheckIn'](item) && common['btnPayMent'](item)
+        fun:(item)=>common['btnCheckIn'](item) && common['btnPayMent'](item),
+        callBackFun:(order => {
+            useCreateModal(checkInModal,{
+                title:'办理入住',
+                orderRoomMsg:order
+            })
+        })
     },
     {
         title: '办理退房',
@@ -26,7 +36,13 @@ export const buttonList: buttonType[] = [
         name: 'check-out',
         author: '1,2',
         table:"1,2",
-        fun:(item)=>common['btnCheckOut'](item)
+        fun:(item)=>common['btnCheckOut'](item),
+        callBackFun:(order => {
+            useCreateModal(checkoutModal,{
+                title:'办理退房',
+                orderRoomMsg:order
+            })
+        })
     },
     {
         title: '换房',

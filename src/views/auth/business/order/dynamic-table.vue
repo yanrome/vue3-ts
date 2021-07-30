@@ -348,9 +348,9 @@
             }
 
             //发生改变
-            watch(props.pageOption, (newProps, oldProps) => {
-                refreshTableData()
-            });
+
+            //
+
 
 
             return {

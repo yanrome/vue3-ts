@@ -1,7 +1,6 @@
 <template>
     <a-modal width="100%"
              wrapClassName="full-modal"
-
              v-model:visible="visible">
         <a-card>
             <h3>订单详情</h3>
@@ -54,12 +53,15 @@
 
 <script lang="ts">
     import {GetBusinessOrderRoomOrderRoomId} from '@/api/system/order/index'
-    import {defineComponent, reactive, toRefs, ref} from 'vue'
+    import {defineComponent, reactive, toRefs, ref,watch} from 'vue'
     import {useRoute} from "vue-router";
     import OrderMsg from './order-msg.vue'
     import OrderLog from './order-log.vue'
     import OrderUser from './order-user.vue'
     import {Card, Tag, Divider, Modal, Tabs, Descriptions} from "ant-design-vue";
+    import {OrderMutationType} from "@/store/modules/order/mutations";
+    import {OrderActions} from "@/store/modules/order/actions";
+    import store from '@/store'
 
     export default defineComponent({
         name: "details",
@@ -84,10 +86,10 @@
                 type: Object
             }
         },
-        setup(props) {
+        emits:['watchChange'],
+        setup(props,{emit}) {
             const uRoute = useRoute() || {query: props}
-            // const orderSource = props.orderSource
-
+            store.commit(OrderMutationType.setOrderRoomId,uRoute.query.id)
             const state = reactive({
                 visible: true,
                 orderRoomMsg: {},
@@ -96,15 +98,17 @@
 
             //获取订单详情
             const getBusinessDetails = async (params = {}) => {
-                params = {
-                    orderRoomId: uRoute.query.id,
-                    ...params
-                }
-                const {data} = await GetBusinessOrderRoomOrderRoomId(params)
-                state.orderRoomMsg = data
+                 await store.dispatch(OrderActions.getOrderRoomMsg,params)
             }
 
             getBusinessDetails()
+
+            watch(() => store.getters.orderRoomMsg, (val,oldValue) => {
+                state.orderRoomMsg = store.getters.orderRoomMsg
+                if (oldValue){
+                    emit('watchChange')
+                }
+            },{deep:true})
 
             return {
                 ...toRefs(state),

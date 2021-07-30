@@ -65,8 +65,16 @@ return http.request({
 })
 }
 
-
-
+/**
+ * @description  订单重新发送短信
+ * */
+export  function postSendMessageAgain(params) {
+    return http.request({
+        url:[Api.businessOrderRoomOrderRoomId,'send/message/again',params.orderRoomId].join('/'),
+        method:RequestEnum.POST,
+        params
+    })
+}
 
 /**
  * 查询订单操作日志
