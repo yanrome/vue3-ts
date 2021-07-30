@@ -32,7 +32,7 @@
                 <a-row type="flex" align="middle">
                     <a-col :span="6">房费总额:</a-col>
                     <a-col :span="18">
-                        {{orderRoomMsg?.virtualRoomScale?.scaleName}}
+                        {{orderRoomMsg?.roomRealAmount}}
                     </a-col>
                 </a-row>
             </a-col>
@@ -40,7 +40,7 @@
                 <a-row type="flex" align="middle">
                     <a-col :span="6">支付方式:</a-col>
                     <a-col :span="18">
-                        {{orderRoomMsg?.virtualRoomScale?.scaleName}}
+                        {{businessPayment[orderRoomMsg?.order?.payment] }}
                     </a-col>
                 </a-row>
             </a-col>
@@ -48,7 +48,7 @@
                 <a-row type="flex" align="middle">
                     <a-col :span="6">押金总额:</a-col>
                     <a-col :span="18">
-                        {{orderRoomMsg?.virtualRoomScale?.scaleName}}
+                        {{orderRoomMsg?.deposit}}
                     </a-col>
                 </a-row>
             </a-col>
@@ -56,7 +56,7 @@
                 <a-row type="flex" align="middle">
                     <a-col :span="6">支付方式:</a-col>
                     <a-col :span="18">
-                        {{orderRoomMsg?.virtualRoomScale?.scaleName}}
+                        {{businessPayment[orderRoomMsg?.order?.depositPayment] }}
                     </a-col>
                 </a-row>
             </a-col>
@@ -112,6 +112,8 @@
     import {postBusinessOrderroomRoomIn} from '@/api/system/order'
     import store from "@/store";
     import {OrderActions} from "@/store/modules/order/actions";
+    import {getDict} from "@/hooks/dict-list";
+    import {fromIcons} from "@/utils/dict";
 
 
 
@@ -134,8 +136,10 @@
         },
         setup(props) {
             const visible = ref<boolean>(true)
+
             const state = reactive({
                 options: [] as any,
+                businessPayment : ref<Object>({}),
                 roomUser: [
                     {
                         roomUser: '',
@@ -149,6 +153,13 @@
                     phone: '',
                 },
             })
+            //获取订单房间状态
+            const getDictFn = async ()=>{
+                const data = await getDict('business_payment','businessOrderroomStatus',false)
+
+                state.businessPayment =data
+            }
+            getDictFn()
             // const store = useStore()
             const getBusinessRoom = async (params= {}) =>{
                 const param = {
