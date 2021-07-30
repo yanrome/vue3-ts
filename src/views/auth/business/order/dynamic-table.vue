@@ -286,7 +286,7 @@
             // 获取表格数据
             const refreshTableData = async (params = {}) => {
                 params = {
-                    pageNumber: pageOptions.value.current,
+                    pageNum: pageOptions.value.current,
                     pageSize: pageOptions.value.pageSize,
                     ...props.pageOption,
                     ...params
