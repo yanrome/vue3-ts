@@ -2,57 +2,58 @@ import http from '@/utils/http/axios';
 import {RequestEnum} from '@/enums/httpEnum'
 
 enum Api {
-  adminRole = '/system/role/list',
-  adminRoleAdd = '/system/role/add',
-  adminRoleEdit = '/system/role/edit',
-  adminRoleRemove = '/system/role/remove',
-  adminRoleAccess = '/admin/role_access',
+  adminMenu = '/system/menu/list',
+  adminMenuAdd = '/system/menu/add',
+  adminMenuEdit = '/system/menu/edit',
+  adminMenuRemove = '/system/menu/remove',
+  adminMenuAccess = '/admin/menu_access',
 }
 
 /**
- * 获取角色权限资源列表
+ * 获取菜单权限资源列表
  * @param params
  */
-export function getAdminRoleAccess(id?: string | number) {
+export function getAdminUserAccess(id?: string | number) {
   return http.request({
-    url: [Api.adminRoleAccess, id].join('/'),
+    url: [Api.adminMenuAccess, id].join('/'),
     method: RequestEnum.GET,
   });
 }
 
 /**
- * 获取角色列表
+ * 获取菜单列表
  * @param params
  */
-export function getAdminRole(params) {
+export function adminMenu(params) {
   return http.request({
-    url: Api.adminRole,
-    method: RequestEnum.POST,
+    url: Api.adminMenu,
+    method: RequestEnum.GET,
     params,
   });
 }
 
 /**
- * 删除角色
+ * 修改菜单
  * @param params
  */
-export function adminRoleRemove(id: string) {
+export function adminMenuEdit(params) {
   return http.request({
-    url: [Api.adminRoleRemove, id].join('/'),
-    method: RequestEnum.DELETE,
+    url: Api.adminMenuEdit,
+    method: RequestEnum.POST,
+    params,
   }, {
     isShowErrorMessage: true, // 是否显示错误提示信息
-    successMessageText: '删除成功'
+    successMessageText: '修改成功'
   });
 }
 
 /**
- * 修改角色
+ * 删除菜单
  * @param params
  */
-export function adminRoleEdit(params) {
+ export function adminMenuRemove(params) {
   return http.request({
-    url: Api.adminRoleEdit,
+    url: Api.adminMenuRemove,
     method: RequestEnum.POST,
     params,
   }, {
@@ -63,12 +64,12 @@ export function adminRoleEdit(params) {
 
 
 /**
- * 新建角色
+ * 新建菜单
  * @param params
  */
-export function adminRoleAdd(params) {
+export function adminMenuAdd(params) {
   return http.request({
-    url: Api.adminRoleAdd,
+    url: Api.adminMenuAdd,
     method: RequestEnum.POST,
     params,
   }, {

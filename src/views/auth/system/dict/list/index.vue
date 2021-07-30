@@ -4,13 +4,19 @@
             :label-col="labelCol"
             :wrapper-col="wrapperCol">
       <div class="flex">
-        <a-form-item label="菜单名称"
+        <a-form-item label="字典名称111"
+                     class="w50 mr20">
+          <a-input v-model:value="formState.name" />
+        </a-form-item>
+        <a-form-item label="字典类型111"
                      class="w50">
           <a-input v-model:value="formState.name" />
         </a-form-item>
-        <a-form-item label="菜单状态"
+      </div>
+      <div class="flex">
+        <a-form-item label="创建时间111"
                      class="w50 mr20">
-          <a-select v-model:value="formState.name"
+          <a-select v-model:value="formState.region"
                     placeholder="please select your zone">
             <a-select-option value="shanghai">Zone one</a-select-option>
             <a-select-option value="beijing">Zone two</a-select-option>
@@ -21,7 +27,7 @@
             <template v-slot:title>
               <SearchOutlined />
             </template>
-            搜索
+            搜索111
           </a-button>
         </a-form-item>
         <a-form-item>
@@ -29,7 +35,7 @@
             <template v-slot:title>
               <RetweetOutlined />
             </template>
-            重置
+            重置111
           </a-button>
         </a-form-item>
         <!-- <a-form-item label="创建时间">
@@ -44,40 +50,39 @@
   </a-card>
   <dynamic-table ref="tableRef"
                  :columns="columns"
-                 :pageOption="pageOption"
-                 :get-list-func="adminMenu"
-                 :rowKey="rowKey">
+                 :get-list-func="adminDataDict"
+                 rowKey="id"
+                 :row-selection="rowSelection">
     <template v-slot:title>
-      <a-button v-permission="{ action: undefined, effect: 'disabled' }"
-                @click="addItem"
+      <a-button @click="addItem"
                 type="primary">
-        添加
-      </a-button>
-      <a-button @click="isOpen"
-                type="primary">
-        展开/折叠
+        新增111
       </a-button>
     </template>
   </dynamic-table>
 </template>
-
 <script lang="ts">
 import {
   defineComponent,
   reactive,
   toRefs,
+  createVNode,
   computed,
   UnwrapRef,
   ref
 } from 'vue'
-import { adminMenu, adminMenuAdd, adminMenuRemove } from '@/api/system/menu/index'
+import { Modal } from 'ant-design-vue'
+import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { DynamicTable } from '@/components/dynamic-table'
-import { columns } from './columns'
-import { useFormModal } from '@/hooks/useFormModal'
-import { getFormSchema } from './form-schema'
-import AddModal from './add-modal.vue'
-import { useCreateModal } from '@/hooks'
-import { keyBy } from 'lodash'
+import {
+  adminDataDictRemove,
+  adminDataDict,
+  adminDataDictEdit
+} from '@/api/system/dict'
+// import { getFormSchema } from './list-schema'
+// import { columns } from './list-columns'
+import { hasPermission } from '@/utils/permission/hasPermission'
+import { useFormModal } from '@/hooks/useFormModal/'
 
 interface FormState {
   name: string
@@ -89,15 +94,17 @@ interface FormState {
 }
 
 export default defineComponent({
-  name: 'system-menu',
+  name: 'system-dict',
   components: {
     DynamicTable
   },
   setup() {
-    console.log('jiehifiwhoh',columns)
+    const columns = ref()
+
     const formState: UnwrapRef<FormState> = reactive({
       name: '',
       region: undefined,
+      date1: undefined,
       delivery: false,
       type: [],
       resource: '',
@@ -116,16 +123,29 @@ export default defineComponent({
       }
     })
 
-    // 添加菜单
-    const addItem = () => {
-      useFormModal({
-        title: '添加菜单',
-        formSchema: getFormSchema(),
-        handleOk: async (modelRef, state) => {
-          await adminMenuAdd(modelRef)
+    // 删除多项
+    const deleteItems = () => {
+      Modal.confirm({
+        title: '提示',
+        icon: createVNode(QuestionCircleOutlined),
+        content: '您确定要删除所有选中吗？',
+        onOk: async () => {
+          await adminDataDictRemove(state.rowSelection.selectedRowKeys.toString())
           tableRef.value.refreshTableData()
+          state.rowSelection.selectedRowKeys = []
         }
       })
+    }
+    // 添加字典
+    const addItem = () => {
+      // useFormModal({
+      //   title: '添加字典',
+      //   formSchema: getFormSchema(),
+      //   handleOk: async (modelRef, state) => {
+      //     await adminDataDictEdit(modelRef)
+      //     tableRef.value.refreshTableData()
+      //   }
+      // })
     }
     const isDisabled = computed(
       () => state.rowSelection.selectedRowKeys.length == 0
@@ -135,16 +155,15 @@ export default defineComponent({
       ...toRefs(state),
       columns,
       tableRef,
-      adminMenu,
+      adminDataDict,
       isDisabled,
       addItem,
       formState,
-      adminMenuRemove
+      deleteItems,
     }
   }
 })
 </script>
-
 <style scoped>
 .flex {
   display: flex;
@@ -160,4 +179,3 @@ export default defineComponent({
   margin-bottom: 20px;
 }
 </style>
-

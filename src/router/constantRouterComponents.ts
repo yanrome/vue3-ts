@@ -1,3 +1,4 @@
+
 import {RouterView} from 'vue-router'
 import {RouterTransition} from "@/components/transition";
 
@@ -18,5 +19,6 @@ export const constantRouterComponents = {
 
 
 }
+
 
 

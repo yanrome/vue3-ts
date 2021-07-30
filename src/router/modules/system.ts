@@ -2,15 +2,15 @@
 // import {RouterTransition} from '@/components/transition'
 // import {markRaw} from "vue";
 
-// const routeName = 'business'
+// const routeName = 'system'
 
 
 
 // const routes: Array<RouteRecordRaw> = [
 //     {
-//         path: '/business',
+//         path: '/system',
 //         name: routeName,
-//         redirect: '/business/details',
+//         redirect: '/system/details',
 //         component: markRaw(RouterTransition),
 //         meta: {
 //             title: '订单管理',
@@ -20,7 +20,7 @@
 //         children: [
 //             {
 //                 path: 'details',
-//                 name: `business-details`,
+//                 name: 'system-details',
 //                 meta: {
 //                     title: '订单列表',
 //                     icon: 'icon-zhuomian',

@@ -1,29 +1,41 @@
-import {adminRoleRemove, adminRoleEdit} from "@/api/system/role";
-import {formatDate} from '@/utils/common'
-import {TableColumn} from "@/types/tableColumn";
-import {useFormModal} from "@/hooks/useFormModal";
-import {getFormSchema} from "./form-schema";
+import { adminUserEdit } from "@/api/system/user/index";
+import { formatDate } from '@/utils/common'
+import { TableColumn } from "@/types/tableColumn";
+import { useFormModal } from "@/hooks/useFormModal";
+import { getFormSchema } from "./form-schema";
 
 export const columns: TableColumn[] = [ // 角色列表
     {
-        title: '角色名称',
-        dataIndex: 'roleName'
+        title: '用户ID',
+        dataIndex: 'id'
     },
     {
-        title: '角色标志',
-        dataIndex: 'name'
+        title: '登陆名称',
+        dataIndex: 'username',
     },
     {
-        title: '显示顺序',
-        dataIndex: 'orderNum'
+        title: '用户姓名',
+        dataIndex: 'realName'
     },
     {
-        title: '状态',
-        dataIndex: 'status'
+        title: '昵称',
+        dataIndex: 'nickName'
     },
     {
-        title: '备注',
-        dataIndex: 'remark'
+        title: '用户来源',
+        dataIndex: 'isTest'
+    },
+    {
+        title: '手机',
+        dataIndex: 'phone'
+    },
+    {
+        title: '创建时间',
+        dataIndex: 'createTime'
+    },
+    {
+        title: '关联公众号',
+        dataIndex: 'wxOpenId'
     },
     {
         title: '操作',
@@ -36,14 +48,14 @@ export const columns: TableColumn[] = [ // 角色列表
             {
                 type: 'popconfirm', // 控制类型，默认为a,可选： select | button | text
                 text: '删除',
-                // permission: { // 权限
-                //     action: 'delete',
-                //     effect: 'disabled'
-                // },
+                permission: { // 权限
+                    action: 'delete',
+                    effect: 'disabled'
+                },
                 props: {
                   type: 'danger'
                 },
-                func: async ({record}, refreshTableData) => await adminRoleRemove(record.id).then(() => refreshTableData()),
+                // func: async ({record}, refreshTableData) => await delAdminRole(record.id).then(() => refreshTableData()),
             },
             {
                 type: 'button', // 控制类型，默认为a,可选： select | button | text
@@ -66,7 +78,7 @@ export const columns: TableColumn[] = [ // 角色列表
                             description, title,
                             accessIdsList: accessIdsList.toString()
                         }
-                        return await adminRoleEdit(params).then(() => refreshTableData())
+                        return await adminUserEdit(record.id, params).then(() => refreshTableData())
                     }
                 })
             }

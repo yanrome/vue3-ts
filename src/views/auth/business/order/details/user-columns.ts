@@ -1,4 +1,4 @@
-import {delAdminRole, patchAdminRole} from '@/api/system/role'
+// import {delAdminRole, patchAdminRole} from '@/api/system/role'
 import {formatDate} from '@/utils/common'
 import {TableColumn} from "@/types/tableColumn";
 import {signToRealName} from '@/utils/dictionary'
@@ -45,8 +45,8 @@ export const userColumns: TableColumn[] = [
                 props: {
                     type: 'text'
                 },
-                func: async ({record}, refreshTableData) =>
-                    await delAdminRole(record.id).then(() => refreshTableData())
+                // func: async ({record}, refreshTableData) =>
+                //     await delAdminRole(record.id).then(() => refreshTableData())
             },
             // {
             //     type: 'button', // 控制类型，默认为a,可选： select | button | text

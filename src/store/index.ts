@@ -58,7 +58,7 @@ export function useStore(): Store {
 
 export function setupStore(app: App) {
     app.use(store)
-    console.log(store, 'vuex')
+    // console.log(store, 'vuex')
 }
 
 export default store

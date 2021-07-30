@@ -1,7 +1,9 @@
 import { useCreateModal } from '@/hooks'
 import AddModal from './add-modal.vue'
-import { delAdminAccess } from '@/api/system/access'
+import { adminMenuEdit, adminMenuRemove } from '@/api/system/menu/index'
 import {TableColumn} from "@/types/tableColumn";
+import { useFormModal } from "@/hooks/useFormModal";
+import { getFormSchema } from "./form-schema";
 import { formatDate } from '@/utils/common'
 import { message } from 'ant-design-vue'
 import { IconFont } from '@/components/iconfont'
@@ -21,44 +23,25 @@ export const columns: TableColumn[] = [
         dataIndex: 'menuName'
     },
     {
+        title: '场景',
+        dataIndex: 'menuScene'
+    },
+    {
         title: '请求地址',
         dataIndex: 'url'
+    },
+    {
+        title: '类型',
+        dataIndex: 'menuType'
+    },
+    {
+        title: '可见',
+        dataIndex: 'visible'
     },
     {
         title: '权限标识',
         dataIndex: 'perms'
     },
-    // {
-    //     title: 'icon图标',
-    //     dataIndex: 'icon',
-    //     slots: {
-    //         customRender: 'icon'
-    //     },
-    //     slotsType: 'component',
-    //     slotsFunc: (record) => createVNode(IconFont, { type: record.icon }) // 动态创建图标
-    // },
-    // {
-    //     title: '排序',
-    //     dataIndex: 'sort'
-    // },
-    // {
-    //     title: '创建时间',
-    //     dataIndex: 'createdAt',
-    //     slots: {
-    //         customRender: 'createdAt'
-    //     },
-    //     slotsType: 'format',
-    //     slotsFunc: (val) => formatDate(val) // 格式化时间
-    // },
-    // {
-    //     title: '最后更新时间',
-    //     dataIndex: 'updatedAt',
-    //     slots: {
-    //         customRender: 'updatedAt'
-    //     },
-    //     slotsType: 'format',
-    //     slotsFunc: (val) => formatDate(val) // 格式化时间
-    // },
     {
         title: '操作',
         dataIndex: 'action',
@@ -67,6 +50,51 @@ export const columns: TableColumn[] = [
             customRender: 'action'
         },
         actions: [
+            {
+                type: 'button', // 控制类型，默认为a,可选： select | button | text
+                text: '编辑',
+                // permission: {
+                //     // 权限
+                //     action: 'update',
+                //     effect: 'disabled'
+                // },
+                props: {
+                    type: 'warning' // 按钮类型
+                },
+                func: ({ record }, refreshTableData) =>useFormModal({
+                    title: '编辑菜单',
+                    fields: record,
+                    formSchema: getFormSchema(),
+                    handleOk: async (modelRef, state) => {
+                        const {description, title, accessIdsList} = modelRef
+
+                        const params = {
+                            description, title,
+                            accessIdsList: accessIdsList.toString()
+                        }
+                        return await adminMenuEdit(params).then(() => refreshTableData())
+                    }
+                })
+            },
+            {
+                type: 'button', // 控制类型，默认为a,可选： select | button | text
+                text: '新增',
+                // permission: {
+                //     // 权限
+                //     action: 'update',
+                //     effect: 'disabled'
+                // },
+                props: {
+                    type: 'warning', // 按钮类型，
+                    background:"red",
+                },
+                func: ({ record }, callback) =>
+                    useCreateModal(AddModal, {
+                        // 点击删除的回调
+                        fields: record,
+                        callback
+                    })
+            },
             {
                 type: 'popconfirm', // 控制类型，默认为a,可选： select | button | text
                 text: '删除',
@@ -83,26 +111,8 @@ export const columns: TableColumn[] = [
                     if (record.id < 6) {
                         return message.warn('系统预置菜单，不能删除！')
                     }
-                    return await delAdminAccess(record.id).then(() => refreshTableData())
+                    return await adminMenuRemove(record.id).then(() => refreshTableData())
                 }
-            },
-            {
-                type: 'button', // 控制类型，默认为a,可选： select | button | text
-                text: '编辑',
-                // permission: {
-                //     // 权限
-                //     action: 'update',
-                //     effect: 'disabled'
-                // },
-                props: {
-                    type: 'warning' // 按钮类型
-                },
-                func: ({ record }, callback) =>
-                    useCreateModal(AddModal, {
-                        // 点击删除的回调
-                        fields: record,
-                        callback
-                    })
             }
         ]
     }
