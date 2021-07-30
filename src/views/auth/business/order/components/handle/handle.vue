@@ -6,7 +6,7 @@
             <template v-if="btn.action && btn.action.type == 'popconfirm'">
                 <a-popconfirm
                         :key="index"
-                        cancel-text="取消操作"
+                        cancel-text="取消操作1"
                         ok-text="确认"
                         @confirm="btn.callBackFun(orderRoomMsg)"
                 >
