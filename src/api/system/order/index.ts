@@ -33,6 +33,50 @@ export function GetBusinessOrderRoomOrderRoomId(params) {
 }
 
 /**
+ * @description 房东办理入住
+ * */
+export  function postBusinessOrderroomRoomIn(param) {
+return http.request({
+    url:[Api.businessOrderRoomOrderRoomId,'roomin',param.orderRoomId].join('/'),
+    method:RequestEnum.POST,
+    params:param
+})
+}
+
+/**
+ * @description 房东换房
+ * */
+export function  postOrderRoomChange(param) {
+    return http.request({
+        url:[Api.businessOrderRoomOrderRoomId,'roomchange',param.orderRoomId].join('/'),
+        method:RequestEnum.POST,
+        params:param
+    })
+}
+
+/**
+ * @description  房东退房
+ * */
+export function postOrderRoomLeave(params) {
+return http.request({
+    url:[Api.businessOrderRoomOrderRoomId,'leave'].join('/'),
+    method:RequestEnum.POST,
+    params
+})
+}
+
+/**
+ * @description  订单重新发送短信
+ * */
+export  function postSendMessageAgain(params) {
+    return http.request({
+        url:[Api.businessOrderRoomOrderRoomId,'send/message/again',params.orderRoomId].join('/'),
+        method:RequestEnum.POST,
+        params
+    })
+}
+
+/**
  * 查询订单操作日志
  * */
 export  function getBusinessOrderLogByOrderRoomOrderRoomId(params) {

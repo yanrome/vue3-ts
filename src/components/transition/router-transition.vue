@@ -1,4 +1,18 @@
 <template>
+<!--  <keep-alive>-->
+<!--    <router-view v-if="route.meta.keepAlive"></router-view>-->
+<!--  </keep-alive>-->
+<!--  <router-view v-if="!route.meta.keepAlive"></router-view>-->
+<!--  <router-view v-slot="{ Component }">-->
+<!--    <keep-alive>-->
+<!--      <component :is="Component"  v-if="route.meta.keepAlive"/>-->
+<!--    </keep-alive>-->
+<!--    <component :is="Component"  v-if="!route.meta.keepAlive"/>-->
+<!--  </router-view>-->
+
+
+
+
   <router-view></router-view>
 <!--  <router-view v-slot="{ Component, route }">-->
 <!--    <transition name="zoom-fade" mode="out-in" appear>-->
@@ -27,18 +41,20 @@ export default defineComponent({
   },
   setup() {
 
-
     const router = useRouter()
     const route = useRoute()
+    console.log('router======',route.meta.keepAlive)
+
+
     // 需要缓存的路由组件
     const keepAliveComponents = ref<string[]>([])
     // 获取需要缓存的组件
-    // const getKeepAliveComponents = () => {
-    //   const comNames = router.getRoutes()
-    //       .filter(item => item?.meta.keepAlive)
-    //       .map(item => item?.meta?.componentName?.replace(/\B([A-Z])/g, "-$1").toLowerCase() || '')
-    //   return [...new Set(comNames)]
-    // }
+    const getKeepAliveComponents = () => {
+      const comNames = router.getRoutes()
+          .filter(item => item?.meta.keepAlive)
+          // .map(item => item?.meta?.componentName?.replace(/\B([A-Z])/g, "-$1").toLowerCase() || '')
+      return [...new Set(comNames)]
+    }
 
     // 获取需要缓存的组件
     onBeforeRouteLeave((to, from) => {
@@ -54,7 +70,8 @@ export default defineComponent({
     })
 
     return {
-      keepAliveComponents
+      keepAliveComponents,
+      route
     }
   }
 })

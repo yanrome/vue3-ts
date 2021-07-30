@@ -4,8 +4,12 @@
 
 export type State = {
     orderRoomStatus: string;
+    orderRoomMsg:any
+    orderRoomId:any
 };
 
 export const state: State = {
     orderRoomStatus:'',// Storage.get(ACCESS_TOKEN, ''),
+    orderRoomMsg:null,
+    orderRoomId:''
 };

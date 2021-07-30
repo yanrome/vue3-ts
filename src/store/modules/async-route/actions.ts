@@ -20,7 +20,7 @@ export type Actions = {
 }
 
 export const actions: ActionTree<State, RootState> & Actions = {
-    async [AsyncRouteActionTypes.GenerateRoutes]({ commit }) { // 动态获取菜单
+    async [AsyncRouteActionTypes.GenerateRoutes]({ commit }) {
         const routers = await generatorDynamicRouter()
         commit(MutationType.SetRouters, routers)
 

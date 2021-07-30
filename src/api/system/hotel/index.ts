@@ -12,7 +12,7 @@ enum Api {
  */
 export function getBusinessHotelList(searchValue) {
     return http.request({
-        url: `${Api.businessHotelList}/${searchValue}`,
+        url: [Api.businessHotelList,searchValue].join('/') ,
         method: RequestEnum.GET,
     }, {
         isTransformRequestResult: false

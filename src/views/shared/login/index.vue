@@ -3,7 +3,7 @@
         <div class="login-logo">
             <svg-icon icon-class="logo"/>
             <!--      <img src="~@/assets/images/logo.png" alt="">-->
-            <h1>Antd Admin</h1>
+            <h1>哎哟有房</h1>
         </div>
         <a-form layout="horizontal" :model="formInline" @submit.prevent="handleSubmit">
             <a-form-item>
@@ -127,7 +127,6 @@
             }
 
             h1 {
-                margin-left: 10px;
                 margin-bottom: 0;
             }
         }

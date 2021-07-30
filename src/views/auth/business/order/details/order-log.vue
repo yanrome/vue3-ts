@@ -1,27 +1,44 @@
 <template>
-
+<a-steps progress-dot :current="1" direction="vertical">
+    <a-step v-for="item in logMsg" :key="item.id" :title="item.title"
+            :description="item.realName +' ' + item.operTime" />
+</a-steps>
 </template>
 
 <script lang="ts">
     import {defineComponent,reactive,toRefs} from 'vue'
     import {getBusinessOrderLogByOrderRoomOrderRoomId} from '@/api/system/order/index'
     import {useRoute} from "vue-router";
+    import {getDict} from "@/hooks/dict-list";
+    import {Steps} from "ant-design-vue";
+
     export default defineComponent({
         name: "order-log",
-        props:{
-
+        components:{
+            [Steps.name]:Steps,
+            aStep:Steps.Step
         },
-        setup(){
-            const uRoute = useRoute()
+        props:{
+            id:{
+                type:Number
+            }
+        },
+        setup(props){
+            // const uRoute = useRoute()
             const state = reactive({
-                logMsg:{}
+                logMsg:{},
             })
 
             const getOrderLog = async ()=>{
-                const {data} = await getBusinessOrderLogByOrderRoomOrderRoomId({orderRoomId:uRoute.query.id})
-                state.logMsg = data
+                let orderTypeArray = await getDict('business_order_oper_type','',false)
+                const {data} = await getBusinessOrderLogByOrderRoomOrderRoomId({orderRoomId:props.id})
+                state.logMsg = data.map(item=>{
+                    item.title = orderTypeArray[item.orderOperType]
+                    return item
+                })
             }
             getOrderLog()
+
 
             return{
                 ...toRefs(state)
