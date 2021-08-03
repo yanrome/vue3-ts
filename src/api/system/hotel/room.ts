@@ -72,6 +72,17 @@ export function postBusinessRoomScaleStateBatch(params,str:string) {
     })
 }
 
+
+/**
+ * @description  查询房型连住折扣
+ * */
+export  function getBusinessRoomScaleDiscountInfo (params) {
+    return http.request({
+        url:[Api.businessRoomScale,'discount/info',params.id].join('/'),
+        method:RequestEnum.GET
+    })
+}
+
 /**
  * @description  日历房价模块
  * @url  /business/roomprice/batch/add

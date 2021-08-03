@@ -70,7 +70,7 @@
                 </a-row>
             </a-col>
             <a-col :span="24">
-                <a-row type="flex" v-for="(item,index) in roomUser" :key="item.idCard" align="middle">
+                <a-row type="flex" v-for="(item,index) in roomUser" :key="index" align="middle">
                     <a-col :span="3">入住人{{index+1}}:</a-col>
                     <a-col :span="21">
                         <a-button @click="removeUser(index)" type="link">删除</a-button>
@@ -132,6 +132,9 @@
         props: {
             orderRoomMsg: {
                 type: Object
+            },
+            callback: {
+                type: Function
             }
         },
         setup(props) {
@@ -196,10 +199,14 @@
             }
 
             const handleOk = () => {
-                const params = Object.assign(state.roomInParams, state.roomUser)
+                const params = {
+                    roomUser: JSON.stringify(state.roomUser),
+                    ...state.roomInParams
+                }
                 postBusinessOrderroomRoomIn(params).then(res => {
+                    message.info(res.msg)
+                    props?.callback?.()
                     setTimeout(() => {
-                        message.info(res.msg)
                         visible.value = false
                     }, 2000)
                 })

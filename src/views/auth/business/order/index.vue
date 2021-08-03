@@ -34,7 +34,6 @@
                        :listType="'list'"
                        :orderSource="orderSource"
                        @change="callbackMore"
-                       @watchChange="emitSon"
                        :columns="columns"
                        :pageOption="pageOption"
                        :get-list-func="postBusinessOrderRoomList"
@@ -52,7 +51,7 @@
     import DynamicTable from './dynamic-table.vue'
     import {OrderList} from '@/components/order-list'
     import {postBusinessOrderRoomList} from '@/api/system/order'
-    import {useStore} from "@/store";
+    import store, {useStore} from "@/store";
     import {usePages} from '@/hooks'
     import {OrderMutationType} from "@/store/modules/order/mutations";
     import {Row,Col,Input,Button} from 'ant-design-vue'
@@ -105,6 +104,9 @@
            const emitSon = () =>{
                tableRef.value.refreshTableData()
            }
+           const  emitSonfn = () =>{
+                debugger
+           }
 
             //watch监听
             watch(() => store.getters.hotelId, (val) => {
@@ -114,6 +116,10 @@
             watch(state.pageOption, (newProps, oldProps) => {
                 emitSon()
             },{deep:true});
+
+            watch(() => store.getters.orderRoomMsg, (val,oldValue) => {
+                    emitSon()
+            },{deep:true})
 
             //重置筛选条件
             const reset = () =>{
@@ -130,7 +136,9 @@
                 useCreateModal(AddModal, {
                     id:id,
                     orderSource:state.orderSource,
-                    callback: () => {}
+                    callback: () => {
+                        emitSon()
+                    }
                 })
             }
 

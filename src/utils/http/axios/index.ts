@@ -43,7 +43,7 @@ const transform: AxiosTransform = {
             if (hasSuccess && (successMessageText || isShowSuccessMessage)) { // 是否显示自定义信息提示
                 Message.success(successMessageText || message || '操作成功！')
             } else if (!hasSuccess && (errorMessageText || isShowErrorMessage)) { // 是否显示自定义信息提示
-                Message.error(message || errorMessageText || '操作失败！')
+                Message.error( data || message || errorMessageText || '操作失败！')
             } else if (!hasSuccess && options.errorMessageMode === 'modal') { // errorMessageMode=‘custom-modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
                 Modal.confirm({title: '错误提示', content: message});
             }
@@ -66,7 +66,7 @@ const transform: AxiosTransform = {
         // 接口请求错误，统一提示错误信息
         if (code === ResultEnum.ERROR) {
             if (message) {
-                Message.error(data.msg);
+                Message.error(data.data || data.msg);
                 Promise.reject(new Error(message));
             } else {
                 const msg = '操作失败,系统异常!';
@@ -145,6 +145,7 @@ const transform: AxiosTransform = {
             }
         }
         return config;
+
     },
 
     /**

@@ -61,8 +61,9 @@
                         console.log(modelRef)
                         const params = {
                             orderRoomId:props.id,
-                            roomUser:modelRef
+                            roomUser:[modelRef]
                         }
+                        debugger
                        const {data} = await  postUserAdd(params)
                         tableRef.value.refreshTableData()
                     }

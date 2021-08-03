@@ -22,6 +22,6 @@ export declare interface buttonType extends Types {
     author?:string,
     table?:string,
     fun:(order:any)=>any,
-    callBackFun?:(order:any)=>any,
+    callBackFun?:(order:any,source:void)=>any,
     action?:any
 }

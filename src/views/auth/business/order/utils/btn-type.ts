@@ -3,7 +3,11 @@ import {buttonType} from '../types'
 import * as common from "./common";
 import { useCreateModal } from '@/hooks'
 import {checkInModal,checkoutModal,exchangeModal} from '../components/handle/modal'
-
+import store from "@/store";
+import {OrderActions} from "@/store/modules/order/actions";
+import {OrderMutationType} from "@/store/modules/order/mutations";
+import {postOrderRoomCancel,postSendMessageAgain,postSendPasswordAgain} from "@/api/system/order";
+import {message} from "ant-design-vue";
 
 export const buttonList: buttonType[] = [
     {
@@ -23,9 +27,13 @@ export const buttonList: buttonType[] = [
         table:"1,2",
         fun:(item)=>common['btnCheckIn'](item) && common['btnPayMent'](item),
         callBackFun:(order => {
+            store.commit(OrderMutationType.setOrderRoomId,order.id)
             useCreateModal(checkInModal,{
                 title:'办理入住',
-                orderRoomMsg:order
+                orderRoomMsg:order,
+                callback:async ()=>{
+                    await store.dispatch(OrderActions.getOrderRoomMsg)
+                }
             })
         })
     },
@@ -37,9 +45,13 @@ export const buttonList: buttonType[] = [
         table:"1,2",
         fun:(item)=>common['btnCheckOut'](item),
         callBackFun:(order => {
+            store.commit(OrderMutationType.setOrderRoomId,order.id)
             useCreateModal(checkoutModal,{
                 title:'办理退房',
-                orderRoomMsg:order
+                orderRoomMsg:order,
+                callback:async ()=>{
+                    await store.dispatch(OrderActions.getOrderRoomMsg)
+                }
             })
         })
     },
@@ -50,9 +62,13 @@ export const buttonList: buttonType[] = [
         author: '1,2,3,4',
         fun:(item)=>common['btnCheckOut'](item),
         callBackFun:(order => {
+            store.commit(OrderMutationType.setOrderRoomId,order.id)
             useCreateModal(exchangeModal,{
                 title:'换房',
-                orderRoomMsg:order
+                orderRoomMsg:order,
+                callback:async ()=>{
+                    await store.dispatch(OrderActions.getOrderRoomMsg)
+                }
             })
         })
     },
@@ -64,6 +80,9 @@ export const buttonList: buttonType[] = [
         fun:(item)=>common['btnCheckIn'](item),
         callBackFun:(item=>{
             console.log('popconfirm',item)
+            postSendPasswordAgain({orderRoomId:item.id,orderId:item.orderId}).then(res=>{
+                res.ret === 1 && message.info('已重新发送密码')
+            })
         }),
         action:{
             type:'popconfirm',
@@ -75,8 +94,11 @@ export const buttonList: buttonType[] = [
         name: 'resend-code',
         author: '1,2',
         fun:(item)=>common['btnCheckIn'](item),
-        callBackFun:(item=>{
+        callBackFun:( item=>{
             console.log('popconfirm',item)
+             postSendMessageAgain({orderRoomId:item.id,roomUser:item.order.roomUser,phone:item.order.phone}).then(res=>{
+                res.ret === 1 && message.info('已重新发送短信')
+             })
         }),
         action:{
             type:'popconfirm',
@@ -89,8 +111,10 @@ export const buttonList: buttonType[] = [
         name: 'cancel',
         author: '1',
         fun:(item)=>common['btnCancelOrder'](item),
-        callBackFun:(item=>{
+        callBackFun:(async item=>{
             console.log('popconfirm',item)
+           await postOrderRoomCancel({orderId:item.orderId,orderRoomId:item.id})
+            await store.dispatch(OrderActions.getOrderRoomMsg)
         }),
         action:{
             type:'popconfirm',

@@ -84,10 +84,12 @@
             },
             orderSource: {
                 type: Object
+            },
+            callback:{
+                type:Function
             }
         },
-        emits:['watchChange'],
-        setup(props,{emit}) {
+        setup(props) {
             const uRoute = useRoute() || {query: props}
             store.commit(OrderMutationType.setOrderRoomId,uRoute.query.id)
             const state = reactive({
@@ -105,9 +107,9 @@
 
             watch(() => store.getters.orderRoomMsg, (val,oldValue) => {
                 state.orderRoomMsg = store.getters.orderRoomMsg
-                if (oldValue){
-                    emit('watchChange')
-                }
+                // if (oldValue){
+                //    props?.callback?.()
+                // }
             },{deep:true})
 
             return {

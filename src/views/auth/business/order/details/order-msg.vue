@@ -11,15 +11,26 @@
         <a-descriptions-item label="备注">无</a-descriptions-item>
     </a-descriptions>
     <a-divider/>
-    <h3>房费：￥121.00</h3>
+    <h3>房费：￥{{ point(orderRoomMsg?.invoiceAmount)}}</h3>
     <a-descriptions v-if="orderRoomMsg?.priceRecord" :column="6" layout="vertical" bordered>
         <a-descriptions-item label="日期">房价</a-descriptions-item>
-        <a-descriptions-item v-for="item in toObj(orderRoomMsg?.priceRecord,true) " :key="item.value" :label="item.value">{{item.label}}</a-descriptions-item>
+        <a-descriptions-item v-for="item in toObj(orderRoomMsg?.priceRecord,true) " :key="item.value" :label="item.value">{{ point( item.label)}}</a-descriptions-item>
     </a-descriptions>
+    <div style="margin: 18px 0">
+        <a-space :size="30">
+            <span>房费：  ￥{{ point( orderRoomMsg?.roomRealAmount)}}</span>
+
+            <span v-if="orderRoomMsg?.discountPrice">
+                连住折扣：  -￥{{point(orderRoomMsg?.discountPrice) }}
+            </span>
+            <span v-if="orderRoomMsg?.discountMember">
+                会员优惠：  -￥{{point( orderRoomMsg?.discountMember) }}
+            </span>
+            <span v-if="orderRoomMsg?.couponAmount">优惠劵优惠：  -￥{{point( orderRoomMsg?.couponAmount)}}</span>
+        </a-space>
+    </div>
     <a-space :size="30">
-        <span>房费：  ￥{{orderRoomMsg?.order?.realAmount}}</span>
-<!--        <span>会员优惠：  -￥1.00</span>-->
-<!--        <span>连住优惠：  -￥8.00</span>-->
+        <span>实际支付：  ￥{{ point( orderRoomMsg?.invoiceAmount)}}</span>
     </a-space>
     <a-divider/>
     <h3>押金：{{orderRoomMsg?.deposit}}</h3>
@@ -36,6 +47,8 @@
     import handle from '../components/handle'
     import {buttonList} from '../utils/btn-type'
     import {toRefs} from "@vueuse/core";
+    import {point} from '@/utils/common'
+    import {getBusinessRoomScaleDiscountInfo} from "@/api/system/hotel/room";
 
     export default defineComponent({
         name: "order-msg",
@@ -58,6 +71,8 @@
                     return item.author?.includes(props?.orderRoomMsg?.status)
                 })
             })
+
+
             watch(() => props.orderRoomMsg, (val) => {
                 if(val){
                     state.list = buttonList.filter(item=>{
@@ -67,6 +82,7 @@
             },{deep:true})
             return{
                 ...toRefs(state),
+                point,
                 formatDate,
                 toObj
             }
