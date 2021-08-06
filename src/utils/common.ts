@@ -29,6 +29,19 @@ export const changeStr = (str: string) => {
 }
 
 /**
+ * @description 将数字保留两位小数
+ * @params      num    保留位数
+ * @params      p      乘数
+ * */
+export const point = (point, num = 2, p = 1)=> {
+    if (point) {
+        return Number(point * p).toFixed(num)
+    } else {
+        return 0
+    }
+}
+
+/**
  * @description 批量导入文件
  * @param {Object} context 上下文对象
  * @param {RegExp} reg 匹配规则

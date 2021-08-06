@@ -31,6 +31,9 @@
         props: {
             orderRoomMsg: {
                 type: Object
+            },
+            callback: {
+                type: Function
             }
         },
         setup(props) {
@@ -47,6 +50,11 @@
             const handleOk = async () =>{
                 const params = state.leaveParams
                 const {data} = await postOrderRoomLeave(params)
+                props?.callback?.()
+                setTimeout(() => {
+                    visible.value = false
+                }, 2000)
+
             }
 
             return {

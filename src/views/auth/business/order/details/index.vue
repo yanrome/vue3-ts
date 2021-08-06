@@ -1,21 +1,20 @@
 <template>
     <a-modal width="100%"
              wrapClassName="full-modal"
+             @cancel="cancel"
              v-model:visible="visible">
         <a-card>
             <h3>订单详情</h3>
             <div class="flex-bet">
                 <div class="z-flex">
                     <div class="details-top-item fontsize20">
-                        <div>订单号：{{orderRoomMsg.id}}</div>
+                        <div>订单号：{{orderRoomMsg?.id}}</div>
                         <div>
-                            <a-tag color="blue">订单同步</a-tag>
-                            <a-tag color="blue">个人</a-tag>
+                            <a-tag :color="orderTypeColor[orderRoomMsg?.status]">{{orderRoomStatusData[orderRoomMsg?.status]}}</a-tag>
                         </div>
                     </div>
                     <div class="details-top-item fontsize14 fontcolor00045">
                         订单渠道:
-
                         <img v-if="orderSource?.[orderRoomMsg?.orderType]?.['icon']"
                              :src="orderSource?.[orderRoomMsg?.orderType]?.['icon']" alt="">
                         <span v-else> {{ orderSource?.[orderRoomMsg?.orderType]?.['label']}}</span>
@@ -45,8 +44,7 @@
 
         </a-card>
         <template #footer>
-            <a-button key="back" @click="handleCancel">Return</a-button>
-
+            <a-button key="back" @click="cancel">Return</a-button>
         </template>
     </a-modal>
 </template>
@@ -62,7 +60,15 @@
     import {OrderMutationType} from "@/store/modules/order/mutations";
     import {OrderActions} from "@/store/modules/order/actions";
     import store from '@/store'
+    import {getDict} from "@/hooks/dict-list";
 
+     const orderTypeColor = {
+        1: '#5A7EF8',
+        2: '#6CC178',
+        3: '#FA7D41',
+        4: '#F95252',
+        7: '#108ee9',
+    }
     export default defineComponent({
         name: "details",
         components: {
@@ -84,34 +90,47 @@
             },
             orderSource: {
                 type: Object
+            },
+            callback:{
+                type:Function
             }
         },
-        emits:['watchChange'],
-        setup(props,{emit}) {
+        setup(props) {
             const uRoute = useRoute() || {query: props}
             store.commit(OrderMutationType.setOrderRoomId,uRoute.query.id)
             const state = reactive({
                 visible: true,
                 orderRoomMsg: {},
+                orderRoomStatusData:{},
                 activeKey: ref('1'),
             })
+
+            //弹出框取消回调
+            const cancel = () =>{
+                state.visible = false
+                store.commit(OrderMutationType.setOrderRoomMsg,null)
+            }
 
             //获取订单详情
             const getBusinessDetails = async (params = {}) => {
                  await store.dispatch(OrderActions.getOrderRoomMsg,params)
+                const data = await getDict('business_orderroom_status','businessOrderroomStatus',false)
+
+                state.orderRoomStatusData = data
             }
 
             getBusinessDetails()
 
             watch(() => store.getters.orderRoomMsg, (val,oldValue) => {
                 state.orderRoomMsg = store.getters.orderRoomMsg
-                if (oldValue){
-                    emit('watchChange')
-                }
+                // if (oldValue){
+                //    props?.callback?.()
+                // }
             },{deep:true})
 
             return {
-                ...toRefs(state),
+                ...toRefs(state),orderTypeColor,
+                cancel,
                 uRoute
             }
         },

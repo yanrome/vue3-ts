@@ -37,14 +37,14 @@
                             <p>{{item.roomSn}}</p>
                         </div>
                         <div class="u-aim-item">
-                            <div>房费：{{item.order.price}}</div>
+                            <div>房费：{{item.invoiceAmount}}</div>
                         </div>
                         <div class="u-aim-item u-aim-group-item z-text-center">
                             <div class="z-text-center">
-                                <!--                                <a-button type="primary">办理入住</a-button>-->
-                                <handle :orderRoomMsg="item" :list="buttonList.filter(list=>{
-                                    return list.table &&  list.table.includes(item.status)
-                                })"></handle>
+                                <handle :orderRoomMsg="item"
+                                        :list="buttonList.filter(list=>{return list.table &&  list.table.includes(item.status)})"
+                                        :fun="refreshTableData"
+                                ></handle>
                             </div>
                             <div class="u-aim-more">
                                 <a-button class="u-aim-more-btn u-aim-before" @click="navDetails(item.id)" type="link">
@@ -68,104 +68,7 @@
             </template>
         </a-list>
     </div>
-    <!--    <a-table-->
-    <!--            :columns="columns"-->
-    <!--            :loading="loading"-->
-    <!--            :rowSelection="rowSelection"-->
-    <!--            :rowKey="rowKey"-->
-    <!--            size="middle"-->
-    <!--            :data-source="data"-->
-    <!--            :pagination="pageOptions"-->
-    <!--            bordered-->
-    <!--            :customRow="customRow"-->
-    <!--            v-bind="$attrs"-->
-    <!--            @change="paginationChange"-->
-    <!--    >-->
-    <!--        &lt;!&ndash;  自定义slots start&ndash;&gt;-->
-    <!--        <template v-for="(value, key) in $slots" #[key]="slotProps">-->
-    <!--            <slot :name="key" v-bind="slotProps"></slot>-->
-    <!--        </template>-->
-    <!--        &lt;!&ndash;    自定义slots end&ndash;&gt;-->
 
-    <!--        &lt;!&ndash;    是否有自定义显示slots start&ndash;&gt;-->
-    <!--        <template-->
-    <!--                v-for="slotItem in columns.filter((item) => item.slots)"-->
-    <!--                :key="slotItem.dataIndex || slotItem.slots?.customRender"-->
-    <!--                #[slotItem.slots?.customRender]="slotProps"-->
-    <!--        >-->
-    <!--            &lt;!&ndash;        自定义渲染start&ndash;&gt;-->
-    <!--            <slot-->
-    <!--                    v-if="$slots[slotItem.slots?.customRender]"-->
-    <!--                    :name="slotItem.slots?.customRender"-->
-    <!--                    v-bind="slotProps"-->
-    <!--            ></slot>-->
-    <!--            &lt;!&ndash;        自定义渲染end&ndash;&gt;-->
-
-    <!--            &lt;!&ndash;     非自定义渲染start &ndash;&gt;-->
-    <!--            <template v-else>-->
-    <!--                &lt;!&ndash;        非操作 start&ndash;&gt;-->
-    <!--                <template v-if="slotItem.slots?.customRender !== 'action'">-->
-    <!--                    &lt;!&ndash;        使用自定义组件格式化显示start&ndash;&gt;-->
-    <!--                    <template v-if="slotItem.slotsType == 'component'">-->
-    <!--                        <component :is="slotItem?.slotsFunc?.(slotProps.record)" />-->
-    <!--                    </template>-->
-    <!--                    &lt;!&ndash;        使用自定义组件格式化显示end&ndash;&gt;-->
-    <!--                    &lt;!&ndash;        使用自定义函数格式化显示&ndash;&gt;-->
-    <!--                    <template v-if="slotItem.slotsType == 'format'">-->
-    <!--                        {{-->
-    <!--                        slotItem?.slotsFunc?.(-->
-    <!--                        slotProps.record[slotItem.dataIndex || slotItem.key],-->
-    <!--                        slotProps.record-->
-    <!--                        )-->
-    <!--                        }}-->
-    <!--                    </template>-->
-    <!--                </template>-->
-    <!--                &lt;!&ndash;      非操作 end&ndash;&gt;-->
-
-    <!--                &lt;!&ndash;        操作start&ndash;&gt;-->
-    <!--                <div-->
-    <!--                        v-if="slotItem.slots?.customRender == 'action'"-->
-    <!--                        :key="slotItem.slots.customRender"-->
-    <!--                        class="actions"-->
-    <!--                >-->
-    <!--                    &lt;!&ndash;        对表格的操作动作start&ndash;&gt;-->
-    <!--                    <template v-for="(action, index) in actions">-->
-    <!--                        &lt;!&ndash;            编辑按钮&ndash;&gt;-->
-    <!--                        <template v-if="action.type == 'button'">-->
-    <!--                            <a-button-->
-    <!--                                    v-bind="{ ...buttonProps, ...action.props }"-->
-    <!--                                    :key="index"-->
-    <!--                                    v-permission="action.permission"-->
-    <!--                                    @click="actionEvent(slotProps.record, action.func)"-->
-    <!--                            >-->
-    <!--                                {{ action.text }}-->
-    <!--                            </a-button>-->
-    <!--                        </template>-->
-    <!--                        &lt;!&ndash;            删除按钮 气泡确认框&ndash;&gt;-->
-    <!--                        <template v-if="action.type == 'popconfirm'">-->
-    <!--                            <a-popconfirm-->
-    <!--                                    :key="index"-->
-    <!--                                    placement="leftTop"-->
-    <!--                                    @confirm="actionEvent(slotProps.record, action.func, 'del')"-->
-    <!--                            >-->
-    <!--                                <template #title> 您确定要删除吗？ </template>-->
-    <!--                                <a-button-->
-    <!--                                        v-permission="action.permission"-->
-    <!--                                        v-bind="{ ...buttonProps, ...action.props }"-->
-    <!--                                >-->
-    <!--                                    {{ action.text }}-->
-    <!--                                </a-button>-->
-    <!--                            </a-popconfirm>-->
-    <!--                        </template>-->
-    <!--                    </template>-->
-    <!--                    &lt;!&ndash;        对表格的操作动作end&ndash;&gt;-->
-    <!--                </div>-->
-    <!--                &lt;!&ndash;      操作end&ndash;&gt;-->
-    <!--            </template>-->
-    <!--            &lt;!&ndash;      非自定义渲染end&ndash;&gt;-->
-    <!--        </template>-->
-    <!--        &lt;!&ndash;    是否有自定义显示slots end&ndash;&gt;-->
-    <!--    </a-table>-->
 </template>
 
 
@@ -246,7 +149,7 @@
             }
 
         },
-        emits: ['change'],
+        emits: ['change','watchChange'],
         setup(props, {emit}) {
             // const {: pageOptions} = usePages()
             const {pageOption: pageOptions} = Object.assign(usePages({
@@ -344,7 +247,6 @@
             //查看详情
             const navDetails = (id) => {
                 emit('change', id)
-                // router.push({name:'/business/details',query:{id:id}})
             }
 
             //发生改变

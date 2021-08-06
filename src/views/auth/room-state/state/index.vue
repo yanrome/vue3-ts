@@ -1,47 +1,59 @@
 <template>
-  <search-group @callback="callback"></search-group>
-  <a-card class="g-hotel-room z-mt18  ">
-    <div class="s-card-group">
-      <div class="z-mt10"
-           v-for="(floor,key) in hotelRoom"
-           :key="key">
-        <div>{{ key }} F</div>
-        <a-card class="s-card"
-                :bodyStyle="{padding:'6px'}"
-                v-for="item in floor"
-                :key="item.id"
-                :style="'background:' + item.color">
-          <p>{{ item.roomSn }}</p>
-          <p style="font-size: 12px;">{{ item.roomScale.scaleName }}</p>
-          <p class="s-card-p"
-             :style="'color:' + item.color">夜</p>
-        </a-card>
-      </div>
+    <search-group @callback="callback"></search-group>
+    <a-card class="g-hotel-room z-mt18  ">
+        <div class="s-card-group">
+            <div class="z-mt10" v-for="(floor,key) in hotelRoom">
+                <div>{{key}} F</div>
+                <a-card class="s-card" :bodyStyle="{padding:'6px'}" v-for="item in floor" :key="item.id"
+                        :style="'background:' + item.color">
+                    <p>{{item.roomSn}}</p>
+                    <p style="font-size: 12px">{{item.roomScale.scaleName}}</p>
+                    <p class="s-card-p" :style="'color:' + item.color">{{item.txt}}</p>
+                </a-card>
+            </div>
 
     </div>
   </a-card>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, watch, toRefs, onMounted } from 'vue'
-import { Card, Checkbox, Space } from 'ant-design-vue'
-import { useStore } from '@/store'
-import searchGroup from './search-group.vue'
-import { getBusinessRoomByHotel } from '@/api/system/hotel/room'
-import { statusColor } from '@/utils/dict'
+    import {defineComponent, reactive, watch, toRefs, onMounted} from 'vue'
+    import {Card, Checkbox, Space} from "ant-design-vue";
+    import {useStore} from "@/store";
+    import searchGroup from './search-group.vue'
+    import {getBusinessRoomByHotel} from '@/api/system/hotel/room'
+    import {statusColor,statusTxt} from "@/utils/dict";
 
-export default defineComponent({
-  name: 'index',
-  components: {
-    [Card.name]: Card,
-    [Checkbox.name]: Checkbox,
-    [Space.name]: Space,
-    searchGroup
-  },
-  setup() {
-    const state = reactive({
-      hotelRoom: [] as any
-    })
+    export default defineComponent({
+        name: "index",
+        components: {
+            [Card.name]: Card,
+            [Checkbox.name]: Checkbox,
+            [Space.name]: Space,
+            searchGroup
+        },
+        setup() {
+            const state = reactive({
+                hotelRoom: [] as any
+            });
+
+            const store = useStore()
+            const getHotelRoom = async (param:object = {}) => {
+                const params = {
+                    hotelId: store.getters.hotelId
+                }
+                param = Object.assign(param, params)
+                const {data} = await getBusinessRoomByHotel(param)
+                const floor = {};
+                data.forEach(item=>{
+                    item.color = statusColor[item.status]
+                    item.txt = statusTxt[item.status]
+                    floor[item.floor] !== undefined ? floor[item.floor].push(item) : floor[item.floor] = [item]
+                })
+                console.log('floor =====',floor)
+                state.hotelRoom = floor
+            }
+            getHotelRoom()
 
     const store = useStore()
     const getHotelRoom = async (param: object = {}) => {

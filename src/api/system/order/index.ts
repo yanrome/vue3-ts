@@ -77,6 +77,28 @@ export  function postSendMessageAgain(params) {
 }
 
 /**
+ * @description  订单重新发送密码
+ * */
+export  function postSendPasswordAgain(params) {
+    return http.request({
+        url:[Api.businessOrderRoomOrderRoomId,'password/send',params.orderRoomId].join('/'),
+        method:RequestEnum.POST,
+        params
+    })
+}
+
+/**
+ * @description 取消订单
+ * */
+export function postOrderRoomCancel(params) {
+    return http.request({
+        url:[Api.businessOrderRoomOrderRoomId,'cancel',params.orderRoomId].join('/'),
+        method:RequestEnum.POST,
+        params
+    })
+}
+
+/**
  * 查询订单操作日志
  * */
 export  function getBusinessOrderLogByOrderRoomOrderRoomId(params) {

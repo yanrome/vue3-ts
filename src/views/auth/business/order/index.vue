@@ -18,7 +18,7 @@
                     <a-row  type="flex" align="middle">
                         <a-col :span="6">检索条件:</a-col>
                         <a-col :span="18">
-                            <a-input v-model="pageOption.searchValue" placeholder="请输入"></a-input>
+                            <a-input v-model:value="pageOption.searchValue" placeholder="请输入"></a-input>
                         </a-col>
                     </a-row>
                 </a-col>
@@ -30,18 +30,17 @@
 
     </a-card>
     <a-card class="w100 mtp8 g-card">
-        <dynamic-table ref="tableRef"
+        <order-dynamic-table ref="tableRef"
                        :listType="'list'"
                        :orderSource="orderSource"
                        @change="callbackMore"
-                       @watchChange="emitSon"
                        :columns="columns"
                        :pageOption="pageOption"
                        :get-list-func="postBusinessOrderRoomList"
                        rowKey="id">
             <template v-slot:title>
             </template>
-        </dynamic-table>
+        </order-dynamic-table>
         <!--        <order-list></order-list>-->
     </a-card>
 
@@ -49,10 +48,10 @@
 <script lang="ts">
     import {defineComponent, reactive, ref, toRefs, watch} from 'vue';
     import {columns} from "./utils/columns";
-    import DynamicTable from './dynamic-table.vue'
+    import OrderDynamicTable from './dynamic-table.vue'
     import {OrderList} from '@/components/order-list'
     import {postBusinessOrderRoomList} from '@/api/system/order'
-    import {useStore} from "@/store";
+    import store, {useStore} from "@/store";
     import {usePages} from '@/hooks'
     import {OrderMutationType} from "@/store/modules/order/mutations";
     import {Row,Col,Input,Button} from 'ant-design-vue'
@@ -68,7 +67,7 @@
             [Col.name]:Col,
             [Input.name]:Input,
             [Button.name]:Button,
-            DynamicTable,
+            OrderDynamicTable,
             OrderList,
 
         },
@@ -105,6 +104,9 @@
            const emitSon = () =>{
                tableRef.value.refreshTableData()
            }
+           const  emitSonfn = () =>{
+                debugger
+           }
 
             //watch监听
             watch(() => store.getters.hotelId, (val) => {
@@ -114,6 +116,11 @@
             watch(state.pageOption, (newProps, oldProps) => {
                 emitSon()
             },{deep:true});
+
+            watch(() => store.getters.orderRoomMsg, (val,oldValue) => {
+                if(oldValue && val)
+                    emitSon()
+            },{deep:true})
 
             //重置筛选条件
             const reset = () =>{
@@ -130,7 +137,9 @@
                 useCreateModal(AddModal, {
                     id:id,
                     orderSource:state.orderSource,
-                    callback: () => {}
+                    callback: () => {
+                        emitSon()
+                    }
                 })
             }
 

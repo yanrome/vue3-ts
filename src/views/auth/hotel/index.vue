@@ -54,11 +54,9 @@
     import {defineComponent, watch,reactive} from 'vue'
     import {useStore} from '@/store'
     import {getBusinessHotelHotelId} from '@/api/system/hotel'
-    // import {getSystemDictDataByType} from '@/api/system/dict'
     import {postBusinessHotelAccountList} from '@/api/system/hotel/account'
     import {toRefs} from "@vueuse/core";
     import {Card,Descriptions} from "ant-design-vue";
-    // import {changeDict} from '@/utils/common'
     import {getDict} from '@/hooks/dict-list'
     import {formatDate} from '@/utils/common'
     import {accountType} from "@/utils/dict";
