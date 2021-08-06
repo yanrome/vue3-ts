@@ -21,6 +21,14 @@ export const statusColor = {
     5: '#4A4A4A',
 }
 
+export const statusTxt = {
+    1: '空',
+    2: '夜',
+    3: '扫',
+    4: '查',
+    5: '锁',
+}
+
 export const fromIcons = {
         1:require('@/assets/icons/icon-ai.png'),
         2:require('@/assets/icons/icon-mt.png'),

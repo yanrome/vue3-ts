@@ -35,7 +35,10 @@
     <a-divider/>
     <h3>押金：{{orderRoomMsg?.deposit}}</h3>
     <div class="z-right">
-        <handle :list="list" :orderRoomMsg="orderRoomMsg"></handle>
+        <handle :list="list"
+                :orderRoomMsg="orderRoomMsg"
+                :fun="getBusinessDetails"
+        ></handle>
     </div>
 </template>
 
@@ -49,6 +52,8 @@
     import {toRefs} from "@vueuse/core";
     import {point} from '@/utils/common'
     import {getBusinessRoomScaleDiscountInfo} from "@/api/system/hotel/room";
+    import store from "@/store";
+    import {OrderActions} from "@/store/modules/order/actions";
 
     export default defineComponent({
         name: "order-msg",
@@ -72,6 +77,11 @@
                 })
             })
 
+            //获取订单详情
+            const getBusinessDetails = async (params = {}) => {
+                await store.dispatch(OrderActions.getOrderRoomMsg,params)
+            }
+
 
             watch(() => props.orderRoomMsg, (val) => {
                 if(val){
@@ -82,6 +92,7 @@
             },{deep:true})
             return{
                 ...toRefs(state),
+                getBusinessDetails,
                 point,
                 formatDate,
                 toObj

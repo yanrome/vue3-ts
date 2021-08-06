@@ -61,7 +61,7 @@
 
 <script lang="ts">
     import {defineComponent, ref, reactive, toRefs, watch} from 'vue'
-    import {Modal, Tabs, Form, DatePicker, InputNumber, Radio} from "ant-design-vue";
+    import {Modal, Tabs, Form, DatePicker, InputNumber, Radio, message} from "ant-design-vue";
     import {postBusinessRoomScaleStateBatch,postBusinessRoomPriceAddAndEdit} from "@/api/system/hotel/room";
 
     export default defineComponent({
@@ -131,7 +131,9 @@
                     stu = 'state/batch/add'
                 }
                 params = Object.assign(params, time)
-                const {ret} = await postBusinessRoomScaleStateBatch(params, stu)
+                const {data,ret} = await postBusinessRoomScaleStateBatch(params, stu)
+                 message.info(data)
+                state.visible = false
             }
 
             //日历房价修改
@@ -166,7 +168,9 @@
                     stu = 'batch/add'
                 }
                 params = Object.assign(params, time)
-                const {ret} = await postBusinessRoomPriceAddAndEdit(params, stu)
+                const {data,ret} = await postBusinessRoomPriceAddAndEdit(params, stu)
+                 message.info(data)
+                state.visible = false
             }
 
             watch(() => state.time, (val) => {

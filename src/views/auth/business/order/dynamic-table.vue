@@ -41,9 +41,10 @@
                         </div>
                         <div class="u-aim-item u-aim-group-item z-text-center">
                             <div class="z-text-center">
-                                <handle :orderRoomMsg="item"  :list="buttonList.filter(list=>{
-                                    return list.table &&  list.table.includes(item.status)
-                                })"></handle>
+                                <handle :orderRoomMsg="item"
+                                        :list="buttonList.filter(list=>{return list.table &&  list.table.includes(item.status)})"
+                                        :fun="refreshTableData"
+                                ></handle>
                             </div>
                             <div class="u-aim-more">
                                 <a-button class="u-aim-more-btn u-aim-before" @click="navDetails(item.id)" type="link">

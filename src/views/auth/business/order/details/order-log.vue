@@ -35,7 +35,7 @@
                 state.logMsg = data.map(item=>{
                     item.title = orderTypeArray[item.orderOperType]
                     return item
-                })
+                }).reverse()
             }
             getOrderLog()
 

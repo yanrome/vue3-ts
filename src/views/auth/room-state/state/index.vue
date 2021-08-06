@@ -8,7 +8,7 @@
                         :style="'background:' + item.color">
                     <p>{{item.roomSn}}</p>
                     <p style="font-size: 12px">{{item.roomScale.scaleName}}</p>
-                    <p class="s-card-p" :style="'color:' + item.color">夜</p>
+                    <p class="s-card-p" :style="'color:' + item.color">{{item.txt}}</p>
                 </a-card>
             </div>
 
@@ -22,7 +22,7 @@
     import {useStore} from "@/store";
     import searchGroup from './search-group.vue'
     import {getBusinessRoomByHotel} from '@/api/system/hotel/room'
-    import {statusColor} from "@/utils/dict";
+    import {statusColor,statusTxt} from "@/utils/dict";
 
     export default defineComponent({
         name: "index",
@@ -47,6 +47,7 @@
                 const floor = {};
                 data.forEach(item=>{
                     item.color = statusColor[item.status]
+                    item.txt = statusTxt[item.status]
                     floor[item.floor] !== undefined ? floor[item.floor].push(item) : floor[item.floor] = [item]
                 })
                 console.log('floor =====',floor)

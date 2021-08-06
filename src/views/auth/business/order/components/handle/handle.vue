@@ -8,7 +8,7 @@
                         :key="index"
                         cancel-text="取消操作"
                         ok-text="确认"
-                        @confirm="btn.callBackFun(orderRoomMsg)"
+                        @confirm="btn.callBackFun(orderRoomMsg,fun)"
                 >
                     <template #title> {{btn.action.title}}？ </template>
                     <a-button class="m-btn"
@@ -19,7 +19,7 @@
             </template>
             <template v-else>
                 <a-button class="m-btn"
-                          @click="btn.callBackFun(orderRoomMsg)"
+                          @click="btn.callBackFun(orderRoomMsg,fun)"
                           :type="btn.type">
                     {{btn.title}}
                 </a-button>
@@ -50,7 +50,8 @@
             list: Array,
             orderRoomMsg:{
                 type:Object
-            }
+            },
+            fun:Function
         },
         emits:['callback'],
         setup(props,{emit}) {

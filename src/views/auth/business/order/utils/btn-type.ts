@@ -26,14 +26,12 @@ export const buttonList: buttonType[] = [
         author: '1,2,3,4',
         table:"1,2",
         fun:(item)=>common['btnCheckIn'](item) && common['btnPayMent'](item),
-        callBackFun:(order => {
+        callBackFun:((order,fun) => {
             store.commit(OrderMutationType.setOrderRoomId,order.id)
             useCreateModal(checkInModal,{
                 title:'办理入住',
                 orderRoomMsg:order,
-                callback:async ()=>{
-                    await store.dispatch(OrderActions.getOrderRoomMsg)
-                }
+                callback: ()=>fun()
             })
         })
     },
@@ -44,14 +42,11 @@ export const buttonList: buttonType[] = [
         author: '1,2',
         table:"1,2",
         fun:(item)=>common['btnCheckOut'](item),
-        callBackFun:(order => {
-            store.commit(OrderMutationType.setOrderRoomId,order.id)
+        callBackFun:((order,fun) => {
             useCreateModal(checkoutModal,{
                 title:'办理退房',
                 orderRoomMsg:order,
-                callback:async ()=>{
-                    await store.dispatch(OrderActions.getOrderRoomMsg)
-                }
+                callback: ()=>fun()
             })
         })
     },
@@ -61,14 +56,11 @@ export const buttonList: buttonType[] = [
         name: 'exchange',
         author: '1,2,3,4',
         fun:(item)=>common['btnCheckOut'](item),
-        callBackFun:(order => {
-            store.commit(OrderMutationType.setOrderRoomId,order.id)
+        callBackFun:((order,fun) => {
             useCreateModal(exchangeModal,{
                 title:'换房',
                 orderRoomMsg:order,
-                callback:async ()=>{
-                    await store.dispatch(OrderActions.getOrderRoomMsg)
-                }
+                callback:async ()=>fun()
             })
         })
     },

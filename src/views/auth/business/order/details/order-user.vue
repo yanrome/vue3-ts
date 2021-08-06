@@ -1,6 +1,6 @@
 <template>
 <div>
-    <dynamic-table  ref="tableRef"
+    <dynamic-table  ref="tableRefUser"
                     :columns="userColumns"
                     :bordered="false"
                     :pageOption="pageOption"
@@ -33,7 +33,7 @@
             }
         },
         setup(props) {
-            const tableRef = ref<any>(null)
+            const tableRefUser = ref<any>(null)
             // const uRoute = useRoute()
             const state = reactive({
                 orderUser: {},
@@ -43,14 +43,14 @@
             })
 
             //获取用户列表
-            const getOrderRoomUser = async () => {
-                const params = {
-                    orderRoomId: props.id
-                }
-
-                const {data} = await getBusinessOrderRoomUser(params)
-                state.orderUser = data
-            }
+            // const getOrderRoomUser = async () => {
+            //     const params = {
+            //         orderRoomId: props.id
+            //     }
+            //
+            //     const {data} = await getBusinessOrderRoomUser(params)
+            //     state.orderUser = data
+            // }
 
             //添加入住人
             const addItem = () => {
@@ -61,11 +61,10 @@
                         console.log(modelRef)
                         const params = {
                             orderRoomId:props.id,
-                            roomUser:[modelRef]
+                            roomUser: JSON.stringify( [modelRef])
                         }
-                        debugger
                        const {data} = await  postUserAdd(params)
-                        tableRef.value.refreshTableData()
+                        tableRefUser.value.refreshTableData()
                     }
                 })
 
@@ -73,7 +72,7 @@
             // getOrderRoomUser()
             return {
                 ...toRefs(state),
-                getOrderRoomUser,
+                // getOrderRoomUser,
                 addItem,
                 getBusinessOrderRoomUser,
                 userColumns,

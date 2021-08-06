@@ -18,7 +18,7 @@
                     <a-row  type="flex" align="middle">
                         <a-col :span="6">检索条件:</a-col>
                         <a-col :span="18">
-                            <a-input v-model="pageOption.searchValue" placeholder="请输入"></a-input>
+                            <a-input v-model:value="pageOption.searchValue" placeholder="请输入"></a-input>
                         </a-col>
                     </a-row>
                 </a-col>
@@ -30,7 +30,7 @@
 
     </a-card>
     <a-card class="w100 mtp8 g-card">
-        <dynamic-table ref="tableRef"
+        <order-dynamic-table ref="tableRef"
                        :listType="'list'"
                        :orderSource="orderSource"
                        @change="callbackMore"
@@ -40,7 +40,7 @@
                        rowKey="id">
             <template v-slot:title>
             </template>
-        </dynamic-table>
+        </order-dynamic-table>
         <!--        <order-list></order-list>-->
     </a-card>
 
@@ -48,7 +48,7 @@
 <script lang="ts">
     import {defineComponent, reactive, ref, toRefs, watch} from 'vue';
     import {columns} from "./utils/columns";
-    import DynamicTable from './dynamic-table.vue'
+    import OrderDynamicTable from './dynamic-table.vue'
     import {OrderList} from '@/components/order-list'
     import {postBusinessOrderRoomList} from '@/api/system/order'
     import store, {useStore} from "@/store";
@@ -67,7 +67,7 @@
             [Col.name]:Col,
             [Input.name]:Input,
             [Button.name]:Button,
-            DynamicTable,
+            OrderDynamicTable,
             OrderList,
 
         },
@@ -118,6 +118,7 @@
             },{deep:true});
 
             watch(() => store.getters.orderRoomMsg, (val,oldValue) => {
+                if(oldValue && val)
                     emitSon()
             },{deep:true})
 

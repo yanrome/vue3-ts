@@ -80,8 +80,9 @@
                                     @confirm="actionEvent(slotProps.record, action.func, 'del')"
                             >
                                 <template #title> 您确定要删除吗？ </template>
+                                <!-- v-permission="action.permission"                        -->
+
                                 <a-button
-                                        v-permission="action.permission"
                                         v-bind="{ ...buttonProps, ...action.props }"
                                 >
                                     {{ action.text }}
@@ -174,7 +175,7 @@
                     .getListFunc(params)
                     .finally(() => (state.loading = false))
                 Object.assign(pageOptions.value, {
-                    total: ~~total
+                    total: ~~total || 10
                 })
                 state.data = data
                 // 是否可以拖拽行
