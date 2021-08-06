@@ -57,7 +57,7 @@ export const columns: TableColumn[] = [ // 字典表格
                 },
                 func:({record}, refreshTableData)=>{
                     router.push({ 
-                        name: '/system/list',
+                        name: '/dict/list',
                         query: {
                             id:'111'
                         } 

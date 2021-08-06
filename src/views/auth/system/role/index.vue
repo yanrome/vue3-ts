@@ -4,13 +4,13 @@
             :label-col="labelCol"
             :wrapper-col="wrapperCol">
       <div class="flex">
-        <a-form-item label="菜单名称"
+        <a-form-item label="角色名称"
                      class="w50">
-          <a-input v-model:value="formState.name" />
+          <a-input v-model:value="formState.roleName" />
         </a-form-item>
-        <a-form-item label="菜单状态"
+        <a-form-item label="角色状态"
                      class="w50 mr20">
-          <a-select v-model:value="formState.name"
+          <a-select v-model:value="formState.status"
                     placeholder="please select your zone">
             <a-select-option value="shanghai">Zone one</a-select-option>
             <a-select-option value="beijing">Zone two</a-select-option>
@@ -99,7 +99,6 @@ export default defineComponent({
       desc: ''
     })
 
-
     const tableRef = ref<any>(null)
 
     const state = reactive({
@@ -127,10 +126,12 @@ export default defineComponent({
     }
     // 添加角色
     const addItem = () => {
+      console.log('添加用户modelRef-1')
       useFormModal({
         title: '添加用户',
         formSchema: getFormSchema(),
         handleOk: async (modelRef, state) => {
+          console.log('添加用户modelRef', modelRef)
           const { description, title, accessIdsList } = modelRef
 
           const params = {
@@ -138,7 +139,7 @@ export default defineComponent({
             title,
             accessIdsList: accessIdsList.toString()
           }
-          console.log('添加用户',params)
+          console.log('添加用户', params)
           await adminRoleAdd(params)
           tableRef.value.refreshTableData()
         }

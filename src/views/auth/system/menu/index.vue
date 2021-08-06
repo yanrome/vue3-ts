@@ -6,11 +6,11 @@
       <div class="flex">
         <a-form-item label="菜单名称"
                      class="w50">
-          <a-input v-model:value="formState.name" />
+          <a-input v-model:value="formState.menuName" />
         </a-form-item>
         <a-form-item label="菜单状态"
                      class="w50 mr20">
-          <a-select v-model:value="formState.name"
+          <a-select v-model:value="formState.visible"
                     placeholder="please select your zone">
             <a-select-option value="shanghai">Zone one</a-select-option>
             <a-select-option value="beijing">Zone two</a-select-option>
@@ -70,11 +70,16 @@ import {
   UnwrapRef,
   ref
 } from 'vue'
-import { adminMenu, adminMenuAdd, adminMenuRemove } from '@/api/system/menu/index'
+import {
+  adminMenu,
+  adminMenuAdd,
+  adminMenuRemove
+} from '@/api/system/menu/index'
 import { DynamicTable } from '@/components/dynamic-table'
 import { columns } from './columns'
 import { useFormModal } from '@/hooks/useFormModal'
 import { getFormSchema } from './form-schema'
+import { getSystemDictDataByType } from '@/api/system/user/index'
 import AddModal from './add-modal.vue'
 import { useCreateModal } from '@/hooks'
 import { keyBy } from 'lodash'
@@ -93,8 +98,11 @@ export default defineComponent({
   components: {
     DynamicTable
   },
+  created(){
+    
+  },
   setup() {
-    console.log('jiehifiwhoh',columns)
+    console.log('jiehifiwhoh', columns)
     const formState: UnwrapRef<FormState> = reactive({
       name: '',
       region: undefined,
@@ -130,10 +138,15 @@ export default defineComponent({
     const isDisabled = computed(
       () => state.rowSelection.selectedRowKeys.length == 0
     )
+    // const aaa = () => {
+    //   const abc = getSystemDictDataByType({ dictType: 'sys_menu_type' })
+    //   console.log('abc', abc)
+    // }
 
     return {
       ...toRefs(state),
       columns,
+      // aaa,
       tableRef,
       adminMenu,
       isDisabled,

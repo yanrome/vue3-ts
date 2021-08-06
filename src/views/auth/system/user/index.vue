@@ -1,7 +1,11 @@
 <template>
-  <div style="display:flex;">
-    <div style="border:1px solid red;">
-     <access-tree></access-tree>
+  <div style="display: flex;">
+    <div class="flex">
+      <!-- <access-tree>11</access-tree> -->
+      <div v-if="show">111</div>
+      <div class="right_btn"
+           @click='show=!show'>></div>
+
     </div>
     <div>
       <a-card class="g-search-card mb20">
@@ -11,17 +15,17 @@
           <div class="flex">
             <a-form-item label="名称"
                          class="w50 mr20">
-              <a-input v-model:value="formState.name" />
+              <a-input v-model:value="formState.userName" />
             </a-form-item>
             <a-form-item label="手机号码"
                          class="w50">
-              <a-input v-model:value="formState.name" />
+              <a-input v-model:value="formState.phone" />
             </a-form-item>
           </div>
           <div class="flex">
             <a-form-item label="用户状态"
                          class="w50 mr20">
-              <a-select v-model:value="formState.region"
+              <a-select v-model:value="formState.isTest"
                         placeholder="please select your zone">
                 <a-select-option value="shanghai">Zone one</a-select-option>
                 <a-select-option value="beijing">Zone two</a-select-option>
@@ -110,7 +114,7 @@ export default defineComponent({
     AccessTree
   },
   setup() {
-
+    const show = ref('false')
     const formState: UnwrapRef<FormState> = reactive({
       name: '',
       region: undefined,
@@ -179,6 +183,7 @@ export default defineComponent({
       formState,
       // isDisabled
       addItem,
+      show
       // deleteItems
     }
   }
@@ -188,6 +193,12 @@ export default defineComponent({
 .flex {
   display: flex;
   align-items: center;
+}
+.right_btn {
+  display: flex;
+  align-items: center;
+  width: 12px;
+  background: #999;
 }
 .w50 {
   width: 50%;

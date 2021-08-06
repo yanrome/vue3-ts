@@ -6,7 +6,7 @@
       <div class="flex">
         <a-form-item label="部门名称"
                      class="w50 mr20">
-          <a-input v-model:value="formState.name" />
+          <a-input v-model:value="formState.deptName" />
         </a-form-item>
         <a-form-item label="创建时间"
                      class="w50 mr20">

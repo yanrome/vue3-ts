@@ -1,25 +1,36 @@
 <template>
-  <a-form ref="schemaFormRef"
+  <a-form ref="schemaFormRef" 
           v-bind="formItemLayout">
-    <template v-for="(formItem, index) in formSchema.formItem.filter(item => !item.hidden)"
-              :key="formItem.field">
+    <template
+      v-for="(formItem, index) in formSchema.formItem.filter((item) => !item.hidden)"
+      :key="formItem.field"
+    >
       <a-spin :spinning="formItem.loading || false">
-        <a-form-item :help="formItem.help"
-                     :extra="formItem.extra"
-                     :label="formItem.label"
-                     :name="formItem.field"
-                     v-bind="{...formItem.props,...validateInfos[formItem.field]}">
-          <!-- v-model:value="modelRef[formItem.field]" -->
-          <component v-model:value="modelRef[formItem.field]"
-                     :form-item="formItem"
-                     v-on="{...getTriggerEvent(formItem)}"
-                     :is="getComponent(formItem.type)" />
+        <a-form-item
+          :help="formItem.help"
+          :extra="formItem.extra"
+          :label="formItem.label"
+          :name="formItem.field"
+          v-bind="{ ...formItem.props, ...validateInfos[formItem.field] }"
+          :type="undefined"
+        >
+          <component
+            :is="getComponent(formItem.type)"
+            v-model:value="modelRef[formItem.field]"
+            :form-item="formItem"
+            v-on="{ ...getTriggerEvent(formItem) }"
+          />
         </a-form-item>
       </a-spin>
     </template>
     <template v-if="$slots['operate-button']">
-      <a-form-item :wrapper-col="{ span: formItemLayout.wrapperCol.span, offset: formItemLayout.labelCol.span,  }">
-        <slot name="operate-button" />
+      <a-form-item
+        :wrapper-col="{
+          span: formItemLayout.wrapperCol.span,
+          offset: formItemLayout.labelCol.span
+        }"
+      >
+        <slot name="operate-button"></slot>
       </a-form-item>
     </template>
   </a-form>
@@ -37,7 +48,6 @@ import {
   PropType
 } from 'vue'
 import { Form, Spin } from 'ant-design-vue'
-// import { useForm } from '@ant-design-vue/use'
 import { isString, isFunction, isAsyncFunction } from '@/utils/is'
 import components from './components'
 import { FormItem, FormSchema } from '@/types/schema'
@@ -45,7 +55,7 @@ import { FormItem, FormSchema } from '@/types/schema'
 const useForm = Form.useForm
 
 export default defineComponent({
-  name: 'dynamic-form',
+  name: 'DynamicForm',
   components: {
     ...components,
     [Spin.name]: Spin,
@@ -64,9 +74,9 @@ export default defineComponent({
       default: () => ({})
     }
   },
-  setup(props, ctx) {
+  setup(props) {
     // a-form
-    const schemaFormRef = ref<any>(null)
+    const schemaFormRef = ref<InstanceType<typeof Form>>()!
     // 表单实例
     const formInstance = getCurrentInstance()
 
@@ -87,9 +97,7 @@ export default defineComponent({
         //     fn(...rest, formInstance)
         //   }
         // })
-        // console.log('currentValue.value', currentValue.value)
         previousValue[currentValue.field] = currentValue.value
-        // console.log('previousValue', previousValue)
         return previousValue
       }, {})
     )
@@ -99,7 +107,7 @@ export default defineComponent({
     // 异步设置默认数据
     props.formSchema.formItem.forEach(async (item: FormItem) => {
       // 是否需要loading
-      if (item?.hasOwnProperty('loading')) {
+      if (Object.prototype.hasOwnProperty.call(item, 'loading')) {
         item.loading = true
       }
       // 异步选项
@@ -107,10 +115,7 @@ export default defineComponent({
         item.options = await item
           .asyncOptions(item, formInstance)
           .finally(() => (item.loading = false))
-      } else if (
-        isFunction(item.asyncValue) ||
-        isAsyncFunction(item.asyncValue)
-      ) {
+      } else if (isFunction(item.asyncValue) || isAsyncFunction(item.asyncValue)) {
         // 异步默认值
         modelRef[item.field] = await item
           .asyncValue(item, formInstance)
@@ -123,8 +128,7 @@ export default defineComponent({
       props.formSchema.formItem
         .filter((item) => !item.hidden)
         .reduce((previousValue, currentValue) => {
-          currentValue.rules &&
-            (previousValue[currentValue.field] = currentValue.rules)
+          currentValue.rules && (previousValue[currentValue.field] = currentValue.rules)
           return previousValue
         }, {})
     )
@@ -141,10 +145,7 @@ export default defineComponent({
     // }))
     // watch(props.formSchema.watchKeys.map(item => () => modelRef[item]), eval(props.formSchema.watchCallback))
 
-    const { resetFields, validate, validateInfos, validateField } = useForm(
-      modelRef,
-      rulesRef
-    )
+    const { resetFields, validate, validateInfos, validateField } = useForm(modelRef, rulesRef)
 
     const preset = [
       'input',
@@ -187,16 +188,10 @@ export default defineComponent({
           if (Array.isArray(ruleItem.trigger)) {
             ruleItem.trigger.forEach(
               (triggerItem) =>
-                (events[triggerItem] = setTriggerEvent({
-                  field,
-                  trigger: triggerItem
-                }))
+                (events[triggerItem] = setTriggerEvent({ field, trigger: triggerItem }))
             )
           } else if (isString(ruleItem.trigger)) {
-            events[ruleItem.trigger] = setTriggerEvent({
-              field,
-              trigger: ruleItem.trigger
-            })
+            events[ruleItem.trigger] = setTriggerEvent({ field, trigger: ruleItem.trigger })
           }
         })
       } else if (formItem.rules?.trigger) {
@@ -206,10 +201,7 @@ export default defineComponent({
         if (Array.isArray(trigger)) {
           trigger.forEach(
             (triggerItem) =>
-              (events[triggerItem] = setTriggerEvent({
-                field,
-                trigger: triggerItem
-              }))
+              (events[triggerItem] = setTriggerEvent({ field, trigger: triggerItem }))
           )
         } else if (isString(trigger)) {
           events[trigger] = setTriggerEvent({ field, trigger: trigger })
