@@ -61,20 +61,25 @@ export const columns: TableColumn[] = [
                 props: {
                     type: 'warning' // 按钮类型
                 },
-                func: ({ record }, refreshTableData) =>useFormModal({
-                    title: '编辑菜单',
-                    fields: record,
-                    formSchema: getFormSchema(),
-                    handleOk: async (modelRef, state) => {
-                        const {description, title, accessIdsList} = modelRef
-
-                        const params = {
-                            description, title,
-                            accessIdsList: accessIdsList.toString()
+                func: ({ record }, refreshTableData) =>{
+                    
+                   return useFormModal({
+                        title: '编辑菜单',
+                        fields: {menuScene:record.menuScene,menuType:record.menuType,menuName:record.menuName},
+                        formSchema: getFormSchema(),
+                        handleOk: async (modelRef, state) => {
+                            
+                            const {menuScene, menuType, menuName} = modelRef
+    
+                            const params = {
+                                menuScene, menuType,
+                                menuName
+                            }
+                            debugger
+                            return await adminMenuEdit(params).then(() => refreshTableData())
                         }
-                        return await adminMenuEdit(params).then(() => refreshTableData())
-                    }
-                })
+                    })
+                } 
             },
             {
                 type: 'button', // 控制类型，默认为a,可选： select | button | text

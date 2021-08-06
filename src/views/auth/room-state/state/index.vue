@@ -2,7 +2,7 @@
     <search-group @callback="callback"></search-group>
     <a-card class="g-hotel-room z-mt18  ">
         <div class="s-card-group">
-            <div class="z-mt10" v-for="(floor,key) in hotelRoom">
+            <div class="z-mt10" v-for="(floor,key) in hotelRoom" :key="key">
                 <div>{{key}} F</div>
                 <a-card class="s-card" :bodyStyle="{padding:'6px'}" v-for="item in floor" :key="item.id"
                         :style="'background:' + item.color">
@@ -54,25 +54,6 @@
                 state.hotelRoom = floor
             }
             getHotelRoom()
-
-    const store = useStore()
-    const getHotelRoom = async (param: object = {}) => {
-      const params = {
-        hotelId: store.getters.hotelId
-      }
-      param = Object.assign(param, params)
-      const { data } = await getBusinessRoomByHotel(param)
-      const floor = {}
-      data.forEach((item) => {
-        item.color = statusColor[item.status]
-        floor[item.floor] !== undefined
-          ? floor[item.floor].push(item)
-          : (floor[item.floor] = [item])
-      })
-      console.log('floor =====', floor)
-      state.hotelRoom = floor
-    }
-    getHotelRoom()
 
     const callback = (data) => {
       let params = JSON.parse(JSON.stringify(data))

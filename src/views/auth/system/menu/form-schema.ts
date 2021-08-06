@@ -4,6 +4,29 @@ import {FormSchema} from "@/types/schema";
 import { getSystemDictDataByType } from '@/api/system/user/index'
 import { adminUserAdd } from "@/api/system/user/index";
 
+const  treeData = [
+    {
+      title: 'parent 1',
+      key: '0-0',
+      children: [
+        {
+          title: 'parent 1-0',
+          key: '0-0-0',
+          disabled: true,
+          children: [
+            { title: 'leaf', key: '0-0-0-0', disableCheckbox: true },
+            { title: 'leaf', key: '0-0-0-1' },
+          ],
+        },
+        {
+          title: 'parent 1-1',
+          key: '0-0-1',
+          children: [{ key: '0-0-1-0', slots: { title: 'title0010' } }],
+        },
+      ],
+    },
+  ];
+
 // 与vue2的里面的data一样，函数返回新对象防止多处共用同一对象,造成数据混乱
 export const getFormSchema = (): FormSchema => ({
     style: {
@@ -19,9 +42,10 @@ export const getFormSchema = (): FormSchema => ({
     },
     formItem: [
         {
-            type: "input",
+            type: "tree",
             label: "上级菜单",
             field: "menuTypes",
+            treeOptions:treeData,
             value: '',
             props: {
                 placeholder: "请输入上级菜单"

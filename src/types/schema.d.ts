@@ -14,7 +14,7 @@ type Rule = ValidationRule | {
 }
 
 interface FormItem extends Partial<typeof FormItemProps>{
-    type?: 'input' | 'textarea' | 'select' | 'radio' | 'checkbox' | 'input-number' | 'inputRange' | 'switch' | VNode;
+    type?: 'input' | 'textarea' | 'select' | 'radio' | 'checkbox' | 'input-number' | 'inputRange' | 'switch' | 'tree' | VNode;
     label?: string; // 表单标签
     field: string; // 表单字段
     value: any; // 表单默认值
@@ -27,6 +27,7 @@ interface FormItem extends Partial<typeof FormItemProps>{
     asyncOptions?: (formItem: FormItem, formInstance: ComponentInternalInstance | null) => Promise<any>; // 异步选项的数据
     hidden?: boolean; // 是否隐藏表单项
     placeholder?: string;
+    treeOptions?:any
 }
 
 interface FormSchema extends Partial<typeof FormProps>{
