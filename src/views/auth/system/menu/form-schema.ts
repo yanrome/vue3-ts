@@ -1,8 +1,9 @@
 import {createVNode} from 'vue'
-import AccessTree from './components/access-tree.vue'
+import AccessTree from "./components/access-tree.vue"
 import {FormSchema} from "@/types/schema";
 import { getSystemDictDataByType } from '@/api/system/user/index'
 import { adminUserAdd } from "@/api/system/user/index";
+import {adminMenu} from "@/api/system/menu/index";
 
 const  treeData = [
     {
@@ -41,21 +42,33 @@ export const getFormSchema = (): FormSchema => ({
         }
     },
     formItem: [
+        // {
+        //     type: "tree",
+        //     label: "上级菜单",
+        //     field: "menuTypes",
+        //     treeOptions:treeData,
+        //     value: '',
+        //     props: {
+        //         placeholder: "请输入上级菜单"
+        //     },
+        //     rules: [
+        //         {
+        //             required: true,
+        //             message: "上级菜单不能为空"
+        //         }
+        //     ]
+        // },
         {
-            type: "tree",
-            label: "上级菜单",
-            field: "menuTypes",
-            treeOptions:treeData,
-            value: '',
-            props: {
-                placeholder: "请输入上级菜单"
-            },
-            rules: [
-                {
-                    required: true,
-                    message: "上级菜单不能为空"
-                }
-            ]
+            type: createVNode(AccessTree),
+            label: '上级菜单',
+            field: 'accessIdsList',
+            value: [],
+            asyncValue: async (currentValue, formInstance) => {
+                // 获取角色列表
+                // const data = await adminMenu({})
+                // // 设置角色复选框选项
+                // return data.map((item) => item.accessId)
+            }
         },
         {
             type: "radio",
