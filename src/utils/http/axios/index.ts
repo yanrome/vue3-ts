@@ -110,8 +110,8 @@ const transform: AxiosTransform = {
     beforeRequestHook: (config, options) => {
         const {apiUrl, joinPrefix, joinParamsToUrl, formatDate, isParseToJson} = options;
 
-        config.url = isDev ? `/api${config.url}` : `${apiUrl || ''}${config.url}`;
-
+        config.url = isDev ? `/api${config.url}` :  `${process.env.VUE_APP_API_URL1}${config.url}` // `${apiUrl || ''}${config.url}`;
+        console.log('process',process.env)
         if (config.method === RequestEnum.GET) {
             const now = new Date().getTime();
             if (!isString(config.params)) {
@@ -235,7 +235,7 @@ const Axios = new VAxios({
         // 接口地址
         // apiUrl: process.env.VUE_APP_API_URL1,
     },
-    withCredentials: false
+    withCredentials: true
 });
 
 export default Axios;

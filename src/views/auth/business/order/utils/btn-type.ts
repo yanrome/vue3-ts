@@ -88,6 +88,10 @@ export const buttonList: buttonType[] = [
         fun:(item)=>common['btnCheckIn'](item),
         callBackFun:( item=>{
             console.log('popconfirm',item)
+            if(!item.order.phone){
+                message.error('没有手机号，发送失败')
+                return
+            }
              postSendMessageAgain({orderRoomId:item.id,roomUser:item.order.roomUser,phone:item.order.phone}).then(res=>{
                 res.ret === 1 && message.info('已重新发送短信')
              })
@@ -105,7 +109,8 @@ export const buttonList: buttonType[] = [
         fun:(item)=>common['btnCancelOrder'](item),
         callBackFun:(async item=>{
             console.log('popconfirm',item)
-           await postOrderRoomCancel({orderId:item.orderId,orderRoomId:item.id})
+          const {ret,data,msg} = await postOrderRoomCancel({orderId:item.orderId,orderRoomId:item.id})
+            ret === 1 && message.info(msg)
             await store.dispatch(OrderActions.getOrderRoomMsg)
         }),
         action:{

@@ -13,6 +13,7 @@ const IS_DEV = ["development"].includes(process.env.NODE_ENV);
 
 module.exports = {
   lintOnSave: false,
+  outputDir:'pms',
   // publicPath: isDev ? '' : querystring.unescape('<%=request.getContextPath()%>'),
   publicPath: process.env.BASE_URL,
   // filenameHashing: false,
@@ -48,7 +49,7 @@ module.exports = {
     config
       .plugin("html")
       .tap(args => {
-        args[0].title = "vue3-antd-admin管理系统";
+        args[0].title = "哎哟有房后台管理系统";
         return args;
       });
 
@@ -151,3 +152,5 @@ module.exports = {
     }
   }
 };
+
+
