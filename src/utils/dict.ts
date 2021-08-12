@@ -12,6 +12,31 @@ export const businessOrderroomStatus = {
     7:'已完成'
 }
 
+export const sysUserSource = {
+    0:{
+        txt:'用户注册',
+        color:'pink'
+    },
+    1:{
+        txt:'微信小程序',
+        color:'orange'
+    },
+    2:{
+        txt:'微信公众号',
+        color:'green'
+    },
+    3:{
+        txt:'支付宝小程序',
+        color:'blue'
+    },
+    4:{
+        txt:'抖音小程序',
+        color:'#000'
+    }
+}
+
+
+
 
 export const statusColor = {
     1: '#6CC178',

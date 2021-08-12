@@ -1,6 +1,7 @@
 import {App} from 'vue'
 
 import {SvgIcon} from '@/components/svg-icon'
+import { Tag } from 'ant-design-vue'
 
 /**
  * 全局注册自定义组件
@@ -8,4 +9,6 @@ import {SvgIcon} from '@/components/svg-icon'
  */
 export function setupCustomComponents(app: App) {
     app.component(SvgIcon.name, SvgIcon)
+    app.component(Tag.name, Tag)
 }
+

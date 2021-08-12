@@ -20,5 +20,6 @@ export declare interface TableColumn extends ColumnProps {
     };
     slotsType?: 'format' | 'link' | 'component';
     slotsFunc?: (val) => any;
+    asyncFunc?: (val) => Promise;
     actions?: ActionOptions[];
 }

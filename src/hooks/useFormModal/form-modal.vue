@@ -63,7 +63,6 @@ export default defineComponent({
     )
 
     const onOk = () => {
-      console.log('111111111111111', state.dynamicValidateForm.formItem)
       state.confirmLoading = true
       dynamicForm.value
         .validate()

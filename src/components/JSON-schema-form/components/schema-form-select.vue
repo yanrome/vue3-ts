@@ -1,11 +1,11 @@
 <template>
   <a-select v-model:value="modelValue"
-            v-on="formItem.eventObject"
-            v-bind="formItem.props">
+            v-bind="formItem.props"
+            v-on="formItem.eventObject">
     <template v-for="option in formItem.options"
-              :key="option.dictValue">
-      <Option :value="option.dictValue">
-        {{ option.dictLabel }}
+              :key="option.value">
+      <Option :value="option.value">
+        {{ option.label }}
       </Option>
     </template>
   </a-select>
@@ -14,10 +14,8 @@
 import { defineComponent, PropType, computed } from 'vue'
 import { Select } from 'ant-design-vue'
 import { FormItem } from '@/types/schema'
-
 export default defineComponent({
-  name: 'schema-form-select',
-  emits: ['update:value'],
+  name: 'SchemaFormSelect',
   components: {
     [Select.name]: Select,
     [Select.Option.name]: Select.Option
@@ -30,13 +28,13 @@ export default defineComponent({
     },
     value: undefined as any // 表单项值
   },
+  emits: ['update:value'],
   setup(props, { attrs, emit }) {
-    console.log('props', props.formItem.options)
+    console.log('props-value', props)
     const modelValue = computed({
-      get: () => props.value,
-      set: (val) => emit('update:value', val)
+    get: () => props.value,
+    set: (val) => emit('update:value', val)
     })
-
     return {
       modelValue
     }

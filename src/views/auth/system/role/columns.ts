@@ -1,8 +1,8 @@
-import {adminRoleRemove, adminRoleEdit} from "@/api/system/role";
-import {formatDate} from '@/utils/common'
-import {TableColumn} from "@/types/tableColumn";
-import {useFormModal} from "@/hooks/useFormModal";
-import {getFormSchema} from "./form-schema";
+import { adminRoleRemove, adminRoleEdit } from "@/api/system/role";
+import { formatDate } from '@/utils/common'
+import { TableColumn } from "@/types/tableColumn";
+import { useFormModal } from "@/hooks/useFormModal";
+import { getFormSchema } from "./form-schema";
 
 export const columns: TableColumn[] = [ // 角色列表
     {
@@ -36,10 +36,6 @@ export const columns: TableColumn[] = [ // 角色列表
             {
                 type: 'button', // 控制类型，默认为a,可选： select | button | text
                 text: '编辑',
-                // permission: { // 权限
-                //     action: 'update',
-                //     effect: 'disabled'
-                // },
                 props: {
                     type: 'warning'
                 },
@@ -48,11 +44,9 @@ export const columns: TableColumn[] = [ // 角色列表
                     fields: record,
                     formSchema: getFormSchema(),
                     handleOk: async (modelRef, state) => {
-                        const {description, title, accessIdsList} = modelRef
-
+                        const {roleName, roleType,  name, orderNum, status, remark, id } = modelRef
                         const params = {
-                            description, title,
-                            accessIdsList: accessIdsList.toString()
+                            roleName, roleType,  name, orderNum, status, remark, id
                         }
                         return await adminRoleEdit(params).then(() => refreshTableData())
                     }

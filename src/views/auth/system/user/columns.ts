@@ -1,8 +1,13 @@
-import { adminUserEdit } from "@/api/system/user/index";
-import { formatDate } from '@/utils/common'
+import { adminUserEdit, adminUserRemove, adminUserRoleEdit } from "@/api/system/user/index";
 import { TableColumn } from "@/types/tableColumn";
 import { useFormModal } from "@/hooks/useFormModal";
 import { getFormSchema } from "./form-schema";
+import { getFormSchemaRole } from "./form-schema-role";
+import { getSystemDictDataByType } from '@/api/system/user/index'
+import tag from './components/tag.vue'
+import { createVNode, render, VNode} from 'vue'
+import { Tag } from "ant-design-vue";
+import { sysUserSource } from "@/utils/dict";
 
 export const columns: TableColumn[] = [ // 角色列表
     {
@@ -22,8 +27,29 @@ export const columns: TableColumn[] = [ // 角色列表
         dataIndex: 'nickName'
     },
     {
-        title: '用户来源',
-        dataIndex: 'isTest'
+        title: '用户来源11',
+        dataIndex: 'userSource',
+        slotsType:'component',
+        slots: {
+            customRender: 'userSource'
+        },
+        slotsFunc:  (record)=>{
+            return createVNode(Tag,{
+                color:sysUserSource[record.userSource].color
+            },sysUserSource[record.userSource].txt)
+            // const asyncFnc = async (record) =>{
+            //     let data = await userSourceData
+            //     // console.log(' getDictUserSource[record.userSource111]', data[record.userSource])
+            // }
+            // asyncFnc(record)
+        }
+        // slotsFunc: (val)=>{
+        //     console.log('=====================>val',val)
+        //     // const params = { dictType:'sys_user_sex' }
+        //     // const res = await getSystemDictDataByType (params)
+        //     // console.log('用户来源用户来源用户来源',res)
+        //     // return res.data
+        // }
     },
     {
         title: '手机',
@@ -46,42 +72,54 @@ export const columns: TableColumn[] = [ // 角色列表
         },
         actions: [
             {
-                type: 'popconfirm', // 控制类型，默认为a,可选： select | button | text
-                text: '删除',
-                permission: { // 权限
-                    action: 'delete',
-                    effect: 'disabled'
-                },
-                props: {
-                  type: 'danger'
-                },
-                // func: async ({record}, refreshTableData) => await delAdminRole(record.id).then(() => refreshTableData()),
-            },
-            {
-                type: 'button', // 控制类型，默认为a,可选： select | button | text
+                type: 'button', 
                 text: '编辑',
-                // permission: { // 权限
-                //     action: 'update',
-                //     effect: 'disabled'
-                // },
                 props: {
-                    type: 'warning'
+                  type: 'primary'
                 },
                 func: ({record}, refreshTableData) => useFormModal({
-                    title: '编辑角色',
+                    title: '编辑用户',
                     fields: record,
                     formSchema: getFormSchema(),
                     handleOk: async (modelRef, state) => {
-                        const {description, title, accessIdsList} = modelRef
-
+                        const {userName, deptName,  realName, email, phone, sex, status, id } = modelRef
                         const params = {
-                            description, title,
-                            accessIdsList: accessIdsList.toString()
+                            userName, deptName,  realName, email, phone, sex, status, id
                         }
-                        return await adminUserEdit(record.id, params).then(() => refreshTableData())
+                            await adminUserEdit(params)
+                            .then(_ => refreshTableData())
                     }
                 })
-            }
+            },
+            {
+                type: 'button', 
+                text: '角色',
+                props: {
+                  type: 'warning'
+                },
+                func: ({record}, refreshTableData) => useFormModal({
+                    title: '角色编辑',
+                    fields: record,
+                    formSchema: getFormSchemaRole(),
+                    handleOk: async (modelRef, state) => {
+                        let param = {
+                            roleNames:(modelRef.roles).toString()
+                        }
+                        await adminUserRoleEdit(modelRef.id,param)
+                        .then(() => refreshTableData())
+                    }
+                })
+            },
+            {
+                type: 'popconfirm', // 控制类型，默认为a,可选： select | button | text
+                text: '删除',
+                props: {
+                  type: 'danger'
+                },
+                func: async ({record}, refreshTableData) => 
+                    await adminUserRemove(record.id)
+                    .then(() => refreshTableData()),
+            },
         ]
     },
 ]

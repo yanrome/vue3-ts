@@ -26,7 +26,7 @@ export function getAdminUserAccess(id?: string | number) {
  * 获取部门列表
  * @param params
  */
-export function adminDept(params) {
+export function adminDept(params?: any) {
   return http.request({
     url: Api.adminDept,
     method: RequestEnum.GET,

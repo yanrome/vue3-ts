@@ -10,36 +10,31 @@
         </a-form-item>
         <a-form-item label="角色状态"
                      class="w50 mr20">
-          <a-select v-model:value="formState.status"
-                    placeholder="please select your zone">
-            <a-select-option value="shanghai">Zone one</a-select-option>
-            <a-select-option value="beijing">Zone two</a-select-option>
+          <a-select v-model:value="formState.status">
+            <a-select-option value="2">所有</a-select-option>
+            <a-select-option value="0">非测试</a-select-option>
+            <a-select-option value="1">测试</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item>
-          <a-button type="primary">
-            <template v-slot:title>
-              <SearchOutlined />
-            </template>
-            搜索
-          </a-button>
-        </a-form-item>
-        <a-form-item>
-          <a-button type="primary">
-            <template v-slot:title>
-              <RetweetOutlined />
-            </template>
-            重置
-          </a-button>
-        </a-form-item>
-        <!-- <a-form-item label="创建时间">
-          <a-range-picker v-model:value="formState.date1"
-                          show-time
-                          type="date"
-                          placeholder="Pick a date"
-                          style="width: 100%;" />
-        </a-form-item> -->
       </div>
+      <div class="flex">
+        <a-form-item label="创建时间">
+          <a-range-picker v-model:value="rangeTime"
+                          @change="ChooseTime(rangeTime)"
+                          :valueFormat="'YYYY-MM-DD'" />
+        </a-form-item>
+      </div>
+      <a-form-item>
+        <a-button type="primary"
+                  @click="search">
+          搜索
+        </a-button>
+        <a-button type="primary"
+                  style="margin-left: 10px;"
+                  @click="reSet">
+          重置
+        </a-button>
+      </a-form-item>
     </a-form>
   </a-card>
   <dynamic-table ref="tableRef"
@@ -73,6 +68,8 @@ import { adminRoleRemove, getAdminRole, adminRoleAdd } from '@/api/system/role'
 import { columns } from './columns'
 import { hasPermission } from '@/utils/permission/hasPermission'
 import { useFormModal } from '@/hooks/useFormModal'
+import { Moment } from 'moment'
+import { DatePicker } from 'ant-design-vue'
 import { getFormSchema } from './form-schema'
 
 interface FormState {
@@ -82,12 +79,22 @@ interface FormState {
   type: string[]
   resource: string
   desc: string
+  roleName: string
+  status: string
+  starTime: string
+  endTime: string
+}
+
+interface Param {
+  pageNum: number
+  pageSize: number
 }
 
 export default defineComponent({
   name: 'system-role',
   components: {
-    DynamicTable
+    DynamicTable,
+    aRangePicker: DatePicker.RangePicker
   },
   setup() {
     const formState: UnwrapRef<FormState> = reactive({
@@ -96,7 +103,16 @@ export default defineComponent({
       delivery: false,
       type: [],
       resource: '',
-      desc: ''
+      desc: '',
+      roleName: '',
+      status: '2',
+      starTime: '',
+      endTime: ''
+    })
+
+    const param = ref<Param>({
+      pageNum: 1,
+      pageSize: 10
     })
 
     const tableRef = ref<any>(null)
@@ -131,16 +147,8 @@ export default defineComponent({
         title: '添加用户',
         formSchema: getFormSchema(),
         handleOk: async (modelRef, state) => {
-          console.log('添加用户modelRef', modelRef)
-          const { description, title, accessIdsList } = modelRef
-
-          const params = {
-            description,
-            title,
-            accessIdsList: accessIdsList.toString()
-          }
-          console.log('添加用户', params)
-          await adminRoleAdd(params)
+          console.log('添加用户-参数', modelRef)
+          await adminRoleAdd(modelRef)
           tableRef.value.refreshTableData()
         }
       })
@@ -148,6 +156,28 @@ export default defineComponent({
     const isDisabled = computed(
       () => state.rowSelection.selectedRowKeys.length == 0
     )
+    // 选择时间-处理
+    const ChooseTime = (time) => {
+      formState.starTime = time[0]
+      formState.endTime = time[1]
+    }
+    // 搜索后
+    const search = () => {
+      const mergeParam = { ...formState, ...param.value }
+      const res = getAdminRole(mergeParam)
+      console.log('搜索后', res)
+      // columns.values = res.data
+    }
+    // 重置后
+    const reSet = () => {
+      formState.roleName = ''
+      formState.status = '2'
+      formState.starTime = ''
+      formState.endTime = ''
+      const res = getAdminRole(param.value)
+      console.log('重置后', res)
+      // columns.values = res.data
+    }
 
     return {
       ...toRefs(state),
@@ -157,7 +187,11 @@ export default defineComponent({
       isDisabled,
       addItem,
       formState,
-      deleteItems
+      deleteItems,
+      search,
+      reSet,
+      ChooseTime,
+      rangeTime: ref<Moment[]>([])
     }
   }
 })

@@ -39,7 +39,7 @@ export function getAdminRole(params) {
 export function adminRoleRemove(id: string) {
   return http.request({
     url: [Api.adminRoleRemove, id].join('/'),
-    method: RequestEnum.DELETE,
+    method: RequestEnum.POST,
   }, {
     isShowErrorMessage: true, // 是否显示错误提示信息
     successMessageText: '删除成功'

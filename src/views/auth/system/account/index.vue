@@ -1,7 +1,7 @@
 <template>
   <dynamic-table ref="tableRef"
                  :columns="columns"
-                 :get-list-func="getAdminAccount"
+                 :get-list-func="adminMenu"
                  rowKey="id"
                  :row-selection="rowSelection">
     <template v-slot:title>
@@ -32,10 +32,10 @@ import { Modal } from 'ant-design-vue'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { DynamicTable } from '@/components/dynamic-table'
 import {
-  delAdminAccount,
-  getAdminAccount,
-  postAdminAccount
-} from '@/api/system/account'
+  adminMenu,
+  adminMenuAdd,
+  adminMenuRemove
+} from '@/api/system/menu/index'
 import { columns } from './columns'
 import { useFormModal } from '@/hooks/useFormModal'
 import { getFormSchema } from './form-schema'
@@ -59,36 +59,36 @@ export default defineComponent({
     })
 
     // 删除多项
-    const deleteItems = () => {
-      Modal.confirm({
-        title: '提示',
-        icon: createVNode(QuestionCircleOutlined),
-        content: '您确定要删除所有选中吗？',
-        onOk: async () => {
-          await delAdminAccount(state.rowSelection.selectedRowKeys.toString())
-          tableRef.value.refreshTableData()
-          state.rowSelection.selectedRowKeys = []
-        }
-      })
-    }
+    // const deleteItems = () => {
+    //   Modal.confirm({
+    //     title: '提示',
+    //     icon: createVNode(QuestionCircleOutlined),
+    //     content: '您确定要删除所有选中吗？',
+    //     onOk: async () => {
+    //       await delAdminAccount(state.rowSelection.selectedRowKeys.toString())
+    //       tableRef.value.refreshTableData()
+    //       state.rowSelection.selectedRowKeys = []
+    //     }
+    //   })
+    // }
     // 添加账号
-    const addItem = () => {
-      useFormModal({
-        title: '添加账号',
-        formSchema: getFormSchema(),
-        handleOk: async (modelRef, state) => {
-          const { username, password, roles } = modelRef
+    // const addItem = () => {
+    //   useFormModal({
+    //     title: '添加账号',
+    //     formSchema: getFormSchema(),
+    //     handleOk: async (modelRef, state) => {
+    //       const { username, password, roles } = modelRef
 
-          const params = {
-            username,
-            password,
-            roles: roles.toString()
-          }
-          await postAdminAccount(params)
-          tableRef.value.refreshTableData()
-        }
-      })
-    }
+    //       const params = {
+    //         username,
+    //         password,
+    //         roles: roles.toString()
+    //       }
+    //       await postAdminAccount(params)
+    //       tableRef.value.refreshTableData()
+    //     }
+    //   })
+    // }
     const isDisabled = computed(
       () => state.rowSelection.selectedRowKeys.length == 0
     )
@@ -97,10 +97,10 @@ export default defineComponent({
       ...toRefs(state),
       columns,
       tableRef,
-      getAdminAccount,
+      adminMenu,
       isDisabled,
-      addItem,
-      deleteItems
+      // addItem,
+      // deleteItems
     }
   }
 })

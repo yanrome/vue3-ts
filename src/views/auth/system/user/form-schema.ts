@@ -36,7 +36,7 @@ export const getFormSchema = (): FormSchema => ({
             type: "input",
             label: "部门名称",
             field: "deptName",
-            value: '',
+            value: 'deptId',
             props: {
                 placeholder: ""
             },
@@ -62,6 +62,30 @@ export const getFormSchema = (): FormSchema => ({
                 }
             ]
         },
+        // {
+        //     type: 'checkbox',
+        //     label: '角色',
+        //     field: 'roles',
+        //     value: [],
+        //     options: [],
+        //     loading: true,
+        //     rules: [
+        //       {
+        //         required: true,
+        //         message: '请选择角色',
+        //         type: 'array'
+        //       }
+        //     ],
+        //     asyncOptions: async () => {
+        //       // 异步数据回调
+        //       // 获取角色列表
+        //       const { data } = await getAdminRole({})
+        //       return data.map((item) => ({
+        //         label: item.title,
+        //         value: item.id
+        //       }))
+        //     }
+        //   }
         {
             type: "input",
             label: "邮箱",

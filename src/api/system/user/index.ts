@@ -5,6 +5,10 @@ enum Api {
   adminUser = '/system/user/list',
   adminUserAdd = '/system/user/add',
   adminUserEdit = '/system/user/edit',
+  adminUserRemove = '/system/user/remove',
+  adminUserPlatRoles = '/system/user/plat/roles',
+  adminUserRoles = '/system/user/roles',
+  adminUserRoleEdit = '/system/user/role/edit',
   adminUserAccess = '/admin/user_access',
   systemDictDataByType = `/system/dict/data/byType`,
 }
@@ -47,14 +51,66 @@ export function adminUser(params) {
  * 修改人员
  * @param params
  */
-export function adminUserEdit(id, params) {
+export function adminUserEdit(params) {
   return http.request({
-    url: [Api.adminUserEdit, id].join('/'),
+    url: Api.adminUserEdit,
     method: RequestEnum.POST,
     params,
   }, {
     isShowErrorMessage: true, // 是否显示错误提示信息
     successMessageText: '修改成功'
+  });
+}
+
+
+/**
+ * 删除人员
+ * @param params
+ */
+ export function adminUserRemove(userId) {
+  return http.request({
+    url: [Api.adminUserRemove, userId].join('/'),
+    method: RequestEnum.POST,
+  }, {
+    isShowErrorMessage: true, // 是否显示错误提示信息
+    successMessageText: '删除成功'
+  });
+}
+
+
+/**
+ * 查询用户平台角色信息
+ * @param params
+ */
+ export function adminUserPlatRoles(id) {
+  return http.request({
+    url: [Api.adminUserPlatRoles, id].join('/'),
+    method: RequestEnum.GET,
+  });
+}
+
+
+/**
+ * 编辑用户角色
+ * @param params
+ */
+ export function adminUserRoleEdit(userId, params) {
+  return http.request({
+    url: [Api.adminUserRoleEdit, userId].join('/'),
+    method: RequestEnum.POST,
+    params,
+  })
+};
+
+
+/**
+ * 查询用户角色信息
+ * @param params
+ */
+ export function adminUserRoles(id) {
+  return http.request({
+    url: [Api.adminUserRoles, id].join('/'),
+    method: RequestEnum.GET,
   });
 }
 

@@ -1,10 +1,9 @@
 <template>
   <a-modal v-model:visible="visible">
-    <div class="add_title">{{ modalRef.id?'修改菜单':'添加菜单' }}</div>
+    <div class="add_title">添加菜单111</div>
     <a-form>
       <a-form-item label="上级菜单">
-        <a-input placeholder="请选择上级菜单"
-                 v-model:value="modalRef.name"></a-input>
+        <a-input></a-input>
       </a-form-item>
       <a-form-item label="菜单类型">
         <a-radio-group v-model:value="modalRef.menuType">

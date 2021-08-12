@@ -1,7 +1,7 @@
 <template>
   <a-checkbox-group v-model:value="modelValue"
                     v-on="formItem.eventObject"
-                    style="width:100%;">
+                    style="width: 100%;">
     <a-row>
       <template v-for="option in formItem.options"
                 :key="option.value">

@@ -1,8 +1,9 @@
 import { useCreateModal } from '@/hooks'
 import AddModal from './add-modal.vue'
 import { adminMenuEdit, adminMenuRemove } from '@/api/system/menu/index'
-import {TableColumn} from "@/types/tableColumn";
+import { TableColumn } from "@/types/tableColumn";
 import { useFormModal } from "@/hooks/useFormModal";
+import { getSystemDictDataByType } from '@/api/system/user/index'
 import { getFormSchema } from "./form-schema";
 import { formatDate } from '@/utils/common'
 import { message } from 'ant-design-vue'
@@ -24,7 +25,13 @@ export const columns: TableColumn[] = [
     },
     {
         title: '场景',
-        dataIndex: 'menuScene'
+        dataIndex: 'menuScene',
+        actions: [],
+        slotsFunc:  ()=>{
+            alert('231214124141你到家我的女own')
+            const res =  getSystemDictDataByType ({ dictType:'sys_menu_type' })
+            // return res.data.map(item => item)
+        },
     },
     {
         title: '请求地址',
@@ -59,7 +66,7 @@ export const columns: TableColumn[] = [
                 //     effect: 'disabled'
                 // },
                 props: {
-                    type: 'warning' // 按钮类型
+                    type: 'primary' // 按钮类型
                 },
                 func: ({ record }, refreshTableData) =>{
                     

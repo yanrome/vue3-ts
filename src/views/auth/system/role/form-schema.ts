@@ -39,10 +39,15 @@ export const getFormSchema = (): FormSchema => ({
             label: "角色类型",
             field: "roleType",
             value: '',
-            asyncOptions: async (currentValue, formInstance) => {
+            asyncOptions: async () => {
                 const params = { dictType:'sys_user_sex' }
                 const res = await getSystemDictDataByType (params)
-                return res.data
+                console.log('res',res)
+                return res.data.map((item) => ({
+                    label: item.dictLabel,
+                    value: item.dictValue
+                }))
+                
             }
         },
         {
@@ -89,20 +94,7 @@ export const getFormSchema = (): FormSchema => ({
             props: {
                 placeholder: "请输入备注"
             }
-        },
-        // {
-        //     type: createVNode(AccessTree),
-        //     label: "资源",
-        //     field: "accessIdsList",
-        //     value: [],
-        //     asyncValue: async (currentValue, formInstance) => {
-        //         const {id} = formInstance?.props.fields as any
-        //         // 获取角色列表
-        //         const data = await getAdminRoleAccess(id)
-        //         // 设置角色复选框选项
-        //         return data.map(item => item.accessId)
-        //     }
-        // }
+        }
     ]
 })
 

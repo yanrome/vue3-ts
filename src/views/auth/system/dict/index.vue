@@ -14,38 +14,23 @@
         </a-form-item>
       </div>
       <div class="flex">
-        <a-form-item label="创建时间"
-                     class="w50 mr20">
-          <a-select v-model:value="formState.region"
-                    placeholder="please select your zone">
-            <a-select-option value="shanghai">Zone one</a-select-option>
-            <a-select-option value="beijing">Zone two</a-select-option>
-          </a-select>
+        <a-form-item label="创建时间">
+          <a-range-picker v-model:value="rangeTime"
+                          @change="ChooseTime(rangeTime)"
+                          :valueFormat="'YYYY-MM-DD'" />
         </a-form-item>
-        <a-form-item @click="search(formState)">
-          <a-button type="primary">
-            <template v-slot:title>
-              <SearchOutlined />
-            </template>
-            搜索
-          </a-button>
-        </a-form-item>
-        <a-form-item @click="repeat">
-          <a-button type="primary">
-            <template v-slot:title>
-              <RetweetOutlined />
-            </template>
-            重置
-          </a-button>
-        </a-form-item>
-        <!-- <a-form-item label="创建时间">
-          <a-range-picker v-model:value="formState.date1"
-                          show-time
-                          type="date"
-                          placeholder="Pick a date"
-                          style="width: 100%;" />
-        </a-form-item> -->
       </div>
+      <a-form-item>
+        <a-button type="primary"
+                  @click="search">
+          搜索
+        </a-button>
+        <a-button @click="reSet"
+                  style="margin-left: 10px;"
+                  type="primary">
+          重置
+        </a-button>
+      </a-form-item>
     </a-form>
   </a-card>
   <dynamic-table ref="tableRef"
@@ -79,6 +64,8 @@ import { getFormSchema } from './form-schema'
 import { columns } from './columns'
 import { hasPermission } from '@/utils/permission/hasPermission'
 import { useFormModal } from '@/hooks/useFormModal/'
+import { Moment } from 'moment'
+import { DatePicker } from 'ant-design-vue'
 
 interface FormState {
   name: string
@@ -87,12 +74,22 @@ interface FormState {
   type: string[]
   resource: string
   desc: string
+  dictName: string
+  dictType: string
+  starTime: string
+  endTime: string
+}
+
+interface Param {
+  pageNum: number
+  pageSize: number
 }
 
 export default defineComponent({
   name: 'system-dict',
   components: {
-    DynamicTable
+    DynamicTable,
+    aRangePicker: DatePicker.RangePicker
   },
   setup() {
     const formState: UnwrapRef<FormState> = reactive({
@@ -102,7 +99,16 @@ export default defineComponent({
       delivery: false,
       type: [],
       resource: '',
-      desc: ''
+      desc: '',
+      dictName: '',
+      dictType: '',
+      starTime: '',
+      endTime: ''
+    })
+
+    const param = ref<Param>({
+      pageNum: 1,
+      pageSize: 10
     })
 
     const tableRef = ref<any>(null)
@@ -116,26 +122,6 @@ export default defineComponent({
         selectedRowKeys: []
       }
     })
-
-    // 搜索
-    // const search = () => {
-
-    // }
-
-    // 删除多项
-    const search = (aaa) => {
-      console.log('aaa',aaa)
-      // Modal.confirm({
-      //   title: '提示',
-      //   icon: createVNode(QuestionCircleOutlined),
-      //   content: '您确定要删除所有选中吗？',
-      //   onOk: async () => {
-      //     await adminDictRemove(state.rowSelection.selectedRowKeys.toString())
-      //     tableRef.value.refreshTableData()
-      //     state.rowSelection.selectedRowKeys = []
-      //   }
-      // })
-    }
 
     // 删除多项
     const deleteItems = () => {
@@ -156,15 +142,37 @@ export default defineComponent({
         title: '添加字典',
         formSchema: getFormSchema(),
         handleOk: async (modelRef, state) => {
-          console.log('添加字典', modelRef)
-          // await adminDictAdd(modelRef)
-          // tableRef.value.refreshTableData()
+          console.log('添加字典-参数', modelRef)
+          await adminDictAdd(modelRef)
+          tableRef.value.refreshTableData()
         }
       })
     }
     const isDisabled = computed(
       () => state.rowSelection.selectedRowKeys.length == 0
     )
+    // 选择时间-处理
+    const ChooseTime = (time) => {
+      formState.starTime = time[0]
+      formState.endTime = time[1]
+    }
+    // 搜索后
+    const search = () => {
+      const mergeParam = { ...formState, ...param.value }
+      const res = adminDict(mergeParam)
+      console.log('搜索后', res)
+      // columns.values = res.data
+    }
+    // 重置后
+    const reSet = () => {
+      formState.dictName = ''
+      formState.dictType = ''
+      formState.starTime = ''
+      formState.endTime = ''
+      const res = adminDict(param.value)
+      console.log('重置后', res)
+      // columns.values = res.data
+    }
 
     return {
       ...toRefs(state),
@@ -175,7 +183,10 @@ export default defineComponent({
       addItem,
       formState,
       deleteItems,
-      search
+      search,
+      reSet,
+      ChooseTime,
+      rangeTime: ref<Moment[]>([])
     }
   }
 })

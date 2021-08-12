@@ -35,10 +35,6 @@ export const columns: TableColumn[] = [ // 字典表格
             {
                 type: 'button', // 控制类型，默认为a,可选： select | button | text
                 text: '编辑',
-                // permission: { // 权限
-                //     action: 'update',
-                //     effect: 'disabled'
-                // },
                 props: {
                     type: 'warning'
                 },
@@ -46,7 +42,8 @@ export const columns: TableColumn[] = [ // 字典表格
                     title: '编辑字典',
                     fields: record,
                     formSchema: getFormSchema(),
-                    handleOk: async (modelRef, state) => await adminDictEdit(modelRef).then(_ => refreshTableData())
+                    handleOk: async (modelRef, state) => 
+                    await adminDictEdit(modelRef).then(_ => refreshTableData())
                 })
             },
             {
@@ -73,10 +70,10 @@ export const columns: TableColumn[] = [ // 字典表格
             {
                 type: 'popconfirm', // 控制类型，默认为a,可选： select | button | text
                 text: '删除',
-                permission: { // 权限
-                    action: 'delete',
-                    effect: 'disabled'
-                },
+                // permission: { // 权限
+                //     action: 'delete',
+                //     effect: 'disabled'
+                // },
                 props: {
                   type: 'danger'
                 },

@@ -11,8 +11,7 @@
            v-bind="$attrs"
            @change="paginationChange">
     <!-- 自定义slots start -->
-    <template style="border: 1px solid red;"
-              v-for="(value, key) in $slots"
+    <template v-for="(value, key) in $slots"
               #[key]="slotProps">
       <slot :name="key"
             v-bind="slotProps"></slot>
@@ -20,8 +19,7 @@
     <!-- 自定义slots end -->
 
     <!-- 是否有自定义显示slots start -->
-    <template style="border: 1px solid red;"
-              v-for="slotItem in columns.filter((item) => item.slots)"
+    <template v-for="slotItem in columns.filter((item) => item.slots)"
               :key="slotItem.dataIndex || slotItem.slots?.customRender"
               #[slotItem.slots?.customRender]="slotProps">
       <!-- 自定义渲染start -->
@@ -90,136 +88,174 @@
 </template>
 
 <script lang="ts">
-    import { defineComponent, reactive, PropType, toRefs } from 'vue'
-    import { Card, Select, Table, Popconfirm } from 'ant-design-vue'
-    import { TableProps } from 'ant-design-vue/lib/table/interface'
-    import { usePagination, PageOption } from '@/hooks/usePagination'
-    import {  useDragCol,useDragRow } from './hooks'
-    export default defineComponent({
-        name: 'DynamicTable',
-        components: {
-            [Table.name]: Table,
-            [Card.name]: Card,
-            [Select.name]: Select,
-            [Popconfirm.name]: Popconfirm,
-            Option: Select.Option
-        },
-        inheritAttrs: false,
-        props: {
-            columns: {
-                type: Object ,
-                required: true
-            },
-            getListFunc: {
-                // 获取列表数据函数API
-                type: Function,
-                required: true
-            },
-            rowSelection: {
-                type: Object
-            },
-            rowKey: {
-                // 表格唯一字段
-                type: [String, Function] as PropType<string | ((record: any) => string)>
-            },
-            pageOption: {
-                // 分页参数
-                type: Object as PropType<PageOption>,
-                default: () => ({})
-            },
-            dragColEnable: {
-                type: Boolean as PropType<boolean>,
-                default: true
-            },
-            dragRowEnable: Boolean as PropType<boolean>
-        },
-        emits: ['change'],
-        setup(props, { emit }) {
-            const { pageOptions } = usePagination()
+import { defineComponent, reactive, PropType, toRefs } from 'vue'
+import { Card, Select, Table, Popconfirm } from 'ant-design-vue'
+import { TableProps } from 'ant-design-vue/lib/table/interface'
+import { usePagination, PageOption } from '@/hooks/usePagination'
+import { useDragCol, useDragRow } from './hooks'
+export default defineComponent({
+  name: 'DynamicTable',
+  components: {
+    [Table.name]: Table,
+    [Card.name]: Card,
+    [Select.name]: Select,
+    [Popconfirm.name]: Popconfirm,
+    Option: Select.Option
+  },
+  inheritAttrs: false,
+  props: {
+    columns: {
+      type: Object,
+      required: true
+    },
+    getListFunc: {
+      // 获取列表数据函数API
+      type: Function,
+      required: true
+    },
+    rowSelection: {
+      type: Object
+    },
+    rowKey: {
+      // 表格唯一字段
+      type: [String, Function] as PropType<string | ((record: any) => string)>
+    },
+    pageOption: {
+      // 分页参数
+      type: Object as PropType<PageOption>,
+      default: () => ({})
+    },
+    dragColEnable: {
+      type: Boolean as PropType<boolean>,
+      default: true
+    },
+    dragRowEnable: Boolean as PropType<boolean>
+  },
+  emits: ['change'],
+  setup(props, { emit }) {
+    const { pageOptions } = usePagination()
 
-            Object.assign(pageOptions.value, props.pageOption)
+    Object.assign(pageOptions.value, props.pageOption)
 
-            // 开启表格伸缩列
-            props.dragColEnable && useDragCol(props.columns)
+    // 开启表格伸缩列
+    props.dragColEnable && useDragCol(props.columns)
 
-            const state = reactive({
-                expandItemRefs: {},
-                customRow: () => ({} as TableProps['customRow']),
-                data: [], // 表格数据
-                actions:
-                    props.columns.find((item) => (item.dataIndex || item.key) == 'action')?.actions || [], // 表格操作（如：编辑、删除的按钮等）
-                loading: false // 表格加载
-            })
-
-            // 获取表格数据
-            const refreshTableData = async (params = {}) => {
-                params = {
-                    pageNum: pageOptions.value.current,
-                    pageSize: pageOptions.value.pageSize,
-                    ...props.pageOption,
-                    ...params
-                }
-                state.loading = true
-                const { data, total } = await props
-                    .getListFunc(params)
-                    .finally(() => (state.loading = false))
-                Object.assign(pageOptions.value, {
-                    total: ~~total || 10
-                })
-                state.data = data
-                // 是否可以拖拽行
-                props.dragRowEnable && (state.customRow = useDragRow<any>(state.data)!)
-            }
-
-            refreshTableData()
-
-            // 操作事件
-            const actionEvent = async (record, func, actionType = '') => {
-                // 将refreshTableData放入宏任务中,等待当前微任务拿到结果进行判断操作，再请求表格数据
-                await func({ record, props }, () => setTimeout(() => refreshTableData()))
-                // 如果为删除操作,并且删除成功，当前的表格数据条数小于2条,则当前页数减一,即请求前一页
-                if (actionType == 'del' && state.data.length < 2) {
-                    pageOptions.value.current = Math.max(1, pageOptions.value.current - 1)
-                }
-            }
-
-            // 分页改变
-            const paginationChange = (pagination, filters, sorter, { currentDataSource }) => {
-                const { field, order } = sorter
-                console.log(pagination)
-                pageOptions.value = {
-                    ...pageOptions.value,
-                    ...pagination
-                }
-                refreshTableData({
-                    pageSize: pagination.pageSize,
-                    pageNumber: pagination.current,
-                    ...props.pageOption,
-                    ...filters,
-                    field,
-                    order
-                })
-                emit('change', pagination, filters, sorter, { currentDataSource })
-            }
-
-            // dataIndex 可以为 a.b.c
-            // const getDataIndexVal = (dataIndex, record) => dataIndex.split('.').reduce((pre, curr) => pre[curr], record)
-
-            const buttonProps = {
-                size: 'small'
-            }
-
-            return {
-                ...toRefs(state),
-                pageOptions,
-                buttonProps,
-                actionEvent,
-                refreshTableData,
-                paginationChange
-            }
-        }
+    const state = reactive({
+      expandItemRefs: {},
+      customRow: () => ({} as TableProps['customRow']),
+      data: [] as any, // 表格数据
+      actions:
+        props.columns.find((item) => (item.dataIndex || item.key) == 'action')
+          ?.actions || [], // 表格操作（如：编辑、删除的按钮等）
+      loading: false // 表格加载
     })
 
+    // 获取表格数据
+    const refreshTableData = async (params = {}) => {
+      params = {
+        pageNum: pageOptions.value.current,
+        pageSize: pageOptions.value.pageSize,
+        ...props.pageOption,
+        ...params
+      }
+      state.loading = true
+      const { data, total } = await props
+        .getListFunc(params)
+        .finally(() => (state.loading = false))
+      Object.assign(pageOptions.value, {
+        total: ~~total || 10
+      })
+      // state.data = data
+      // console.log('=======================>statestatestate我的我的我的', state)
+      // console.log('=======================>我的我的我的', state.data)
+      state.data = list_tree(data)
+      // 是否可以拖拽行
+      props.dragRowEnable && (state.customRow = useDragRow<any>(state.data)!)
+    }
+
+    refreshTableData()
+
+    // 列表转树
+    const list_tree = (arr) => {
+      let temp = {}
+      let tree = {}
+      // 数组转 键值对
+      arr.forEach((item) => {
+        item.title = item.deptName
+        item.key = item.id
+        temp[item.id] = item
+      })
+      let tempKeys = Object.keys(temp)
+      tempKeys.forEach((key) => {
+        // 获取当前项
+        let item = temp[key]
+        // 当前项 parentId
+        let _itemPId = item.parentId
+        // 获取父级项
+        let parentItemByPid = temp[_itemPId]
+        if (parentItemByPid) {
+          if (!parentItemByPid.children) {
+            parentItemByPid.children = []
+          }
+          parentItemByPid.children.push(item)
+        } else {
+          tree[item.id] = item
+        }
+      })
+      // 对象转数组并返回
+      return Object.keys(tree).map((key) => tree[key])
+    }
+    // 操作事件
+    const actionEvent = async (record, func, actionType = '') => {
+      // 将refreshTableData放入宏任务中,等待当前微任务拿到结果进行判断操作，再请求表格数据
+      await func({ record, props }, () => setTimeout(() => refreshTableData()))
+      // 如果为删除操作,并且删除成功，当前的表格数据条数小于2条,则当前页数减一,即请求前一页
+      if (actionType == 'del' && state.data.length < 2) {
+        pageOptions.value.current = Math.max(1, pageOptions.value.current - 1)
+      }
+    }
+
+    // 分页改变
+    const paginationChange = (
+      pagination,
+      filters,
+      sorter,
+      { currentDataSource }
+    ) => {
+      const { field, order } = sorter
+      console.log(pagination)
+      pageOptions.value = {
+        ...pageOptions.value,
+        ...pagination
+      }
+      refreshTableData({
+        pageSize: pagination.pageSize,
+        pageNumber: pagination.current,
+        ...props.pageOption,
+        ...filters,
+        field,
+        order
+      })
+      emit('change', pagination, filters, sorter, { currentDataSource })
+    }
+
+    // dataIndex 可以为 a.b.c
+    // const getDataIndexVal = (dataIndex, record) => dataIndex.split('.').reduce((pre, curr) => pre[curr], record)
+
+    const buttonProps = {
+      size: 'small'
+    }
+
+    return {
+      ...toRefs(state),
+      pageOptions,
+      buttonProps,
+      actionEvent,
+      refreshTableData,
+      paginationChange
+    }
+  }
+})
 </script>
 
 <style lang="scss" scoped>

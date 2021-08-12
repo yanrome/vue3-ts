@@ -8,56 +8,32 @@
                      class="w50 mr20">
           <a-input v-model:value="formState.deptName" />
         </a-form-item>
-        <a-form-item label="创建时间"
-                     class="w50 mr20">
-          <a-select v-model:value="formState.region"
-                    placeholder="please select your zone">
-            <a-select-option value="shanghai">Zone one</a-select-option>
-            <a-select-option value="beijing">Zone two</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item>
-          <a-button type="primary">
-            <template v-slot:title>
-              <SearchOutlined />
-            </template>
-            搜索
-          </a-button>
-        </a-form-item>
-        <a-form-item>
-          <a-button type="primary">
-            <template v-slot:title>
-              <RetweetOutlined />
-            </template>
-            重置
-          </a-button>
-        </a-form-item>
-        <!-- <a-form-item label="创建时间">
-          <a-range-picker v-model:value="formState.date1"
-                          show-time
-                          type="date"
-                          placeholder="Pick a date"
-                          style="width: 100%;" />
-        </a-form-item> -->
-        <a-form-item>
-          <a-button type="primary">
-            <template v-slot:title>
-              <SearchOutlined />
-            </template>
-            搜索
-          </a-button>
-        </a-form-item>
-        <a-form-item>
-          <a-button type="primary">
-            <template v-slot:title>
-              <RetweetOutlined />
-            </template>
-            重置
-          </a-button>
+      </div>
+      <div class="flex">
+        <a-form-item label="创建时间">
+          <a-range-picker v-model:value="rangeTime"
+                          @change="ChooseTime(rangeTime)"
+                          :valueFormat="'YYYY-MM-DD'" />
         </a-form-item>
       </div>
+      <a-form-item>
+        <a-button type="primary"
+                  @click="search">
+          搜索
+        </a-button>
+        <a-button type="primary"
+                  style="margin-left: 10px;"
+                  @click="reSet">
+          重置
+        </a-button>
+      </a-form-item>
     </a-form>
   </a-card>
+  <!-- <a-table :columns="columns"
+           :data-source="dataList"
+           :row-selection="rowSelection" /> -->
+  <!-- <access-tree></access-tree> -->
+
   <dynamic-table ref="tableRef"
                  :columns="columns"
                  :get-list-func="adminDept"
@@ -96,6 +72,8 @@ import { hasPermission } from '@/utils/permission/hasPermission'
 import { useFormModal } from '@/hooks/useFormModal'
 import { getFormSchema } from './form-schema'
 import { Moment } from 'moment'
+import { DatePicker } from 'ant-design-vue'
+import AccessTree from './components/access-tree.vue'
 
 interface FormState {
   name: string
@@ -104,12 +82,22 @@ interface FormState {
   type: string[]
   resource: string
   desc: string
+  deptName: string
+  starTime: string
+  endTime: string
+}
+
+interface Param {
+  pageNum: number
+  pageSize: number
 }
 
 export default defineComponent({
   name: 'system-dept',
   components: {
-    DynamicTable
+    DynamicTable,
+    aRangePicker: DatePicker.RangePicker,
+    AccessTree
   },
   setup() {
     const formState: UnwrapRef<FormState> = reactive({
@@ -119,7 +107,15 @@ export default defineComponent({
       delivery: false,
       type: [],
       resource: '',
-      desc: ''
+      desc: '',
+      deptName: '',
+      starTime: '',
+      endTime: ''
+    })
+
+    const param = ref<Param>({
+      pageNum: 1,
+      pageSize: 10
     })
 
     const tableRef = ref<any>(null)
@@ -173,14 +169,39 @@ export default defineComponent({
     // const isDisabled = computed(
     //   () => state.rowSelection.selectedRowKeys.length == 0
     // )
+    // 选择时间-处理
+    const ChooseTime = (time) => {
+      formState.starTime = time[0]
+      formState.endTime = time[1]
+    }
+    // 搜索后
+    const search = () => {
+      const mergeParam = { ...formState, ...param.value }
+      const res = adminDept(mergeParam)
+      console.log('搜索后', res)
+      // columns.values = res.data
+    }
+    // 重置后
+    const reSet = () => {
+      formState.deptName = ''
+      formState.starTime = ''
+      formState.endTime = ''
+      const res = adminDept(param.value)
+      console.log('重置后', res)
+      // columns.values = res.data
+    }
+
     return {
       ...toRefs(state),
       columns,
       tableRef,
       adminDept,
       formState,
-      addItem
-      // deleteItems
+      addItem,
+      search,
+      reSet,
+      ChooseTime,
+      rangeTime: ref<Moment[]>([])
     }
   }
 })

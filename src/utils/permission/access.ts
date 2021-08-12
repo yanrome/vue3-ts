@@ -92,6 +92,7 @@ export default {
                 }
 
                 if (!isVerified) {
+                    console.log('121231214',el)
                     el.parentNode && el.parentNode.removeChild(el)
                 }
             }

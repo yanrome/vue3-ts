@@ -10,46 +10,35 @@
         </a-form-item>
         <a-form-item label="菜单状态"
                      class="w50 mr20">
-          <a-select v-model:value="formState.visible"
-                    placeholder="please select your zone">
-            <a-select-option value="shanghai">Zone one</a-select-option>
-            <a-select-option value="beijing">Zone two</a-select-option>
+          <a-select v-model:value="formState.visible">
+            <a-select-option value="2">所有</a-select-option>
+            <a-select-option value="1">显示</a-select-option>
+            <a-select-option value="0">影藏</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item>
-          <a-button type="primary">
-            <template v-slot:title>
-              <SearchOutlined />
-            </template>
-            搜索
-          </a-button>
-        </a-form-item>
-        <a-form-item>
-          <a-button type="primary">
-            <template v-slot:title>
-              <RetweetOutlined />
-            </template>
-            重置
-          </a-button>
-        </a-form-item>
-        <!-- <a-form-item label="创建时间">
-          <a-range-picker v-model:value="formState.date1"
-                          show-time
-                          type="date"
-                          placeholder="Pick a date"
-                          style="width: 100%;" />
-        </a-form-item> -->
       </div>
+      <a-form-item>
+        <a-button type="primary"
+                  @click="search">
+          搜索
+        </a-button>
+        <a-button type="primary"
+                  style="margin-left: 10px;"
+                  @click="reSet">
+          重置
+        </a-button>
+      </a-form-item>
     </a-form>
   </a-card>
   <dynamic-table ref="tableRef"
                  :columns="columns"
                  :pageOption="pageOption"
                  :get-list-func="adminMenu"
-                 :rowKey="rowKey">
+                 :row-selection="rowSelection"
+                 rowKey="id"
+                 @expand="expand">
     <template v-slot:title>
-      <a-button v-permission="{ action: undefined, effect: 'disabled' }"
-                @click="addItem"
+      <a-button @click="addItem"
                 type="primary">
         添加
       </a-button>
@@ -80,17 +69,26 @@ import { columns } from './columns'
 import { useFormModal } from '@/hooks/useFormModal'
 import { getFormSchema } from './form-schema'
 import { getSystemDictDataByType } from '@/api/system/user/index'
+import { useExpandLoading } from '@/components/dynamic-table/hooks'
+import { createVNode } from 'vue'
 import AddModal from './add-modal.vue'
 import { useCreateModal } from '@/hooks'
 import { keyBy } from 'lodash'
 
 interface FormState {
-  name: string
-  region: string | undefined
-  delivery: boolean
-  type: string[]
-  resource: string
-  desc: string
+  parentId: string
+  menuType: number | string
+  menuScene: number | string
+  menuName: string
+  url: string
+  perms: string
+  orderNum: number | string
+  icon: string
+  visible: string
+}
+interface Param {
+  pageNum: number
+  pageSize: number
 }
 
 export default defineComponent({
@@ -98,32 +96,37 @@ export default defineComponent({
   components: {
     DynamicTable
   },
-  created(){
-    
-  },
   setup() {
-    console.log('jiehifiwhoh', columns)
-    const formState: UnwrapRef<FormState> = reactive({
-      name: '',
-      region: undefined,
-      delivery: false,
-      type: [],
-      resource: '',
-      desc: ''
-    })
-
     const tableRef = ref<any>(null)
-
-    const state = reactive({
-      tableLoading: false,
-      rowSelection: {
-        onChange: (selectedRowKeys, selectedRows) => {
-          state.rowSelection.selectedRowKeys = selectedRowKeys
-        },
-        selectedRowKeys: []
-      }
+    const itemRefs = ref({})
+    const param = ref<Param>({
+      pageNum: 1,
+      pageSize: 10
     })
-
+    const formState: UnwrapRef<FormState> = reactive({
+      parentId: '',
+      menuType: '',
+      menuScene: '',
+      menuName: '',
+      url: '',
+      perms: '',
+      orderNum: '',
+      icon: '',
+      visible: '2'
+    })
+    // const state = reactive({
+    //   expandedRowKeys: [] as string[],
+    //   tableLoading: false,
+    //   rowSelection: {
+    //     onChange: (selectedRowKeys, selectedRows) => {
+    //       state.rowSelection.selectedRowKeys = selectedRowKeys
+    //     },
+    //     selectedRowKeys: []
+    //   }
+    // })
+    // const isDisabled = computed(
+    //   () => state.rowSelection.selectedRowKeys.length == 0
+    // )
     // 添加菜单
     const addItem = () => {
       useFormModal({
@@ -135,24 +138,54 @@ export default defineComponent({
         }
       })
     }
-    const isDisabled = computed(
-      () => state.rowSelection.selectedRowKeys.length == 0
-    )
-    // const aaa = () => {
-    //   const abc = getSystemDictDataByType({ dictType: 'sys_menu_type' })
-    //   console.log('abc', abc)
-    // }
+    // 全部展开与折叠
+    const isOpen = () => {
+      console.log('2312全部展开与折叠')
+    }
+    // 点击展开图标
+    const expand = async (expanded, record) => {
+      const expandItemEl = itemRefs.value[record.id]
+      // 点击展开图标loading
+      const result = await useExpandLoading({
+        expanded,
+        record,
+        expandItemEl,
+        asyncFunc: getSystemDictDataByType,
+        params: { id: record.id, limit: 100 }
+      })
+      if (result?.data) {
+        record.children = result.data
+      }
+    }
+    // 搜索后
+    const search = () => {
+      const mergeParam = { ...formState, ...param.value }
+      const res = getSystemDictDataByType(mergeParam)
+      console.log('搜索后', res)
+      // columns.values = res.data
+    }
+    // 重置后
+    const reSet = () => {
+      formState.menuName = ''
+      formState.visible = '2'
+      const res = getSystemDictDataByType(param.value)
+      console.log('重置后', res)
+      // columns.values = res.data
+    }
 
     return {
-      ...toRefs(state),
+      // ...toRefs(state),
+      // isDisabled,
       columns,
-      // aaa,
       tableRef,
       adminMenu,
-      isDisabled,
       addItem,
       formState,
-      adminMenuRemove
+      adminMenuRemove,
+      search,
+      reSet,
+      isOpen,
+      expand
     }
   }
 })
