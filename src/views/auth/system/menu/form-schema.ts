@@ -2,6 +2,7 @@ import {createVNode} from 'vue'
 import AccessTree from "./components/access-tree.vue"
 import {FormSchema} from "@/types/schema";
 import { getSystemDictDataByType } from '@/api/system/user/index'
+import { systemMenuMenuTreeData } from '@/api/system/menu/index'
 import { adminUserAdd } from "@/api/system/user/index";
 import {adminMenu} from "@/api/system/menu/index";
 
@@ -21,38 +22,46 @@ export const getFormSchema = (): FormSchema => ({
     formItem: [
         {
             type: createVNode(AccessTree),
+            // type: 'tree',
             label: '上级菜单',
-            field: 'accessIdsList',
+            field: 'id',
             value: [],
-            asyncValue: async (currentValue, formInstance) => {
-                const { id } = formInstance?.props.fields as any
-                // 获取角色列表
-                const data = await adminMenu(id)
-                console.log('获取角色列表',data)
-                // 设置角色复选框选项
-                return data.map((item) => item.accessId)
-            }
+            // asyncValue: async (currentValue, formInstance) => {
+            //     // console.log('currentValuecurrentValue',formInstance)
+            //     // const { id } = formInstance?.props.fields as any
+            //     // 获取角色列表
+            //     // console.log('查询角色对应所有模板菜单列表树',id)
+            //     const data = await systemMenuMenuTreeData()
+            //     // 设置角色复选框选项
+            //     return data.map((item) => item.accessId)
+            // }
         },
         {
             type: "radio",
             label: "菜单类型",
             field: "menuType",
-            value: '0',
+            value: 0,
             asyncOptions: async (currentValue, formInstance) => {
                 const params = { dictType:'sys_menu_type' }
                 const res = await getSystemDictDataByType (params)
-                return res.data.map(item => item)
+                return res.data.map((item) => ({
+                    label: item.dictLabel,
+                    value: Number(item.dictValue)
+                }))
             }
         },
         {
             type: "radio",
             label: "菜单场景",
             field: "menuScene",
-            value: '1',
+            value: 1,
             asyncOptions: async (currentValue, formInstance) => {
                 const params = { dictType:'sys_menu_scene' }
                 const res = await getSystemDictDataByType (params)
-                return res.data.map(item => item)
+                return res.data.map((item) => ({
+                    label: item.dictLabel,
+                    value: Number(item.dictValue)
+                }))
             }
         },
         {
@@ -134,11 +143,14 @@ export const getFormSchema = (): FormSchema => ({
             type: "radio",
             label: "菜单状态",
             field: "visible",
-            value: '',
+            value: 1,
             asyncOptions: async (currentValue, formInstance) => {
                 const params = { dictType:'sys_show_hide' }
                 const res = await getSystemDictDataByType (params)
-                return res.data.map(item => item)
+                return res.data.map((item) => ({
+                    label: item.dictLabel,
+                    value: Number(item.dictValue)
+                }))
             }
         }
     ]

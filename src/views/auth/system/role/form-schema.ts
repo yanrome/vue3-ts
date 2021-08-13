@@ -1,9 +1,5 @@
-import {createVNode} from 'vue'
-import AccessTree from './components/access-tree.vue'
 import {FormSchema} from "@/types/schema";
-import {getAdminRoleAccess} from "@/api/system/role";
 import { getSystemDictDataByType } from '@/api/system/user/index'
-import { Input } from 'ant-design-vue';
 
 // 与vue2的里面的data一样，函数返回新对象防止多处共用同一对象,造成数据混乱
 export const getFormSchema = (): FormSchema => ({
@@ -38,14 +34,13 @@ export const getFormSchema = (): FormSchema => ({
             type: 'select',
             label: "角色类型",
             field: "roleType",
-            value: '',
+            value: 0,
             asyncOptions: async () => {
                 const params = { dictType:'sys_user_sex' }
                 const res = await getSystemDictDataByType (params)
-                console.log('res',res)
                 return res.data.map((item) => ({
                     label: item.dictLabel,
-                    value: item.dictValue
+                    value: Number(item.dictValue)
                 }))
                 
             }
@@ -84,7 +79,9 @@ export const getFormSchema = (): FormSchema => ({
             type: "switch",
             label: "状态",
             field: "status",
-            value: ''
+            value: {
+                type:Number
+            }
         },
         {
             type: "input",

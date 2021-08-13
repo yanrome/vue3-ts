@@ -18,10 +18,10 @@
         </a-form-item>
       </div>
       <a-form-item>
-        <a-button type="primary"
+        <!-- <a-button type="primary"
                   @click="search">
           搜索
-        </a-button>
+        </a-button> -->
         <a-button type="primary"
                   style="margin-left: 10px;"
                   @click="reSet">
@@ -32,7 +32,7 @@
   </a-card>
   <dynamic-table ref="tableRef"
                  :columns="columns"
-                 :pageOption="pageOption"
+                 :pageOption="formState"
                  :get-list-func="adminMenu"
                  :row-selection="rowSelection"
                  rowKey="id"
@@ -42,10 +42,10 @@
                 type="primary">
         添加
       </a-button>
-      <a-button @click="isOpen"
+      <!-- <a-button @click="isOpen"
                 type="primary">
         展开/折叠
-      </a-button>
+      </a-button> -->
     </template>
   </dynamic-table>
 </template>
@@ -157,32 +157,19 @@ export default defineComponent({
         record.children = result.data
       }
     }
-    // 搜索后
-    const search = () => {
-      const mergeParam = { ...formState, ...param.value }
-      const res = getSystemDictDataByType(mergeParam)
-      console.log('搜索后', res)
-      // columns.values = res.data
-    }
     // 重置后
     const reSet = () => {
       formState.menuName = ''
       formState.visible = '2'
-      const res = getSystemDictDataByType(param.value)
-      console.log('重置后', res)
-      // columns.values = res.data
     }
 
     return {
-      // ...toRefs(state),
-      // isDisabled,
       columns,
       tableRef,
       adminMenu,
       addItem,
       formState,
       adminMenuRemove,
-      search,
       reSet,
       isOpen,
       expand

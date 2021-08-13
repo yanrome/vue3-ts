@@ -12,15 +12,15 @@
       <div class="flex">
         <a-form-item label="创建时间">
           <a-range-picker v-model:value="rangeTime"
-                          @change="ChooseTime(rangeTime)"
+                          @change="ChooseTime"
                           :valueFormat="'YYYY-MM-DD'" />
         </a-form-item>
       </div>
       <a-form-item>
-        <a-button type="primary"
+        <!-- <a-button type="primary"
                   @click="search">
           搜索
-        </a-button>
+        </a-button> -->
         <a-button type="primary"
                   style="margin-left: 10px;"
                   @click="reSet">
@@ -36,6 +36,7 @@
 
   <dynamic-table ref="tableRef"
                  :columns="columns"
+                 :pageOption="formState"
                  :get-list-func="adminDept"
                  rowKey="id"
                  :row-selection="rowSelection">
@@ -58,17 +59,12 @@ import {
   defineComponent,
   reactive,
   toRefs,
-  createVNode,
-  computed,
   UnwrapRef,
   ref
 } from 'vue'
-import { Modal } from 'ant-design-vue'
-import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { DynamicTable } from '@/components/dynamic-table'
 import { adminDept, adminDeptAdd } from '@/api/system/dept/index'
 import { columns } from './columns'
-import { hasPermission } from '@/utils/permission/hasPermission'
 import { useFormModal } from '@/hooks/useFormModal'
 import { getFormSchema } from './form-schema'
 import { Moment } from 'moment'
@@ -113,18 +109,13 @@ export default defineComponent({
       endTime: ''
     })
 
-    const param = ref<Param>({
-      pageNum: 1,
-      pageSize: 10
-    })
-
     const tableRef = ref<any>(null)
 
     const state = reactive({
       tableLoading: false,
+      rangeTime: ref<Moment[]>([]),
       rowSelection: {
         onChange: (selectedRowKeys, selectedRows) => {
-          console.log('11')
           state.rowSelection.selectedRowKeys = selectedRowKeys
         },
         selectedRowKeys: []
@@ -174,21 +165,12 @@ export default defineComponent({
       formState.starTime = time[0]
       formState.endTime = time[1]
     }
-    // 搜索后
-    const search = () => {
-      const mergeParam = { ...formState, ...param.value }
-      const res = adminDept(mergeParam)
-      console.log('搜索后', res)
-      // columns.values = res.data
-    }
     // 重置后
     const reSet = () => {
       formState.deptName = ''
       formState.starTime = ''
       formState.endTime = ''
-      const res = adminDept(param.value)
-      console.log('重置后', res)
-      // columns.values = res.data
+      state.rangeTime = []
     }
 
     return {
@@ -198,10 +180,8 @@ export default defineComponent({
       adminDept,
       formState,
       addItem,
-      search,
       reSet,
-      ChooseTime,
-      rangeTime: ref<Moment[]>([])
+      ChooseTime
     }
   }
 })

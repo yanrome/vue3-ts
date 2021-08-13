@@ -27,7 +27,7 @@ export const columns: TableColumn[] = [ // 角色列表
         dataIndex: 'nickName'
     },
     {
-        title: '用户来源11',
+        title: '用户来源',
         dataIndex: 'userSource',
         slotsType:'component',
         slots: {
@@ -37,19 +37,7 @@ export const columns: TableColumn[] = [ // 角色列表
             return createVNode(Tag,{
                 color:sysUserSource[record.userSource].color
             },sysUserSource[record.userSource].txt)
-            // const asyncFnc = async (record) =>{
-            //     let data = await userSourceData
-            //     // console.log(' getDictUserSource[record.userSource111]', data[record.userSource])
-            // }
-            // asyncFnc(record)
         }
-        // slotsFunc: (val)=>{
-        //     console.log('=====================>val',val)
-        //     // const params = { dictType:'sys_user_sex' }
-        //     // const res = await getSystemDictDataByType (params)
-        //     // console.log('用户来源用户来源用户来源',res)
-        //     // return res.data
-        // }
     },
     {
         title: '手机',

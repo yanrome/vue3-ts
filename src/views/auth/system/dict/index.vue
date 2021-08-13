@@ -16,15 +16,15 @@
       <div class="flex">
         <a-form-item label="创建时间">
           <a-range-picker v-model:value="rangeTime"
-                          @change="ChooseTime(rangeTime)"
+                          @change="ChooseTime"
                           :valueFormat="'YYYY-MM-DD'" />
         </a-form-item>
       </div>
       <a-form-item>
-        <a-button type="primary"
+        <!-- <a-button type="primary"
                   @click="search">
           搜索
-        </a-button>
+        </a-button> -->
         <a-button @click="reSet"
                   style="margin-left: 10px;"
                   type="primary">
@@ -37,6 +37,7 @@
                  :columns="columns"
                  :get-list-func="adminDict"
                  rowKey="id"
+                 :pageOption="formState"
                  :row-selection="rowSelection">
     <template v-slot:title>
       <a-button @click="addItem"
@@ -115,6 +116,7 @@ export default defineComponent({
 
     const state = reactive({
       tableLoading: false,
+      rangeTime:ref<Moment[]>([]),
       rowSelection: {
         onChange: (selectedRowKeys, selectedRows) => {
           state.rowSelection.selectedRowKeys = selectedRowKeys
@@ -156,22 +158,13 @@ export default defineComponent({
       formState.starTime = time[0]
       formState.endTime = time[1]
     }
-    // 搜索后
-    const search = () => {
-      const mergeParam = { ...formState, ...param.value }
-      const res = adminDict(mergeParam)
-      console.log('搜索后', res)
-      // columns.values = res.data
-    }
     // 重置后
     const reSet = () => {
       formState.dictName = ''
       formState.dictType = ''
       formState.starTime = ''
       formState.endTime = ''
-      const res = adminDict(param.value)
-      console.log('重置后', res)
-      // columns.values = res.data
+      state.rangeTime = []
     }
 
     return {
@@ -183,10 +176,8 @@ export default defineComponent({
       addItem,
       formState,
       deleteItems,
-      search,
       reSet,
-      ChooseTime,
-      rangeTime: ref<Moment[]>([])
+      ChooseTime
     }
   }
 })

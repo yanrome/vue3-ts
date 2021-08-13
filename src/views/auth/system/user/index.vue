@@ -42,15 +42,15 @@
           <div class="flex">
             <a-form-item label="创建时间">
               <a-range-picker v-model:value="rangeTime"
-                              @change="ChooseTime(rangeTime)"
+                              @change="ChooseTime"
                               :valueFormat="'YYYY-MM-DD'" />
             </a-form-item>
           </div>
           <a-form-item>
-            <a-button type="primary"
+            <!-- <a-button type="primary"
                       @click="search">
               搜索
-            </a-button>
+            </a-button> -->
             <a-button type="primary"
                       style='margin-left: 10px;'
                       @click="reSet">
@@ -63,6 +63,7 @@
                      :columns="columns"
                      :get-list-func="adminUser"
                      rowKey="id"
+                     :pageOption="formState"
                      :row-selection="rowSelection">
         <template v-slot:title>
           <a-button @click="addItem"
@@ -81,14 +82,7 @@
   </div>
 </template>
 <script lang="ts">
-import {
-  defineComponent,
-  reactive,
-  toRefs,
-  UnwrapRef,
-  ref,
-  watch
-} from 'vue'
+import { defineComponent, reactive, toRefs, UnwrapRef, ref, watch } from 'vue'
 import { DynamicTable } from '@/components/dynamic-table'
 import { adminUser, adminUserAdd } from '@/api/system/user/index'
 import AccessTree from './components/access-tree.vue'
@@ -97,7 +91,7 @@ import { useFormModal } from '@/hooks/useFormModal'
 import { getFormSchema } from './form-schema'
 import { Moment } from 'moment'
 import { DatePicker, Tree } from 'ant-design-vue'
-import { setupCustomComponents } from "@/plugins";
+import { setupCustomComponents } from '@/plugins'
 interface FormState {
   name: string
   region: string | undefined
@@ -133,7 +127,7 @@ export default defineComponent({
       pageSize: 10
     })
 
-    console.log('setupCustomComponents',setupCustomComponents)
+    console.log('setupCustomComponents', setupCustomComponents)
 
     watch(value, () => {
       console.log(value.value)
@@ -155,13 +149,12 @@ export default defineComponent({
     })
 
     const tableRef = ref<any>(null)
-    console.log('tableRef', tableRef)
 
     const state = reactive({
       tableLoading: false,
+      rangeTime:ref<Moment[]>([]),
       rowSelection: {
         onChange: (selectedRowKeys, selectedRows) => {
-          console.log('11')
           state.rowSelection.selectedRowKeys = selectedRowKeys
         },
         selectedRowKeys: []
@@ -193,6 +186,8 @@ export default defineComponent({
         formSchema: getFormSchema(),
         handleOk: async (modelRef, state) => {
           console.log('添加用户-参数', modelRef)
+          modelRef.status = modelRef.status == true ? '1' : '0'
+          debugger
           await adminUserAdd(modelRef)
           tableRef.value.refreshTableData()
         }
@@ -223,6 +218,7 @@ export default defineComponent({
       formState.phone = ''
       formState.starTime = ''
       formState.endTime = ''
+      state.rangeTime = []
       const res = adminUser(param.value)
       console.log('重置后', res)
       // columns.values = res.data
@@ -241,7 +237,6 @@ export default defineComponent({
       visible,
       reSet,
       ChooseTime,
-      rangeTime: ref<Moment[]>([]),
       afterVisibleChange
     }
   }

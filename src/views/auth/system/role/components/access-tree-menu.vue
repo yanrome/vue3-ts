@@ -1,36 +1,32 @@
 <template>
   <a-spin :spinning="spinning">
-    <a-tree-select v-model:checkedKeys="checkedKeys"
-                   style="min-height: 40px;"
-                   checkable
-                   checkStrictly
-                   :selectable="false"
-                   :tree-data="treeData"
-                   :replace-fields="replaceFields"
-                   @check="onCheck">
-    </a-tree-select>
+    <a-tree style="min-height: 40px;"
+            checkable
+            checkStrictly
+            :selectable="false"
+            :tree-data="treeData"
+            :replace-fields="replaceFields"
+            v-model:checkedKeys="checkedKeys"
+            @check="onCheck">
+    </a-tree>
   </a-spin>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs, computed, onMounted } from 'vue'
-import { Tree, Spin, TreeSelect } from 'ant-design-vue'
-import { systemMenuMenuTreeData } from '@/api/system/menu/index'
+import { Tree, Spin } from 'ant-design-vue'
+import { systemMenuRoleMenuTreeData } from '@/api/system/menu/index'
 
 export default defineComponent({
-  name: 'AccessTree',
-  components: {
-    [Tree.name]: Tree,
-    [TreeSelect.name]: TreeSelect,
-    [Spin.name]: Spin
-  }, // 双向数据绑定
+  name: 'access-tree',
+  components: { [Tree.name]: Tree, [Spin.name]: Spin },
+  emits: ['update:value'], // 双向数据绑定
   props: {
     value: {
       type: Array,
       default: () => []
     }
   },
-  emits: ['update:value'],
   setup(props, { emit }) {
     const state = reactive({
       treeData: [] as any,
@@ -39,22 +35,22 @@ export default defineComponent({
         key: 'id'
       }
     })
-
     // 已勾选的节点
     const checkedKeys = computed({
       get: () => props.value,
       set: (val: any) =>
         emit('update:value', Array.isArray(val) ? val : val.checked)
     })
-
     onMounted(async () => {
-      // 查询所有菜单列表树
+      // 获取权限资源列表
       state.spinning = true
-      const res = await systemMenuMenuTreeData().finally(
+      const res = await systemMenuRoleMenuTreeData(props.value).finally(
         () => (state.spinning = false)
       )
       state.treeData = list2tree(res.data)
+      console.log('查询角色对应所有模板菜单列表树', list2tree(res.data))
     })
+    // console.log('已勾选的节点checkedKeys ', checkedKeys)
 
     // 列表转树
     const list2tree = (arr) => {
@@ -62,9 +58,8 @@ export default defineComponent({
       let tree = {}
       // 数组转 键值对
       arr.forEach((item) => {
-        item.title = item.name
+        // item.title = item.name
         item.key = item.id
-        // item.children = name
         temp[item.id] = item
       })
       let tempKeys = Object.keys(temp)
@@ -154,4 +149,5 @@ export default defineComponent({
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

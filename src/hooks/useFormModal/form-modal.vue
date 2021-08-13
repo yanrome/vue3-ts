@@ -45,7 +45,6 @@ export default defineComponent({
     }
   },
   setup(props) {
-    // console.log('111111111111111props ',props)
     const dynamicForm = ref<any>(null)
 
     const state = reactive({

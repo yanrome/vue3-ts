@@ -88,7 +88,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, PropType, toRefs } from 'vue'
+import { defineComponent, reactive, PropType, toRefs, watch } from 'vue'
 import { Card, Select, Table, Popconfirm } from 'ant-design-vue'
 import { TableProps } from 'ant-design-vue/lib/table/interface'
 import { usePagination, PageOption } from '@/hooks/usePagination'
@@ -214,6 +214,10 @@ export default defineComponent({
         pageOptions.value.current = Math.max(1, pageOptions.value.current - 1)
       }
     }
+
+    watch(props.pageOption,(val)=>{
+      refreshTableData()
+    })
 
     // 分页改变
     const paginationChange = (

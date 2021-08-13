@@ -62,30 +62,6 @@ export const getFormSchema = (): FormSchema => ({
                 }
             ]
         },
-        // {
-        //     type: 'checkbox',
-        //     label: '角色',
-        //     field: 'roles',
-        //     value: [],
-        //     options: [],
-        //     loading: true,
-        //     rules: [
-        //       {
-        //         required: true,
-        //         message: '请选择角色',
-        //         type: 'array'
-        //       }
-        //     ],
-        //     asyncOptions: async () => {
-        //       // 异步数据回调
-        //       // 获取角色列表
-        //       const { data } = await getAdminRole({})
-        //       return data.map((item) => ({
-        //         label: item.title,
-        //         value: item.id
-        //       }))
-        //     }
-        //   }
         {
             type: "input",
             label: "邮箱",
@@ -120,32 +96,24 @@ export const getFormSchema = (): FormSchema => ({
             type: "select",
             label: "性别",
             field: "sex",
-            value: '0',
+            value: 0,
             asyncOptions: async (currentValue, formInstance) => {
                 const params = { dictType:'sys_user_sex' }
                 const res = await getSystemDictDataByType (params)
-                return res.data
+                return res.data.map((item) => ({
+                    label: item.dictLabel,
+                    value: Number(item.dictValue)
+                }))
             }
         },
         {
             type: "switch",
             label: "状态",
             field: "status",
-            value: '0',
+            value: {
+                type:Number
+            }
         },
-        // {
-        //     type: createVNode(AccessTree),
-        //     label: "资源",
-        //     field: "accessIdsList",
-        //     value: [],
-        //     asyncValue: async (currentValue, formInstance) => {
-        //         const {id} = formInstance?.props.fields as any
-        //         // 获取角色列表
-        //         const data = await  adminUserAdd (id)
-        //         // 设置角色复选框选项
-        //         return data.map(item => item.accessId)
-        //     }
-        // }
     ]
 })
 

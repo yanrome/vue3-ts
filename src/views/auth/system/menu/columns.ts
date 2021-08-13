@@ -9,6 +9,8 @@ import { formatDate } from '@/utils/common'
 import { message } from 'ant-design-vue'
 import { IconFont } from '@/components/iconfont'
 import { createVNode } from 'vue'
+import { Tag } from "ant-design-vue";
+import { menuSceneStatus, menuTypeStatus, menuVisibleStatus } from "@/utils/dict";
 
 export const columns: TableColumn[] = [
     // 资源管理
@@ -27,11 +29,20 @@ export const columns: TableColumn[] = [
         title: '场景',
         dataIndex: 'menuScene',
         actions: [],
-        slotsFunc:  ()=>{
-            alert('231214124141你到家我的女own')
-            const res =  getSystemDictDataByType ({ dictType:'sys_menu_type' })
-            // return res.data.map(item => item)
+        slotsType:'component',
+        slots: {
+            customRender: 'menuScene'
         },
+        slotsFunc:  (record)=>{
+            return createVNode(Tag,{
+                color:menuSceneStatus[record.menuScene].color
+            },menuSceneStatus[record.menuScene].txt)
+        }
+        // slotsFunc: async ()=>{
+        //     const res = await getSystemDictDataByType ({ dictType:'sys_menu_type' })
+        //     console.log('231214124141你到家我的女own', res )
+        //     // return res.data.map(item => item)
+        // },
     },
     {
         title: '请求地址',
@@ -39,11 +50,29 @@ export const columns: TableColumn[] = [
     },
     {
         title: '类型',
-        dataIndex: 'menuType'
+        dataIndex: 'menuType',
+        slotsType:'component',
+        slots: {
+            customRender: 'menuType'
+        },
+        slotsFunc:  (record)=>{
+            return createVNode(Tag,{
+                color:menuTypeStatus[record.menuType].color
+            },menuTypeStatus[record.menuType].txt)
+        }
     },
     {
         title: '可见',
-        dataIndex: 'visible'
+        dataIndex: 'visible',
+        slotsType:'component',
+        slots: {
+            customRender: 'visible'
+        },
+        slotsFunc:  (record)=>{
+            return createVNode(Tag,{
+                color:menuVisibleStatus[record.visible].color
+            },menuVisibleStatus[record.visible].txt)
+        }
     },
     {
         title: '权限标识',

@@ -3,6 +3,12 @@ import { formatDate } from '@/utils/common'
 import { TableColumn } from "@/types/tableColumn";
 import { useFormModal } from "@/hooks/useFormModal";
 import { getFormSchema } from "./form-schema";
+import { getFormSchemaModel } from "./form-schemaModel";
+import { getFormSchemaData } from "./form-schemaData";
+import { getFormSchemaMenu } from "./form-schemaMenu";
+import { createVNode } from 'vue'
+import { Tag } from "ant-design-vue";
+import { roleStatus } from "@/utils/dict";
 
 export const columns: TableColumn[] = [ // 角色列表
     {
@@ -19,7 +25,16 @@ export const columns: TableColumn[] = [ // 角色列表
     },
     {
         title: '状态',
-        dataIndex: 'status'
+        dataIndex: 'status',
+        slotsType:'component',
+        slots:{
+            customRender: 'status'
+        },
+        slotsFunc:  (record)=>{
+            return createVNode(Tag,{
+                color:roleStatus[record.status].color
+            },roleStatus[record.status].txt)
+        }
     },
     {
         title: '备注',
@@ -34,7 +49,7 @@ export const columns: TableColumn[] = [ // 角色列表
         },
         actions: [
             {
-                type: 'button', // 控制类型，默认为a,可选： select | button | text
+                type: 'button', 
                 text: '编辑',
                 props: {
                     type: 'warning'
@@ -44,6 +59,7 @@ export const columns: TableColumn[] = [ // 角色列表
                     fields: record,
                     formSchema: getFormSchema(),
                     handleOk: async (modelRef, state) => {
+                        modelRef.status = modelRef.status == true ? '1' : '0'
                         const {roleName, roleType,  name, orderNum, status, remark, id } = modelRef
                         const params = {
                             roleName, roleType,  name, orderNum, status, remark, id
@@ -53,7 +69,67 @@ export const columns: TableColumn[] = [ // 角色列表
                 })
             },
             {
-                type: 'popconfirm', // 控制类型，默认为a,可选： select | button | text
+                type: 'button', 
+                text: '模板菜单权限',
+                props: {
+                    type: 'primary'
+                },
+                func: ({record}, refreshTableData) => useFormModal({
+                    title: '模板菜单权限',
+                    fields: record,
+                    formSchema: getFormSchemaModel(),
+                    handleOk: async (modelRef, state) => {
+                        // modelRef.status = modelRef.status == true ? '1' : '0'
+                        // const {roleName, roleType,  name, orderNum, status, remark, id } = modelRef
+                        // const params = {
+                        //     roleName, roleType,  name, orderNum, status, remark, id
+                        // }
+                        // return await adminRoleEdit(params).then(() => refreshTableData())
+                    }
+                })
+            },
+            {
+                type: 'button', 
+                text: '菜单权限',
+                props: {
+                    type: 'primary'
+                },
+                func: ({record}, refreshTableData) => useFormModal({
+                    title: '菜单权限',
+                    fields: record,
+                    formSchema: getFormSchemaMenu(),
+                    handleOk: async (modelRef, state) => {
+                        // modelRef.status = modelRef.status == true ? '1' : '0'
+                        // const {roleName, roleType,  name, orderNum, status, remark, id } = modelRef
+                        // const params = {
+                        //     roleName, roleType,  name, orderNum, status, remark, id
+                        // }
+                        // return await adminRoleEdit(params).then(() => refreshTableData())
+                    }
+                })
+            },
+            {
+                type: 'button', 
+                text: '数据权限',
+                props: {
+                    type: 'primary'
+                },
+                func: ({record}, refreshTableData) => useFormModal({
+                    title: '分配数据权限',
+                    fields: record,
+                    formSchema: getFormSchemaData(),
+                    handleOk: async (modelRef, state) => {
+                        // modelRef.status = modelRef.status == true ? '1' : '0'
+                        // const {roleName, roleType,  name, orderNum, status, remark, id } = modelRef
+                        // const params = {
+                        //     roleName, roleType,  name, orderNum, status, remark, id
+                        // }
+                        // return await adminRoleEdit(params).then(() => refreshTableData())
+                    }
+                })
+            },
+            {
+                type: 'popconfirm', 
                 text: '删除',
                 props: {
                   type: 'danger'

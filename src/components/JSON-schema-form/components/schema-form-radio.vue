@@ -2,9 +2,9 @@
   <a-radio-group v-model:value="modelValue"
                  v-on="formItem.eventObject">
     <template v-for="option in formItem.options"
-              :key="option.dictValue">
-      <a-radio :value="option.dictValue">
-        {{ option.dictLabel }}
+              :key="option.value">
+      <a-radio :value="option.value">
+        {{ option.label }}
       </a-radio>
     </template>
   </a-radio-group>

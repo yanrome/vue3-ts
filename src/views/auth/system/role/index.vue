@@ -11,24 +11,24 @@
         <a-form-item label="角色状态"
                      class="w50 mr20">
           <a-select v-model:value="formState.status">
-            <a-select-option value="2">所有</a-select-option>
-            <a-select-option value="0">非测试</a-select-option>
-            <a-select-option value="1">测试</a-select-option>
+            <a-select-option value="">所有</a-select-option>
+            <a-select-option value="1">在线</a-select-option>
+            <a-select-option value="0">离线</a-select-option>
           </a-select>
         </a-form-item>
       </div>
       <div class="flex">
         <a-form-item label="创建时间">
           <a-range-picker v-model:value="rangeTime"
-                          @change="ChooseTime(rangeTime)"
+                          @change="ChooseTime"
                           :valueFormat="'YYYY-MM-DD'" />
         </a-form-item>
       </div>
       <a-form-item>
-        <a-button type="primary"
+        <!-- <a-button type="primary"
                   @click="search">
           搜索
-        </a-button>
+        </a-button> -->
         <a-button type="primary"
                   style="margin-left: 10px;"
                   @click="reSet">
@@ -41,6 +41,7 @@
                  :columns="columns"
                  :get-list-func="getAdminRole"
                  rowKey="id"
+                 :pageOption="formState"
                  :row-selection="rowSelection">
     <template v-slot:title>
       <a-button @click="addItem"
@@ -66,19 +67,12 @@ import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { DynamicTable } from '@/components/dynamic-table'
 import { adminRoleRemove, getAdminRole, adminRoleAdd } from '@/api/system/role'
 import { columns } from './columns'
-import { hasPermission } from '@/utils/permission/hasPermission'
 import { useFormModal } from '@/hooks/useFormModal'
 import { Moment } from 'moment'
 import { DatePicker } from 'ant-design-vue'
 import { getFormSchema } from './form-schema'
 
 interface FormState {
-  name: string
-  region: string | undefined
-  delivery: boolean
-  type: string[]
-  resource: string
-  desc: string
   roleName: string
   status: string
   starTime: string
@@ -98,14 +92,8 @@ export default defineComponent({
   },
   setup() {
     const formState: UnwrapRef<FormState> = reactive({
-      name: '',
-      region: undefined,
-      delivery: false,
-      type: [],
-      resource: '',
-      desc: '',
       roleName: '',
-      status: '2',
+      status: '',
       starTime: '',
       endTime: ''
     })
@@ -119,6 +107,7 @@ export default defineComponent({
 
     const state = reactive({
       tableLoading: false,
+      rangeTime: ref<Moment[]>([]),
       rowSelection: {
         onChange: (selectedRowKeys, selectedRows) => {
           state.rowSelection.selectedRowKeys = selectedRowKeys
@@ -148,6 +137,7 @@ export default defineComponent({
         formSchema: getFormSchema(),
         handleOk: async (modelRef, state) => {
           console.log('添加用户-参数', modelRef)
+          modelRef.status = modelRef.status == true ? '1' : '0'
           await adminRoleAdd(modelRef)
           tableRef.value.refreshTableData()
         }
@@ -161,22 +151,22 @@ export default defineComponent({
       formState.starTime = time[0]
       formState.endTime = time[1]
     }
-    // 搜索后
-    const search = () => {
-      const mergeParam = { ...formState, ...param.value }
-      const res = getAdminRole(mergeParam)
-      console.log('搜索后', res)
-      // columns.values = res.data
-    }
+    // // 搜索后
+    // const search = () => {
+    //   const mergeParam = { ...formState, ...param.value }
+    //   const res = getAdminRole(mergeParam)
+    //   console.log('搜索后', res)
+    //   // columns.values = res.data
+    // }
     // 重置后
     const reSet = () => {
       formState.roleName = ''
-      formState.status = '2'
+      formState.status = ''
       formState.starTime = ''
       formState.endTime = ''
-      const res = getAdminRole(param.value)
-      console.log('重置后', res)
-      // columns.values = res.data
+      state.rangeTime = []
+      // const res = getAdminRole(param.value)
+      // console.log('重置后', res)
     }
 
     return {
@@ -188,10 +178,8 @@ export default defineComponent({
       addItem,
       formState,
       deleteItems,
-      search,
       reSet,
-      ChooseTime,
-      rangeTime: ref<Moment[]>([])
+      ChooseTime
     }
   }
 })

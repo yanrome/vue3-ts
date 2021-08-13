@@ -7,6 +7,11 @@ enum Api {
   adminMenuEdit = '/system/menu/edit',
   adminMenuRemove = '/system/menu/remove',
   adminMenuAccess = '/admin/menu_access',
+  // 模板api
+  systemMenuMenuTreeData='/system/menu/menuTreeData',
+  systemMenuRoleMenuTreeData = '/system/menu/roleMenuTreeData',
+  systemMenuTemplateRoleMenuTreeData = '/system/menu/template/roleMenuTreeData',
+
 }
 
 /**
@@ -77,3 +82,41 @@ export function adminMenuAdd(params) {
     successMessageText: '创建成功'
   });
 }
+
+// 模板api
+
+/**
+ * 查询所有菜单列表树
+ * @param params
+ */
+ export function systemMenuMenuTreeData() {
+  return http.request({
+    url: Api.systemMenuMenuTreeData,
+    method: RequestEnum.GET,
+  })
+}
+
+/**
+ * 查询角色对应所有模板菜单列表树
+ * @param params
+ */
+ export function systemMenuTemplateRoleMenuTreeData(roleId) {
+  return http.request({
+    url: [Api.systemMenuTemplateRoleMenuTreeData, roleId].join('/'),
+    method: RequestEnum.GET,
+  })
+}
+
+/**
+ * 查询角色对应所有菜单列表树
+ * @param params
+ */
+ export function systemMenuRoleMenuTreeData(roleId) {
+  return http.request({
+    url: [Api.systemMenuRoleMenuTreeData, roleId].join('/'),
+    method: RequestEnum.GET,
+  })
+}
+
+
+
