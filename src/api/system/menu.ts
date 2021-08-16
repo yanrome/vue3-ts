@@ -6,19 +6,18 @@ import {
 } from './model/menuModel';
 
 enum Api {
-  adminMenus = '/system/menu/byuser',
-  // adminMenus = '/system/menu/byrole',
+  adminMenus = '/system/menu/byrole',
   GetBtnCodeListByUserId = '/getBtnCodeListByUserId',
 }
 
 /**
  * @description: 根据用户id获取用户菜单
  */
-export function adminMenus(menuScene) {
+export function adminMenus(params) {
   return http.request<GetMenuListByUserIdResult>({
-    url: [Api.adminMenus,menuScene].join('/'),
+    url: Api.adminMenus,
     method: 'GET',
-      // params:{...params,menuScene:1},
+      params:{...params,menuScene:1},
   });
 }
 

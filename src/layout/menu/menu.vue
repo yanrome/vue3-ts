@@ -1,19 +1,18 @@
 <template>
-  <a-menu
-      v-model:open-keys="openKeys"
-      v-model:selected-keys="selectedKeys"
-      mode="inline"
-      :inline-collapsed="collapsed"
-      @click="clickMenuItem"
-  >
-    <template v-for="item in menus"  :key="item.name">
-      <menu-item :menu-info="item"/>
+  <a-menu v-model:open-keys="openKeys"
+          v-model:selected-keys="selectedKeys"
+          mode="inline"
+          :inline-collapsed="collapsed"
+          @click="clickMenuItem">
+    <template v-for="item in menus"
+              :key="item.name">
+      <menu-item :menu-info="item" />
     </template>
   </a-menu>
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, computed, watch, toRefs} from 'vue'
+import { defineComponent, reactive, computed, watch, toRefs } from 'vue'
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -21,13 +20,13 @@ import {
   MailOutlined,
   DesktopOutlined,
   InboxOutlined,
-  AppstoreOutlined,
-} from '@ant-design/icons-vue';
-import {Menu} from 'ant-design-vue';
+  AppstoreOutlined
+} from '@ant-design/icons-vue'
+import { Menu } from 'ant-design-vue'
 import MenuItem from './menu-item.vue'
-import {useRoute, useRouter} from "vue-router";
-import {useStore} from '@/store'
-import {routes} from "@/router";
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from '@/store'
+import { routes } from '@/router'
 
 export default defineComponent({
   components: {
@@ -40,10 +39,11 @@ export default defineComponent({
     MailOutlined,
     DesktopOutlined,
     InboxOutlined,
-    AppstoreOutlined,
+    AppstoreOutlined
   },
   props: {
-    collapsed: { // 侧边栏菜单是否收起
+    collapsed: {
+      // 侧边栏菜单是否收起
       type: Boolean
     }
   },
@@ -61,29 +61,38 @@ export default defineComponent({
       selectedKeys: [currentRoute.name]
     })
 
-    const menus = computed(() => store.getters.menus.length > 0 ? store.getters.menus : routes.find(item => item.name == 'Layout')!.children)
+    const menus = computed(() =>
+      store.getters.menus.length > 0
+        ? store.getters.menus
+        : routes.find((item) => item.name == 'Layout')!.children
+    )
 
-    console.log('isMenu',menus)
-
+    console.log('isMenu', menus)
 
     // 监听菜单收缩状态
-    watch(() => props.collapsed, (newVal) => {
-      state.openKeys = newVal ? [] : getOpenKeys()
-      state.selectedKeys = [currentRoute.name]
-    })
+    watch(
+      () => props.collapsed,
+      (newVal) => {
+        state.openKeys = newVal ? [] : getOpenKeys()
+        state.selectedKeys = [currentRoute.name]
+      }
+    )
 
     // 跟随页面路由变化，切换菜单选中状态
-    watch(() => currentRoute.fullPath, () => {
-      if (currentRoute.name == 'login' || props.collapsed) return
-      state.openKeys = getOpenKeys()
-      state.selectedKeys = [currentRoute.name]
-    })
+    watch(
+      () => currentRoute.fullPath,
+      () => {
+        if (currentRoute.name == 'login' || props.collapsed) return
+        state.openKeys = getOpenKeys()
+        state.selectedKeys = [currentRoute.name]
+      }
+    )
 
     // 点击菜单
-    const clickMenuItem = ({item, key, keyPath}) => {
+    const clickMenuItem = ({ item, key, keyPath }) => {
       // router.push({path:keyPath[0],name: key})
-      console.log('key',key)
-      router.push({name:key})
+      console.log('key', key)
+      router.push({ name: key })
     }
 
     return {

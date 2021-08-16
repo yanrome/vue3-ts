@@ -43,7 +43,7 @@
                 show-search
                 placeholder="Select a person"
                 option-filter-prop="children"
-                style="width: 200px;color: #ffffff"
+                style="width: 200px;color: #fff;"
                 :bordered="false"
                 :filter-option="filterOption"
                 @focus="handleFocus"

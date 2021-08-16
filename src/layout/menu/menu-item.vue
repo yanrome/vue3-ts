@@ -1,16 +1,16 @@
 <template>
   <template v-if="!menuInfo.meta.hidden">
-    <a-sub-menu v-if="menuInfo.children?.length" :key="menuInfo.name" v-bind="$attrs">
+    <a-sub-menu v-if="menuInfo.children?.length" :key="menuInfo.id" v-bind="$attrs">
       <template v-slot:title>
         <span>
-          <icon-font style="color: aliceblue" :type="menuInfo.meta.icon" />
+          <icon-font style="color: aliceblue;" :type="menuInfo.meta.icon" />
           <span>{{ menuInfo.meta.title }}</span>
         </span>
       </template>
       <template v-for="item in menuInfo.children" :key="item.name">
         <template v-if="!item.children">
           <a-menu-item :key="item.name">
-            <icon-font style="color: aliceblue" :type="item.meta.icon" />
+            <icon-font style="color: aliceblue;" :type="item.meta.icon" />
             <span>{{ item.meta.title }}</span>
           </a-menu-item>
         </template>

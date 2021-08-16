@@ -29,7 +29,6 @@
 //                 },
 //                 component: () => import(/* webpackChunkName: "demos-custom-a-custom-modal" */ '@/views/auth/business/order/details/index.vue')
 //             },
-
 //         ]
 //     }
 // ]
