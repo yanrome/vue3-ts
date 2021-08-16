@@ -47,6 +47,9 @@
                 {{item.account}}
             </a-descriptions-item>
         </a-descriptions>
+        <a-descriptions-item label="">
+           <a-button @click="edit">编辑</a-button>
+        </a-descriptions-item>
     </a-card>
 </template>
 
@@ -60,6 +63,8 @@
     import {getDict} from '@/hooks/dict-list'
     import {formatDate} from '@/utils/common'
     import {accountType} from "@/utils/dict";
+    import router from "@/router";
+    import {useRouter, useRoute} from "vue-router";
 
     export default defineComponent({
         name: "index",
@@ -69,6 +74,8 @@
             aDescriptionsItem:Descriptions.Item
         },
         setup(){
+            const uRouter = useRouter()
+            const uRoute = useRoute()
             const store = useStore()
             const state = reactive({
                 hotelMsg:{},
@@ -99,9 +106,35 @@
                 getHotelMsg()
             })
 
+            //跳转编辑
+            const edit = ()=>{
+                console.log('router',router)
+                // const uRouter = useRouter()
+                // const uRoute = useRoute()
+                // debugger
+                const component =  ()=>import('./edit.vue')
+                const addRouter = {
+                    component:component,
+                    meta: {
+                        title: '编辑',
+                        icon: 'icon-zhuomian',
+                        keepAlive: true,
+                        reload: false,
+                        componentName: component.name,
+                        hidden: true
+                    },
+                    name: '/hotel/edit' || '',
+                    path: '/hotel/edit',
+                    props: false
+                }
+                uRouter.addRoute('/hotel',addRouter)
+                uRouter.push({path:'/hotel/edit'})
+            }
+
             return{
                 ...toRefs(state),
                 formatDate,
+                edit,
                 accountType
             }
         },
