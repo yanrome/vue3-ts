@@ -243,4 +243,8 @@ export default defineComponent({
     //margin-left: 0;
   }
 }
+::v-deep(.ant-form-item-label) {
+  width: 80px;
+  margin-right: 10px;
+}
 </style>

@@ -1,4 +1,5 @@
 <template>
+    <div v-if="hotelStatus === 'show'">
     <a-card>
         <a-descriptions
                 title="酒店信息"
@@ -30,7 +31,10 @@
                 {{ hotelType[hotelMsg.hotelType] }}
             </a-descriptions-item>
             <a-descriptions-item label="开业年月">
-                {{formatDate(hotelMsg.termStartTime,'YYYY-MM-DD')}}
+                {{formatDate(hotelMsg.opening,'YYYY-MM-DD')}}
+            </a-descriptions-item>
+            <a-descriptions-item label="装修年月">
+                {{formatDate(hotelMsg.decoration,'YYYY-MM-DD')}}
             </a-descriptions-item>
             <a-descriptions-item label="酒店简介">
                 {{hotelMsg.description}}
@@ -48,9 +52,13 @@
             </a-descriptions-item>
         </a-descriptions>
         <a-descriptions-item label="">
-           <a-button @click="edit">编辑</a-button>
+           <a-button @click="edit" >编辑</a-button>
         </a-descriptions-item>
     </a-card>
+    </div>
+    <div v-if="hotelStatus === 'edit'">
+        <ai-edit @success="success" :hotelMsg="hotelMsg"></ai-edit>
+    </div>
 </template>
 
 <script lang="ts">
@@ -65,13 +73,15 @@
     import {accountType} from "@/utils/dict";
     import router from "@/router";
     import {useRouter, useRoute} from "vue-router";
+    import edit from "./edit.vue";
 
     export default defineComponent({
         name: "index",
         components:{
             [Card.name]:Card,
             [Descriptions.name]:Descriptions,
-            aDescriptionsItem:Descriptions.Item
+            aDescriptionsItem:Descriptions.Item,
+            aiEdit:edit
         },
         setup(){
             const uRouter = useRouter()
@@ -80,6 +90,7 @@
             const state = reactive({
                 hotelMsg:{},
                 hotelType: {},
+                hotelStatus:'show',
                 account:{},
                 accountType: {}
             })
@@ -108,10 +119,12 @@
 
             //跳转编辑
             const edit = ()=>{
-                console.log('router',router)
+                state.hotelStatus = 'edit'
+                // console.log('router',router)
                 // const uRouter = useRouter()
                 // const uRoute = useRoute()
                 // debugger
+                return
                 const component =  ()=>import('./edit.vue')
                 const addRouter = {
                     component:component,
@@ -131,10 +144,17 @@
                 uRouter.push({path:'/hotel/edit'})
             }
 
+            //修改成功
+            const success = (e) =>{
+                state.hotelStatus = 'show'
+                state.hotelMsg = Object.assign( state.hotelMsg,e)
+            }
+
             return{
                 ...toRefs(state),
                 formatDate,
                 edit,
+                success,
                 accountType
             }
         },
