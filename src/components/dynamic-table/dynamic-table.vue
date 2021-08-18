@@ -217,6 +217,8 @@ export default defineComponent({
 
     watch(props.pageOption,(val)=>{
       refreshTableData()
+    },{
+      deep:true
     })
 
     // 分页改变

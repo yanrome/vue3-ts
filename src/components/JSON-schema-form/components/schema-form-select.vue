@@ -11,9 +11,10 @@
   </a-select>
 </template>
 <script lang="ts">
-import { defineComponent, PropType, computed } from 'vue'
+import { defineComponent, PropType, computed ,watch} from 'vue'
 import { Select } from 'ant-design-vue'
 import { FormItem } from '@/types/schema'
+import {buttonList} from "@/views/auth/business/order/utils/btn-type";
 export default defineComponent({
   name: 'SchemaFormSelect',
   components: {
@@ -30,7 +31,7 @@ export default defineComponent({
   },
   emits: ['update:value'],
   setup(props, { attrs, emit }) {
-    console.log('props-value', props)
+    console.log('props-value', props.formItem)
     const modelValue = computed({
     get: () => props.value,
     set: (val) => emit('update:value', val)
