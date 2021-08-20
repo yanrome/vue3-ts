@@ -18,11 +18,7 @@ const defaultRoutePath = '/dashboard'
 
 // 是否需要从后端获取菜单
 const isGetMenus = debounce(({to, from, next, hasRoute}) => {
-
-
     store.dispatch(AsyncRouteActionTypes.GenerateRoutes).then(() => {
-
-
         // 根据roles权限生成可访问的路由表
         // 动态添加可访问路由表
         if (allowList.includes(to.name as string)) return
@@ -63,8 +59,8 @@ export function createRouterGuards(router: Router) {
 
                 const hasRoute = router.hasRoute(to.name!)
                 // // 如果不需要每次切换路由获取最新的动态路由，可把下面注释放开
-                // // if (store.getters.addRouters.length === 0) {
-                // // generate dynamic router
+                // if (store.getters.addRouters.length === 0) {
+                // generate dynamic router
                 // // 防抖获取菜单
                 isGetMenus({to, from, next, hasRoute})
 

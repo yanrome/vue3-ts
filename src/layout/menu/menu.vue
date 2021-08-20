@@ -1,5 +1,5 @@
 <template>
-  <a-menu v-model:open-keys="openKeys"
+  <a-menu :open-keys="openKeys"
           v-model:selected-keys="selectedKeys"
           mode="inline"
           :inline-collapsed="collapsed"
@@ -31,8 +31,8 @@ import { routes } from '@/router'
 export default defineComponent({
   components: {
     MenuItem,
-    'a-sub-menu': Menu.SubMenu,
-    'a-menu-item': Menu.Item,
+    'a-sub-menu':Menu.SubMenu,
+    'a-menu-item':Menu.Item,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     PieChartOutlined,
@@ -66,8 +66,6 @@ export default defineComponent({
         ? store.getters.menus
         : routes.find((item) => item.name == 'Layout')!.children
     )
-    console.log('isMenu', menus)
-
     // 监听菜单收缩状态
     watch(
       () => props.collapsed,
@@ -77,12 +75,13 @@ export default defineComponent({
       }
     )
 
+
     // 跟随页面路由变化，切换菜单选中状态
     watch(
       () => currentRoute.fullPath,
       () => {
         if (currentRoute.name == 'login' || props.collapsed)return
-        state.openKeys = getOpenKeys()
+        // state.openKeys = getOpenKeys()
         state.selectedKeys = [currentRoute.name]
       }
     )
@@ -92,6 +91,7 @@ export default defineComponent({
     //   // router.push({path:keyPath[0],name: key})
     //   router.push({ name: key })
     // }
+
     // 点击菜单
     const clickMenuItem = ({ item, key, keyPath }) => {
       if (/http(s)?:/.test(key)) {

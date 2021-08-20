@@ -100,7 +100,7 @@ export function adminUserEdit(params) {
     method: RequestEnum.POST,
     params,
   })
-};
+}
 
 
 /**

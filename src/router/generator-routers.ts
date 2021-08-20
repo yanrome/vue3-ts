@@ -55,7 +55,7 @@ export const generatorDynamicRouter = (): Promise<RouteRecordRaw[]> => {
             console.log('result', result)
             const menuNav: any = []
             const childrenNav = []
-            let dataResult: any = result['data']
+            const dataResult: any = result['data']
 
             //      后端数据, 根级树数组,  根级 PID
             // listToTree(data, childrenNav, 0)

@@ -90,7 +90,7 @@ export const columns: TableColumn[] = [ // 角色列表
                     fields: record,
                     formSchema: getFormSchemaRole(),
                     handleOk: async (modelRef, state) => {
-                        let param = {
+                        const param = {
                             roleNames:(modelRef.roles).toString()
                         }
                         await adminUserRoleEdit(modelRef.id,param)
