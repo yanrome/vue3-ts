@@ -6,7 +6,9 @@ export const constantRouterComponents = {
     '/system': RouterTransition, // 系统管理
     '/business': RouterTransition, // 系统管理
     '/finance': RouterTransition, // 财务中心
+    '/transaction':RouterTransition,
     '/hotel': RouterTransition, //
+    '/order':RouterTransition,
     '/roomState': RouterTransition, //
     '':RouterTransition,
     '/#':RouterTransition,

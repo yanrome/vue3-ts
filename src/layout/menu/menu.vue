@@ -55,7 +55,7 @@ export default defineComponent({
 
     // 获取当前打开的子菜单
     const getOpenKeys = () => [currentRoute.matched[1]?.name]
-
+    console.log('getOpenKeys',getOpenKeys())
     const state = reactive({
       openKeys: getOpenKeys(),
       selectedKeys: [currentRoute.name]
@@ -66,7 +66,6 @@ export default defineComponent({
         ? store.getters.menus
         : routes.find((item) => item.name == 'Layout')!.children
     )
-
     console.log('isMenu', menus)
 
     // 监听菜单收缩状态
@@ -82,17 +81,24 @@ export default defineComponent({
     watch(
       () => currentRoute.fullPath,
       () => {
-        if (currentRoute.name == 'login' || props.collapsed) return
+        if (currentRoute.name == 'login' || props.collapsed)return
         state.openKeys = getOpenKeys()
         state.selectedKeys = [currentRoute.name]
       }
     )
 
     // 点击菜单
+    // const clickMenuItem = ({ item, key, keyPath }) => {
+    //   // router.push({path:keyPath[0],name: key})
+    //   router.push({ name: key })
+    // }
+    // 点击菜单
     const clickMenuItem = ({ item, key, keyPath }) => {
-      // router.push({path:keyPath[0],name: key})
-      console.log('key', key)
-      router.push({ name: key })
+      if (/http(s)?:/.test(key)) {
+        window.open(key)
+      } else {
+        router.push({ name: key })
+      }
     }
 
     return {

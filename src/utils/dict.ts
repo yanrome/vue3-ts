@@ -1,5 +1,29 @@
 import { Radio } from "ant-design-vue"
 
+export const tagColor = {
+    1: 'pink',
+    2: 'red',
+    3: 'orange',
+    4: 'green',
+    5: 'cyan',
+    6:"blue",
+    7:"purple",
+    8:"pink",
+    9:"red",
+}
+
+export const publicColor = {
+    1: '#6CC178',
+    2: '#5A7EF8',
+    3: '#FA7D41',
+    4: '#F95252',
+    5: '#1890ff',
+    6:"#87d068",
+    7:"#ff5500",
+    8:"#389e0d",
+    9:"#531dab",
+}
+
 export const accountType = {
     2: '微信账户',
     3: '支付宝账户'

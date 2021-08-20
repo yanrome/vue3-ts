@@ -36,7 +36,7 @@ const list2tree = (children) => {
                     componentName: component.name,
                     hidden: hidden
                 },
-                name: path || '',
+                name: path.replace('/','') || '',
                 path: path,
                 props: false
             }

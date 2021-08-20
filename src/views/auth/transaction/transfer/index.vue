@@ -14,7 +14,7 @@
     </a-card>
     <a-card>
         <dynamic-table :pageOption="pageOption" rowKey="id" :columns="columns(getDictFn())"
-                       :get-list-func="postAccountFlowList"></dynamic-table>
+                       :get-list-func="postTransferList"></dynamic-table>
     </a-card>
 </template>
 
@@ -26,13 +26,13 @@
     import {formSearch} from './form-search'
     import {DynamicTable} from '@/components/dynamic-table'
     import {toRefs} from "@vueuse/core";
-    import {postAccountFlowList} from "@/api/system/transition/account";
+    import { postTransferList } from "@/api/system/transition/transfer";
     import {columns} from "./columns"
     import {getDict} from "@/hooks/dict-list";
     import moment from 'moment'
 
     export default defineComponent({
-        name: "账户流水",
+        name: "退款记录",
         components: {
             [Card.name]: Card,
             SchemaForm, AButton, DynamicTable
@@ -44,19 +44,19 @@
             })
 
             const getDictFn = async () => {
-                let data = await getDict(
-                    'business_account_flow_type',
+                const status = await getDict(
+                    'business_transfer_status',
                     'businessAccountFlowType',
                     false
                 )
-                let payment = await getDict(
-                    'business_payment',
+                const type = await getDict(
+                    'business_transfer_type',
                     'businessPayment',
                     false
                 )
                 return {
-                    accountFlowType: data,
-                    payment: payment,
+                    status: status,
+                    type:type,
                 }
             }
 
@@ -73,8 +73,8 @@
             //重置按钮
             const cancel = () =>{
                 let nothing = {
-                    accountFlowSn:'',
-                    payment:''
+                    transferSn:'',
+                    status:''
                 }
                 state.pageOption = Object.assign(state.pageOption, nothing)
                 dynamicForm.value.modelRef= Object.assign(dynamicForm.value.modelRef, nothing)
@@ -86,8 +86,8 @@
                 confirm,
                 cancel,
                 dynamicForm,
-                formSchema: formSearch(),
-                postAccountFlowList,
+                formSchema: formSearch(getDictFn()),
+                postTransferList,
                 columns
             }
         },

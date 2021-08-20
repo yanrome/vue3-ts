@@ -3,7 +3,7 @@ import {getDict} from "@/hooks/dict-list";
 import {createVNode} from 'vue'
 import {DatePicker} from "ant-design-vue";
 
-export const formSearch = (): FormSchema => ({
+export const formSearch = (dictData): FormSchema => ({
     style: {
         width: "auto",
 
@@ -14,8 +14,8 @@ export const formSearch = (): FormSchema => ({
     formItem: [
         {
             type: "input",
-            label: "业务单号",
-            field: "accountFlowSn",
+            label: "订单单号",
+            field: "orderSn",
             value: '',
             props: {
                 placeholder: "请输入单号",
@@ -24,20 +24,20 @@ export const formSearch = (): FormSchema => ({
         },
         {
             type: "select",
-            label: "支付方式",
-            field: "payment",
+            label: "退款结果",
+            field: "status",
             props: {
-                placeholder: "请输入单号",
+                placeholder: "请输入",
             },
             value: '',
             loading: true,
             asyncOptions:async () => {
                     let data = await getDict(
-                        'business_payment',
-                        'businessPayment',
+                        'business_refund_status',
+                        '',
                         true
                     )
-                    data = [{label: '所有支付方式', value: ''}, ...data]
+                    data = [{label: '所有退款结果', value: ''}, ...data]
                     return data
                 },
         },
