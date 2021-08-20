@@ -3,6 +3,7 @@
           v-model:selected-keys="selectedKeys"
           mode="inline"
           :inline-collapsed="collapsed"
+          @openChange="onOpenChange"
           @click="clickMenuItem">
     <template v-for="item in menus"
               :key="item.name">
@@ -66,10 +67,19 @@ export default defineComponent({
         ? store.getters.menus
         : routes.find((item) => item.name == 'Layout')!.children
     )
+    const onOpenChange = (openKeys: string[]) => {
+      const latestOpenKey = openKeys.find(key => state.openKeys.indexOf(key) === -1);
+      // if (menus.indexOf(latestOpenKey!) === -1) {
+      //   state.openKeys = openKeys;
+      // } else {
+        state.openKeys = latestOpenKey ? [latestOpenKey] : [];
+      // }
+    };
     // 监听菜单收缩状态
     watch(
       () => props.collapsed,
       (newVal) => {
+        debugger
         state.openKeys = newVal ? [] : getOpenKeys()
         state.selectedKeys = [currentRoute.name]
       }
@@ -103,6 +113,7 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
+      onOpenChange,
       menus,
       clickMenuItem
     }
