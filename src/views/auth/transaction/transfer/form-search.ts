@@ -3,7 +3,7 @@ import {getDict} from "@/hooks/dict-list";
 import {createVNode} from 'vue'
 import {DatePicker} from "ant-design-vue";
 
-export const formSearch = (dictData): FormSchema => ({
+export const formSearch = (): FormSchema => ({
     style: {
         width: "auto",
 

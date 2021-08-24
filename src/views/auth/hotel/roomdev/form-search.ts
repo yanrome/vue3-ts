@@ -13,23 +13,33 @@ export const formSearch = (): FormSchema => ({
     },
     formItem: [
         {
-            type: "select",
-            label: "支付方式",
-            field: "payment",
+            type: "input",
+            label: "设施名称",
+            field: "devName",
+            value: '',
             props: {
-                placeholder: "请输入单号",
+                placeholder: "请输入编号",
+            },
+
+        },
+        {
+            type: "select",
+            label: "状态",
+            field: "status",
+            props: {
+                placeholder: "请输入",
             },
             value: '',
             loading: true,
             asyncOptions:async () => {
-                let data = await getDict(
-                    'business_payment',
-                    'businessPayment',
-                    true
-                )
-                data = [{label: '所有支付方式', value: ''}, ...data]
-                return data
-            },
+                    let data = await getDict(
+                        'business_room_dev_type',
+                        '',
+                        true
+                    )
+                    data = [{label: '所有结果', value: ''}, ...data]
+                    return data
+                },
         },
         {
             type: createVNode(DatePicker.RangePicker, {}),
@@ -40,6 +50,8 @@ export const formSearch = (): FormSchema => ({
                 placeholder: "请输入单号",
                 width: "350px"
             },
+
         },
+
     ]
 })

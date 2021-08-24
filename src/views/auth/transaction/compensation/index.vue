@@ -86,7 +86,7 @@
                 confirm,
                 cancel,
                 dynamicForm,
-                formSchema: formSearch(getDictFn()),
+                formSchema: formSearch(),
                 postCompensationList,
                 columns
             }

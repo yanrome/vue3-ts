@@ -14,27 +14,39 @@
     </a-card>
     <a-card>
         <dynamic-table :pageOption="pageOption" rowKey="id" :columns="columns(getDictFn())"
-                       :get-list-func="postRefundList"></dynamic-table>
+                       :get-list-func="postBusinessRoomDevList">
+            <template v-slot:title>
+                <a-button
+                        @click="addItem"
+                          type="primary">
+                    添加
+                </a-button>
+            </template>
+
+        </dynamic-table>
     </a-card>
 </template>
 
 <script lang="ts">
     import {defineComponent, reactive, ref} from 'vue'
-    import {Card} from "ant-design-vue";
+    import {Card,Button} from "ant-design-vue";
     import {AButton} from '@/components/button/'
     import {SchemaForm} from '@/components/JSON-schema-form'
     import {formSearch} from './form-search'
     import {DynamicTable} from '@/components/dynamic-table'
     import {toRefs} from "@vueuse/core";
-    import {postRefundList} from "@/api/system/transition/refund";
+    import { postBusinessRoomDevList } from "@/api/system/hotel/roomdev";
     import {columns} from "./columns"
     import {getDict} from "@/hooks/dict-list";
     import moment from 'moment'
+    import {useFormModal} from "@/hooks";
+    import {formModal} from "@/views/auth/hotel/roomdev/form-modal";
 
     export default defineComponent({
         name: "退款记录",
         components: {
             [Card.name]: Card,
+            [Button.name]:Button,
             SchemaForm, AButton, DynamicTable
         },
         setup() {
@@ -44,27 +56,30 @@
             })
 
             const getDictFn = async () => {
-                let data = await getDict(
-                    'business_refund_type',
-                    'businessAccountFlowType',
+                const status = await getDict(
+                    'business_room_dev_type',
+                    '',
                     false
                 )
-                let payment = await getDict(
-                    'business_payment',
-                    'businessPayment',
-                    false
-                )
-
-                let refundStatus = await getDict(
-                    'business_refund_status',
+                const devDomain = await getDict(
+                    'business_room_dev_domain',
                     '',
                     false
                 )
                 return {
-                    refundType: data,
-                    payment:payment,
-                    refundStatus:refundStatus
+                    status: status,
+                    devDomain:devDomain,
                 }
+            }
+
+            const addItem = () =>{
+                useFormModal({
+                    title: '编辑账号',
+                    formSchema:formModal(),
+                    handleOk:async (data)=>{
+                        debugger
+                    }
+                })
             }
 
             const confirm = () => {
@@ -80,7 +95,7 @@
             //重置按钮
             const cancel = () =>{
                 let nothing = {
-                    orderSn:'',
+                    transferSn:'',
                     status:''
                 }
                 state.pageOption = Object.assign(state.pageOption, nothing)
@@ -90,11 +105,12 @@
             return {
                 ...toRefs(state),
                 getDictFn,
+                addItem,
                 confirm,
                 cancel,
                 dynamicForm,
                 formSchema: formSearch(),
-                postRefundList,
+                postBusinessRoomDevList,
                 columns
             }
         },

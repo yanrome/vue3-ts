@@ -86,7 +86,6 @@ export const columns = (dictData): TableColumn[] => [
             customRender: 'action'
         },
         actions: [
-
             {
                 type: 'popconfirm', // 控制类型，默认为a,可选： select | button | text
                 props:{
@@ -98,7 +97,6 @@ export const columns = (dictData): TableColumn[] => [
 
                 }
             },
-
         ]
     }
 ]
