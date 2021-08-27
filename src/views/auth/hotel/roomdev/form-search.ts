@@ -2,8 +2,9 @@ import {FormSchema} from "@/types/schema";
 import {getDict} from "@/hooks/dict-list";
 import {createVNode} from 'vue'
 import {DatePicker} from "ant-design-vue";
+import {formatDict} from "@/utils/common";
 
-export const formSearch = (): FormSchema => ({
+export const formSearch = (dictData): FormSchema => ({
     style: {
         width: "auto",
 
@@ -32,14 +33,10 @@ export const formSearch = (): FormSchema => ({
             value: '',
             loading: true,
             asyncOptions:async () => {
-                    let data = await getDict(
-                        'business_room_dev_type',
-                        '',
-                        true
-                    )
-                    data = [{label: '所有结果', value: ''}, ...data]
-                    return data
-                },
+                return  dictData.then(res=>{
+                    return  [{label: '所有结果', value: ''}, ...formatDict(res.status,true)]
+                })
+            },
         },
         {
             type: createVNode(DatePicker.RangePicker, {}),

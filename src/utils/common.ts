@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import RequireContext = __WebpackModuleApi.RequireContext
 import defaultResult from "ant-design-vue/es/_util/isMobile";
 import any = defaultResult.any;
+import {isArray} from "@/utils/is";
 
 /**
  * @description 处理数据字典
@@ -19,6 +20,19 @@ export const changeDict = (emun, isArray = false, isObj = true) => {
     })
     return (isObj && !isArray) ? returns : list
 }
+
+export const formatDict = (emun,isArray=false)=>{
+    const returns = {}
+    const list = emun.map(item => {
+        returns[item['dictValue']] = item['dictLabel']
+        return !isArray ? item : {
+            label: item['dictLabel'],
+            value: item['dictValue']
+        }
+    })
+    return !isArray ? returns : list
+}
+
 
 /**
  * @description 处理首字母大写 abc => Abc
@@ -173,6 +187,16 @@ export const generateTree = (items, id = 0, link = 'parent') => {
         children: generateTree(items, item.departmentid)
     }))
 }
+/**
+ * @description 将带有_的数据转为驼峰
+ * */
+export const transFormStr = (str)=>{
+    let re = /_(\w)/g
+    return str.replace(re,($0,$1)=>{
+        return $1.toUpperCase()
+    })
+}
+
 
 /***
  * @description 原生加密明文
@@ -185,6 +209,5 @@ const encryption = (plaintext: string) => isBase64(plaintext) ? plaintext : wind
  * @param {string} ciphertext
  */
 const decryption = (ciphertext: string) => isBase64(ciphertext) ? window.decodeURIComponent(window.atob(ciphertext)) : ciphertext
-
 
 

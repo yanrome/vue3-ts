@@ -5,6 +5,7 @@ import {tagColor} from "@/utils/dict";
 import {postBusinessRoomDevRemove} from "@/api/system/hotel/roomdev";
 import {useFormModal} from "@/hooks";
 import { formModal } from './form-modal'
+import {formatDict} from "@/utils/common";
 
 export const columns = (dictData): TableColumn[] => [
     {
@@ -25,7 +26,7 @@ export const columns = (dictData): TableColumn[] => [
                 color:tagColor[record.devDomain],
                 getTypeFun:()=>{
                     return dictData.then(res=>{
-                        return res.devDomain
+                        return formatDict(res.devDomain)
                     })
                 }
             })
@@ -44,7 +45,7 @@ export const columns = (dictData): TableColumn[] => [
                 color:tagColor[record.devType],
                 getTypeFun:()=>{
                     return dictData.then(res=>{
-                        return res.status
+                        return formatDict(res.status)
                     })
                 }
             })
@@ -70,15 +71,15 @@ export const columns = (dictData): TableColumn[] => [
                 },
                 func: ({record}, refreshTableData) =>{
                     return useFormModal({
-                        title: '编辑账号',
+                        title: '编辑',
                         fields: {
                             id:record.id,
                             devName:record.devName,
-                            devDomain:record.devDomain,
-                            devType:record.devType,
+                            devDomain: record.devDomain,
+                            devType: record.devType,
                             sort:record.sort,
                         },
-                        formSchema:formModal(),
+                        formSchema:formModal(dictData),
                         handleOk:async (data)=>{
                             debugger
                         }

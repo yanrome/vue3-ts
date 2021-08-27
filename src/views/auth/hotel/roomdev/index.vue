@@ -13,7 +13,7 @@
         </schema-form>
     </a-card>
     <a-card>
-        <dynamic-table :pageOption="pageOption" rowKey="id" :columns="columns(getDictFn())"
+        <dynamic-table :pageOption="pageOption" rowKey="id" :columns="columns(getFn)"
                        :get-list-func="postBusinessRoomDevList">
             <template v-slot:title>
                 <a-button
@@ -41,6 +41,9 @@
     import moment from 'moment'
     import {useFormModal} from "@/hooks";
     import {formModal} from "@/views/auth/hotel/roomdev/form-modal";
+    import {useStore} from "@/store";
+    import {transFormStr} from "@/utils/common";
+    import {DictActions} from "@/store/modules/dict/actions";
 
     export default defineComponent({
         name: "退款记录",
@@ -50,32 +53,26 @@
             SchemaForm, AButton, DynamicTable
         },
         setup() {
+            const store = useStore()
             const dynamicForm = ref<any>(null)
             let state = reactive({
                 pageOption: {},
+                status:{},
             })
-
             const getDictFn = async () => {
-                const status = await getDict(
-                    'business_room_dev_type',
-                    '',
-                    false
-                )
-                const devDomain = await getDict(
-                    'business_room_dev_domain',
-                    '',
-                    false
-                )
+                const status = await store.dispatch(DictActions.getDict,{dictType:'business_room_dev_type'})
+                const devDomain =  await store.dispatch(DictActions.getDict,{dictType:'business_room_dev_domain'})
                 return {
                     status: status,
                     devDomain:devDomain,
                 }
             }
+            const getFn = getDictFn()
 
             const addItem = () =>{
                 useFormModal({
                     title: '编辑账号',
-                    formSchema:formModal(),
+                    formSchema:formModal(getFn),
                     handleOk:async (data)=>{
                         debugger
                     }
@@ -104,12 +101,12 @@
 
             return {
                 ...toRefs(state),
-                getDictFn,
+                getFn,
                 addItem,
                 confirm,
                 cancel,
                 dynamicForm,
-                formSchema: formSearch(),
+                formSchema: formSearch(getFn),
                 postBusinessRoomDevList,
                 columns
             }

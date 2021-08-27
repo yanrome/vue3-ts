@@ -4,6 +4,7 @@ import {App, InjectionKey} from "vue";
 import {store as asyncRoute, AsyncRouteStore, State as AsyncRouteState} from '@/store/modules/async-route';
 import {store as user, UserStore, State as UserState} from '@/store/modules/user';
 import {store as order,OrderStore, State as OrderState } from '@/store/modules/order'
+import {store as dict,DictStore, State as DictState } from '@/store/modules/dict'
 import {store as lockscreen, LockscreenStore, State as LockscreenState} from '@/store/modules/lockscreen';
 import {store as tabsView, TabsViewStore, State as TabsViewState} from '@/store/modules/tabs-view';
 import {LockscreenMutationType} from "@/store/modules/lockscreen/mutations";
@@ -16,6 +17,7 @@ export type RootState = {
     lockscreen: LockscreenState;
     tabsView: TabsViewState;
     order:OrderState;
+    dict:DictState
 };
 
 export type Store =
@@ -24,6 +26,7 @@ export type Store =
     & LockscreenStore<Pick<RootState, 'lockscreen'>>
     & TabsViewStore<Pick<RootState, 'tabsView'>>
     & OrderStore<Pick<RootState, 'order'>>
+    & DictStore<Pick<RootState, 'dict'>>
 
 // 在开发环境中开启logger
 const debug = process.env.NODE_ENV !== 'production';
@@ -46,7 +49,8 @@ const store = createStore<RootState>({
         user,
         lockscreen,
         tabsView,
-        order
+        order,
+        dict
     }
 })
 
