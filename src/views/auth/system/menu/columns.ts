@@ -1,6 +1,6 @@
 import { useCreateModal } from '@/hooks'
 import AddModal from './add-modal.vue'
-import { adminMenuEdit, adminMenuRemove } from '@/api/system/menu/index'
+import { adminMenuEdit, adminMenuAdd, adminMenuRemove } from '@/api/system/menu/index'
 import { TableColumn } from "@/types/tableColumn";
 import { useFormModal } from "@/hooks/useFormModal";
 import { getSystemDictDataByType } from '@/api/system/user/index'
@@ -89,29 +89,23 @@ export const columns: TableColumn[] = [
             {
                 type: 'button', // 控制类型，默认为a,可选： select | button | text
                 text: '编辑',
-                // permission: {
-                //     // 权限
-                //     action: 'update',
-                //     effect: 'disabled'
-                // },
                 props: {
                     type: 'primary' // 按钮类型
                 },
                 func: ({ record }, refreshTableData) =>{
-                    
-                   return useFormModal({
+                    useFormModal({
                         title: '编辑菜单',
-                        fields: {menuScene:record.menuScene,menuType:record.menuType,menuName:record.menuName},
+                        fields: record,
                         formSchema: getFormSchema(),
                         handleOk: async (modelRef, state) => {
-                            
-                            const {menuScene, menuType, menuName} = modelRef
-    
+                            const {
+                                id,parentId , menuType, menuScene, menuName,
+                                url, perms, orderNum, icon, visible} = modelRef
                             const params = {
-                                menuScene, menuType,
-                                menuName
+                                id,parentId , menuType, menuScene, menuName,
+                                url, perms, orderNum, icon, visible
                             }
-                            debugger
+                            // console.log('编辑菜单-参数',params)
                             return await adminMenuEdit(params).then(() => refreshTableData())
                         }
                     })
@@ -120,30 +114,37 @@ export const columns: TableColumn[] = [
             {
                 type: 'button', // 控制类型，默认为a,可选： select | button | text
                 text: '新增',
-                // permission: {
-                //     // 权限
-                //     action: 'update',
-                //     effect: 'disabled'
-                // },
                 props: {
                     type: 'warning', // 按钮类型，
                     background:"red",
                 },
-                func: ({ record }, callback) =>
-                    useCreateModal(AddModal, {
-                        // 点击删除的回调
+                func: ({ record }, refreshTableData) =>{
+                    useFormModal({
+                        title: '新增菜单',
                         fields: record,
-                        callback
+                        formSchema: getFormSchema(),
+                        handleOk: async (modelRef, state) => {
+                            const {
+                                id, menuType, menuScene, menuName,
+                                url, perms, orderNum, icon, visible} = modelRef
+                            const params = {
+                                parentId:id , menuType, menuScene, menuName,
+                                url, perms, orderNum, icon, visible
+                            }
+                            console.log('新增菜单-参数',params)
+                            return await adminMenuAdd(params).then(() => refreshTableData())
+                        }
                     })
+                }
             },
             {
                 type: 'popconfirm', // 控制类型，默认为a,可选： select | button | text
                 text: '删除',
-                permission: {
-                    // 权限
-                    action: 'delete', // 删除权限
-                    effect: 'disabled' // 没有权限时禁用按钮，不传effect则不显示按钮
-                },
+                // permission: {
+                //     // 权限
+                //     action: 'delete', // 删除权限
+                //     effect: 'disabled' // 没有权限时禁用按钮，不传effect则不显示按钮
+                // },
                 props: {
                     type: 'danger' // 按钮类型
                 },
@@ -152,6 +153,7 @@ export const columns: TableColumn[] = [
                     if (record.id < 6) {
                         return message.warn('系统预置菜单，不能删除！')
                     }
+                    console.log('，，，',record.id)
                     return await adminMenuRemove(record.id).then(() => refreshTableData())
                 }
             }

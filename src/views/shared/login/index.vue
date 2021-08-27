@@ -76,7 +76,6 @@
                     password
                 }
                 params.password = AES.generatekey(password)  // 'ca7c1174708a2afb7cbec68b69bd0ee0' //  md5(password)
-                // debugger
                 const res = await store.dispatch(UserActionTypes.Login, params).finally(() => {
                     state.loading = false
                     message.destroy()

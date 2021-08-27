@@ -2,17 +2,13 @@
   <div style="display: flex;">
     <div class="flex left_tree">
       <div v-if="show">
-        <access-tree></access-tree>
+        <access-tree @aaaaa='abc'></access-tree>
       </div>
-      <!-- <div>
-        我是子组件传过来的值：{{selectedKeys}}
-      </div> -->
       <div class="right_btn"
            @click='show=!show'>
-        <!-- <CaretLeftOutlined v-if='show' />
-        <CaretRightOutlined v-else /> -->
+        <CaretLeftOutlined v-if='show' />
+        <CaretRightOutlined v-else />
       </div>
-
     </div>
     <div>
       <a-card class="g-search-card mb20">
@@ -92,6 +88,7 @@ import { getFormSchema } from './form-schema'
 import { Moment } from 'moment'
 import { DatePicker, Tree } from 'ant-design-vue'
 import { setupCustomComponents } from '@/plugins'
+import { CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons-vue'
 interface FormState {
   name: string
   region: string | undefined
@@ -104,6 +101,8 @@ interface FormState {
   phone: string
   starTime: string
   endTime: string
+  parentId: string
+  deptId: string
 }
 
 interface Param {
@@ -117,20 +116,15 @@ export default defineComponent({
     AccessTree,
     DynamicTable,
     [Tree.name]: Tree,
+    CaretRightOutlined,
+    CaretLeftOutlined,
     aRangePicker: DatePicker.RangePicker
   },
   setup() {
-    let selectedKeys = reactive({})
     const value = ref<string>()
     const param = ref<Param>({
       pageNum: 1,
       pageSize: 10
-    })
-
-    console.log('setupCustomComponents', setupCustomComponents)
-
-    watch(value, () => {
-      console.log(value.value)
     })
 
     const show = ref('false')
@@ -145,14 +139,16 @@ export default defineComponent({
       userName: '',
       phone: '',
       starTime: '',
-      endTime: ''
+      endTime: '',
+      parentId: '',
+      deptId: ''
     })
 
     const tableRef = ref<any>(null)
 
     const state = reactive({
       tableLoading: false,
-      rangeTime:ref<Moment[]>([]),
+      rangeTime: ref<Moment[]>([]),
       rowSelection: {
         onChange: (selectedRowKeys, selectedRows) => {
           state.rowSelection.selectedRowKeys = selectedRowKeys
@@ -187,7 +183,6 @@ export default defineComponent({
         handleOk: async (modelRef, state) => {
           console.log('添加用户-参数', modelRef)
           modelRef.status = modelRef.status == true ? '1' : '0'
-          debugger
           await adminUserAdd(modelRef)
           tableRef.value.refreshTableData()
         }
@@ -207,9 +202,7 @@ export default defineComponent({
     // 搜索后
     const search = () => {
       const mergeParam = { ...formState, ...param.value }
-      const res = adminUser(mergeParam)
-      console.log('搜索后', res)
-      // columns.values = res.data
+      adminUser(mergeParam)
     }
     // 重置后
     const reSet = () => {
@@ -219,9 +212,13 @@ export default defineComponent({
       formState.starTime = ''
       formState.endTime = ''
       state.rangeTime = []
-      const res = adminUser(param.value)
-      console.log('重置后', res)
-      // columns.values = res.data
+      adminUser(param.value)
+    }
+
+    const abc = (obj) => {
+      formState.parentId = obj.parentId
+      formState.deptId = obj.deptId
+      adminUser(formState)
     }
     return {
       ...toRefs(state),
@@ -232,12 +229,12 @@ export default defineComponent({
       addItem,
       value,
       show,
-      selectedKeys,
       search,
       visible,
       reSet,
       ChooseTime,
-      afterVisibleChange
+      afterVisibleChange,
+      abc
     }
   }
 })

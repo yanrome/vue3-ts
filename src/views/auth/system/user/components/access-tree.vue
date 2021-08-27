@@ -1,10 +1,11 @@
 <template>
   <a-spin :spinning="spinning">
     <a-tree style="min-height: 40px;"
+            v-if="treeData.length"
             :tree-data="treeData"
             @select="onSelect"
-            :defaultExpandAll='true'
-            v-model:checkedKeys="checkedKeys">
+            defaultExpandAll='true'
+            :defaultExpandAllRows='true'>
     </a-tree>
   </a-spin>
 </template>
@@ -19,26 +20,20 @@ export default defineComponent({
     [Tree.name]: Tree,
     [Spin.name]: Spin
   },
-  emits: ['update:value'], // 双向数据绑定
+  emits: ['aaaaa'], // 双向数据绑定
   props: {
     value: {
       type: Array,
       default: () => []
     }
   },
-  setup(props, cex: any) {
+  setup(props, { emit }) {
     const state = reactive({
       treeData: [] as any,
       spinning: false,
       replaceFields: {
         key: 'id'
       }
-    })
-    // 已勾选的节点 打印state看看,怎么是prox我也不晓得，有点看不懂这里有问题，
-    const checkedKeys = computed({
-      get: () => props.value,
-      set: (val: any) =>
-        cex.emit('update:value', Array.isArray(val) ? val : val.checked)
     })
     // 人员管理-右边-组织机构-1
     onMounted(async () => {
@@ -81,8 +76,9 @@ export default defineComponent({
       return Object.keys(tree).map((key) => tree[key])
     }
     // 选择树节点
-    const onSelect = (selectedKeys: string[]) => {
-      console.log('selected', selectedKeys[0])
+    const onSelect = (selectedKeys, e) => {
+      emit('aaaaa', {'parentId':e.selectedNodes[0].props.pId,'deptId':e.selectedNodes[0].props.id})
+      
     }
     // 获取所有父节点的key
     const getParentsKey = (treeNode, arr: number[] = []) => {
@@ -96,7 +92,6 @@ export default defineComponent({
     // 获取所有子节点的key
     const getChildrenKeys = (treeNode, arr: number[] = []) => {
       if (treeNode?.children.length > 0) {
-        console.log(treeNode.children, 'children')
         return treeNode.children.reduce((prev, curr) => {
           if (curr.children.length > 0) {
             prev.push(...getChildrenKeys(curr, prev), [])
@@ -110,7 +105,6 @@ export default defineComponent({
     return {
       ...toRefs(state),
       state,
-      checkedKeys,
       // 方法
       onSelect
     }

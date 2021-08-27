@@ -9,9 +9,15 @@ enum Api {
   adminMenuAccess = '/admin/menu_access',
   // 模板api
   systemMenuMenuTreeData='/system/menu/menuTreeData',
-  systemMenuRoleMenuTreeData = '/system/menu/roleMenuTreeData',
-  systemMenuTemplateRoleMenuTreeData = '/system/menu/template/roleMenuTreeData',
 
+  systemMenuRoleMenuTreeData = '/system/menu/roleMenuTreeData',
+  systemRoleMenuEdit = '/system/role/menu/edit',
+  
+  systemMenuTemplateRoleMenuTreeData = '/system/menu/template/roleMenuTreeData',
+  systemRoleTemplateMenuEdit = '/system/role/template/menu/edit',
+
+  systemRoleRule = '/system/role/rule',
+  systemDeptRoleDeptTreeData = '/system/dept/roleDeptTreeData',
 }
 
 /**
@@ -56,11 +62,10 @@ export function adminMenuEdit(params) {
  * 删除菜单
  * @param params
  */
- export function adminMenuRemove(params) {
+ export function adminMenuRemove(id) {
   return http.request({
-    url: Api.adminMenuRemove,
+    url: [Api.adminMenuRemove,id].join('/'),
     method: RequestEnum.POST,
-    params,
   }, {
     isShowErrorMessage: true, // 是否显示错误提示信息
     successMessageText: '修改成功'
@@ -97,7 +102,7 @@ export function adminMenuAdd(params) {
 }
 
 /**
- * 查询角色对应所有模板菜单列表树
+ * 查询角色对应所有---模板菜单---列表树
  * @param params
  */
  export function systemMenuTemplateRoleMenuTreeData(roleId) {
@@ -108,7 +113,22 @@ export function adminMenuAdd(params) {
 }
 
 /**
- * 查询角色对应所有菜单列表树
+ * 编辑---角色模板菜单---
+ * @param params
+ */
+ export function systemRoleTemplateMenuEdit(params) {
+  return http.request({
+    url: Api.systemRoleTemplateMenuEdit,
+    method: RequestEnum.POST,
+    params,
+  }, {
+    isShowErrorMessage: true, // 是否显示错误提示信息
+    successMessageText: '创建成功'
+  });
+}
+
+/**
+ * 查询角色对应所有---角色菜单---列表树
  * @param params
  */
  export function systemMenuRoleMenuTreeData(roleId) {
@@ -117,6 +137,44 @@ export function adminMenuAdd(params) {
     method: RequestEnum.GET,
   })
 }
+
+/**
+ * 编辑---角色菜单---
+ * @param params
+ */
+ export function systemRoleMenuEdit(params) {
+  return http.request({
+    url: Api.systemRoleMenuEdit,
+    method: RequestEnum.POST,
+    params
+  })
+}
+
+
+/**
+ * 编辑---数据权限---
+ * @param params
+ */
+ export function systemRoleRule(params) {
+  return http.request({
+    url: Api.systemRoleRule,
+    method: RequestEnum.POST,
+    params
+  })
+}
+
+/**
+ * 编辑---数据权限-自定义数据权限---
+ * @param params
+ */
+ export function systemDeptRoleDeptTreeData(id) {
+  return http.request({
+    url: [Api.systemDeptRoleDeptTreeData,id].join('/'),
+    method: RequestEnum.GET,
+  })
+}
+
+
 
 
 

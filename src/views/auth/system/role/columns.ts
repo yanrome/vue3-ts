@@ -1,4 +1,5 @@
 import { adminRoleRemove, adminRoleEdit } from "@/api/system/role";
+import { systemRoleTemplateMenuEdit, systemRoleMenuEdit, systemRoleRule } from "@/api/system/menu/index";
 import { formatDate } from '@/utils/common'
 import { TableColumn } from "@/types/tableColumn";
 import { useFormModal } from "@/hooks/useFormModal";
@@ -79,12 +80,11 @@ export const columns: TableColumn[] = [ // 角色列表
                     fields: record,
                     formSchema: getFormSchemaModel(),
                     handleOk: async (modelRef, state) => {
-                        // modelRef.status = modelRef.status == true ? '1' : '0'
-                        // const {roleName, roleType,  name, orderNum, status, remark, id } = modelRef
-                        // const params = {
-                        //     roleName, roleType,  name, orderNum, status, remark, id
-                        // }
-                        // return await adminRoleEdit(params).then(() => refreshTableData())
+                        const params = {
+                            roleId: modelRef.id,
+                            menuIds: modelRef.key.checked.toString()   
+                        }
+                        return await systemRoleTemplateMenuEdit(params).then(() => refreshTableData())
                     }
                 })
             },
@@ -99,12 +99,11 @@ export const columns: TableColumn[] = [ // 角色列表
                     fields: record,
                     formSchema: getFormSchemaMenu(),
                     handleOk: async (modelRef, state) => {
-                        // modelRef.status = modelRef.status == true ? '1' : '0'
-                        // const {roleName, roleType,  name, orderNum, status, remark, id } = modelRef
-                        // const params = {
-                        //     roleName, roleType,  name, orderNum, status, remark, id
-                        // }
-                        // return await adminRoleEdit(params).then(() => refreshTableData())
+                        const params = {
+                            roleId: modelRef.id,
+                            menuIds: modelRef.key.checked.toString()   
+                        }
+                        return await systemRoleMenuEdit(params).then(() => refreshTableData())
                     }
                 })
             },
@@ -119,12 +118,13 @@ export const columns: TableColumn[] = [ // 角色列表
                     fields: record,
                     formSchema: getFormSchemaData(),
                     handleOk: async (modelRef, state) => {
-                        // modelRef.status = modelRef.status == true ? '1' : '0'
-                        // const {roleName, roleType,  name, orderNum, status, remark, id } = modelRef
-                        // const params = {
-                        //     roleName, roleType,  name, orderNum, status, remark, id
-                        // }
-                        // return await adminRoleEdit(params).then(() => refreshTableData())
+                        console.log('123',modelRef)
+                        const params = {
+                            id:modelRef.id,
+                            dataScope: modelRef.dataScope,
+                            deptIds:modelRef.dataScope == '3'?modelRef.deptIds:'',
+                        }
+                        // return await systemRoleRule(params).then(() => refreshTableData())
                     }
                 })
             },

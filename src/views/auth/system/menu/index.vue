@@ -104,7 +104,7 @@ export default defineComponent({
       pageSize: 10
     })
     const formState: UnwrapRef<FormState> = reactive({
-      parentId: '',
+      parentId: '0',
       menuType: '',
       menuScene: '',
       menuName: '',
@@ -133,7 +133,10 @@ export default defineComponent({
         title: '添加菜单',
         formSchema: getFormSchema(),
         handleOk: async (modelRef, state) => {
-          await adminMenuAdd(modelRef)
+          // console.log('添加菜单', modelRef)
+          // console.log('添加菜单', formState)
+          // console.log('添加菜单', {...formState,...modelRef})
+          await adminMenuAdd({...formState,...modelRef})
           tableRef.value.refreshTableData()
         }
       })

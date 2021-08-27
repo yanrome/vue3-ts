@@ -22,15 +22,14 @@ export const getFormSchema = (): FormSchema => ({
     formItem: [
         {
             type: createVNode(AccessTree),
-            // type: 'tree',
             label: '上级菜单',
             field: 'id',
-            value: [],
+            value: []
             // asyncValue: async (currentValue, formInstance) => {
             //     // console.log('currentValuecurrentValue',formInstance)
             //     // const { id } = formInstance?.props.fields as any
             //     // 获取角色列表
-            //     // console.log('查询角色对应所有模板菜单列表树',id)
+                // console.log('查询角色对应所有模板菜单列表树',currentValue)
             //     const data = await systemMenuMenuTreeData()
             //     // 设置角色复选框选项
             //     return data.map((item) => item.accessId)
@@ -86,13 +85,7 @@ export const getFormSchema = (): FormSchema => ({
             value: '',
             props: {
                 placeholder: "请输入请求地址"
-            },
-            rules: [
-                {
-                    required: true,
-                    message: "请求地址不能为空"
-                }
-            ]
+            }
         },
         {
             type: "input",
@@ -120,7 +113,7 @@ export const getFormSchema = (): FormSchema => ({
             rules: [
                 {
                     required: true,
-                    message: ""
+                    message: "显示排序不能为空"
                 }
             ]
         },
@@ -131,13 +124,7 @@ export const getFormSchema = (): FormSchema => ({
             value: '',
             props: {
                 placeholder: ""
-            },
-            rules: [
-                {
-                    required: true,
-                    message: ""
-                }
-            ]
+            }
         },
         {
             type: "radio",

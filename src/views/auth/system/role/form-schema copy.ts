@@ -1,5 +1,5 @@
 import {createVNode} from 'vue'
-import AccessTree from './components/access-tree.vue'
+import AccessTree from './components/access-tree--.vue'
 import {FormSchema} from "@/types/schema";
 import {getAdminRoleAccess} from "@/api/system/role";
 import { getSystemDictDataByType } from '@/api/system/user/index'

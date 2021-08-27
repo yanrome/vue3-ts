@@ -69,7 +69,7 @@ import { useFormModal } from '@/hooks/useFormModal'
 import { getFormSchema } from './form-schema'
 import { Moment } from 'moment'
 import { DatePicker } from 'ant-design-vue'
-import AccessTree from './components/access-tree.vue'
+import AccessTree from './components/access-tree-select.vue'
 
 interface FormState {
   name: string
@@ -106,7 +106,8 @@ export default defineComponent({
       desc: '',
       deptName: '',
       starTime: '',
-      endTime: ''
+      endTime: '',
+      isAll:true
     })
 
     const tableRef = ref<any>(null)

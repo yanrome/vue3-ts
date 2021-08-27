@@ -12,7 +12,6 @@
 
 
 
-
   <router-view></router-view>
 <!--  <router-view v-slot="{ Component, route }">-->
 <!--    <transition name="zoom-fade" mode="out-in" appear>-->

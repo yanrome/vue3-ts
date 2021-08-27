@@ -1,5 +1,5 @@
 import {createVNode} from 'vue'
-import AccessTree from './components/access-tree.vue'
+import AccessTreeSelect from './components/access-tree-select.vue'
 import {FormSchema} from "@/types/schema";
 import { getSystemDictDataByType } from '@/api/system/user/index'
 
@@ -33,19 +33,10 @@ export const getFormSchema = (): FormSchema => ({
             ]
         },
         {
-            type: "input",
+            type: createVNode(AccessTreeSelect),
             label: "部门名称",
-            field: "deptName",
-            value: 'deptId',
-            props: {
-                placeholder: ""
-            },
-            rules: [
-                {
-                    required: true,
-                    message: ""
-                }
-            ]
+            field: "deptId",
+            value: '',
         },
         {
             type: "input",

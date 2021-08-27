@@ -20,7 +20,7 @@
       </template>
     </a-sub-menu>
     <a-menu-item v-else :key="menuInfo.name">
-      <icon-font style="color: aliceblue" :type="menuInfo.meta.icon" />
+      <icon-font style="color: aliceblue;" :type="menuInfo.meta.icon" />
       <span>{{menuInfo.meta.title}}</span>
     </a-menu-item>
   </template>

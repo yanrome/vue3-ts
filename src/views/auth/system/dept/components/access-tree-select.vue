@@ -1,20 +1,9 @@
 <template>
   <a-spin :spinning="spinning">
-    <!-- :replace-fields="replaceFields" -->
-    <!-- checkable -->
-    <!-- <a-tree-select style="min-height: 40px;"
-                   :checkStrictly='true'
-                   :selectable="false"
-                   :dropdown-style="{ maxHeight: '400px', overflow: 'auto'}"
-                   :tree-data="treeData"
-                   v-model:checkedKey="checkedKey"
-                   @change="onSelect">
-    </a-tree-select> -->
     <a-tree-select v-model:value="label"
                    style="width: 100%;"
                    :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
                    :tree-data="treeData"
-                   :treeNodeLabelProp='id'
                    @select='onSelect' />
   </a-spin>
 </template>
@@ -29,7 +18,7 @@ import {
   ref
 } from 'vue'
 import { Tree, Spin, TreeSelect } from 'ant-design-vue'
-import { systemMenuMenuTreeData } from '@/api/system/menu/index'
+import { adminDeptTreeData } from '@/api/system/dept/index'
 
 export default defineComponent({
   name: 'AccessTree',
@@ -52,24 +41,17 @@ export default defineComponent({
       label: ''
     })
 
-    // console.log('=============>', props.value)
-
     onMounted(async () => {
       // 查询所有菜单列表树
       state.spinning = true
-      const res = await systemMenuMenuTreeData().finally(
+      const res = await adminDeptTreeData().finally(
         () => (state.spinning = false)
       )
       let pId = props.value
         ? res.data?.find((item) => item.id == props.value).pId
-        : '主目录'
-      // console.log('=============>', pId)
-      state.label =
-        pId != '主目录'
-          ? res.data?.find((item) => item.pId == pId).name
-          : '主目录'
+        : '未选择'
+      state.label = res.data?.find((item) => item.id == pId).name || '未选择'
       state.treeData = list2tree(res.data)
-      // console.log('-----', list2tree(res.data))
     })
 
     // 列表转树
@@ -78,9 +60,9 @@ export default defineComponent({
       let tree = {}
       // 数组转 键值对
       arr.forEach((item) => {
-        item.value = item.title
+        // item.value = item.name
         temp[item.id] = item
-        temp[item.value] = item.title
+        // temp[item.value] = item.value
       })
       let tempKeys = Object.keys(temp)
       tempKeys.forEach((key) => {
@@ -102,9 +84,16 @@ export default defineComponent({
       // 对象转数组并返回
       return Object.keys(tree).map((key) => tree[key])
     }
-
     const onSelect = (value, label, extra) => {
-      emit('update:value', extra.selectedNodes[0].props.id)
+      // console.log('1111111111111111',value)
+      // console.log('1111111111111111',label)
+      console.log('1111111111111111',extra)
+      // state.label = extra.selectedNodes[0].props.name
+      emit('update:value', {
+        deptId: extra.selectedNodes[0].props.pId,
+        id: extra.selectedNodes[0].props.id,
+        deptName: extra.selectedNodes[0].props.name
+      })
     }
 
     return {

@@ -1,5 +1,6 @@
 <template>
   <a-form ref="schemaFormRef"
+          class="scroll"
           v-bind="formItemLayout">
     <template v-for="(formItem, index) in formSchema.formItem.filter(item => !item.hidden)"
               :key="formItem.field">
@@ -9,7 +10,6 @@
                      :label="formItem.label"
                      :name="formItem.field"
                      v-bind="{...formItem.props,...validateInfos[formItem.field]}">
-          <!-- v-model:value="modelRef[formItem.field]" -->
           <component v-model:value="modelRef[formItem.field]"
                      :form-item="formItem"
                      v-on="{...getTriggerEvent(formItem)}"
@@ -242,5 +242,10 @@ export default defineComponent({
   .ant-checkbox-wrapper {
     //margin-left: 0;
   }
+}
+.scroll {
+  max-height: 500px;
+  position: relative;
+  overflow: auto;
 }
 </style>

@@ -28,7 +28,8 @@ export const getFormSchemaRole = (): FormSchema => ({
                 const res = await adminUserRoles(id)
                 return res.data.map(item=>({
                         label: item.roleName,
-                        value: item.name
+                        value: item.name,
+                        flag: item.flag,
                 }))
             }
         }

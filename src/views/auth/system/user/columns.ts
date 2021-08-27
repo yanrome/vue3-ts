@@ -70,12 +70,12 @@ export const columns: TableColumn[] = [ // 角色列表
                     fields: record,
                     formSchema: getFormSchema(),
                     handleOk: async (modelRef, state) => {
-                        const {userName, deptName,  realName, email, phone, sex, status, id } = modelRef
+                        const {userName, deptName, deptId, realName, email, phone, sex, status, id } = modelRef
                         const params = {
-                            userName, deptName,  realName, email, phone, sex, status, id
-                        }
-                            await adminUserEdit(params)
-                            .then(_ => refreshTableData())
+                                userName, deptId:deptId.deptId, id, deptName:deptId.deptName, realName, email, phone, sex, status:status == true?'1':'2',
+                            }
+                        await adminUserEdit(params)
+                        .then(_ => refreshTableData())
                     }
                 })
             },

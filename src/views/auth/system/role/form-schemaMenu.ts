@@ -19,7 +19,7 @@ export const getFormSchemaMenu = (): FormSchema => ({
         {
             type: createVNode(AccessTree),
             label: "菜单权限",
-            field: 'id',
+            field: 'key',
             value: []
         }
     ]

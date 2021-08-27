@@ -50,6 +50,15 @@ export const roleStatus = {
     }
 }
 
+// 角色状态-数据权限-数据范围
+// export const businessOrderroomStatus = {
+//     1:'待入住',
+//     2:'已入住',
+//     3:'已取消',
+//     4:'已退房',
+//     7:'已完成'
+// }
+
 // 菜单场景
 export const menuSceneStatus = {
     1:{
@@ -66,7 +75,7 @@ export const menuSceneStatus = {
 export const menuTypeStatus = {
     0:{
         txt:'目录',
-        color:'#ED5565',
+        color:'#1C84C6',
     },
     1:{
         txt:'菜单',
@@ -74,7 +83,7 @@ export const menuTypeStatus = {
     },
     2:{
         txt:'按钮',
-        color:'#1AB394'
+        color:'#F8AC59'
     }
 }
 
@@ -121,4 +130,6 @@ export const fromIcons = {
         7:require('@/assets/icons/icon-tj.png'),
         8:require('@/assets/icons/icon-qne.png'),
 }
+
+
 

@@ -1,5 +1,5 @@
 <template>
-  <teleport to="body">
+  <teleport to="body"> 
     <div @click.self="isVisible = false" v-if="isVisible" class="preview-modal">
       <close-circle-outlined @click="isVisible = false" class="close-icon" />
       <div class="preview-content" :style="contentStyle">

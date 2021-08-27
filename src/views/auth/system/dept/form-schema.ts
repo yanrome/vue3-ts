@@ -1,7 +1,8 @@
 import {createVNode} from 'vue'
-import AccessTree from './components/access-tree.vue'
+import AccessTreeSelect from './components/access-tree-select.vue'
 import {FormSchema} from "@/types/schema";
-import { adminDictDedpByType } from "@/api/system/dept/index";
+import { getSystemDictDataByType } from "@/api/system/user/index";
+import { Tree } from 'ant-design-vue';
 
 // 与vue2的里面的data一样，函数返回新对象防止多处共用同一对象,造成数据混乱
 export const getFormSchema = (): FormSchema => ({
@@ -18,19 +19,10 @@ export const getFormSchema = (): FormSchema => ({
     },
     formItem: [
         {
-            type: "input",
+            type: createVNode(AccessTreeSelect),
             label: "上级部门",
-            field: "deptName",
-            value: '',
-            props: {
-                placeholder: "请输入上级部门"
-            },
-            rules: [
-                {
-                    required: true,
-                    message: "上级部门不能为空"
-                }
-            ]
+            field: "id",
+            value: ''
         },
         {
             type: "input",
@@ -48,19 +40,10 @@ export const getFormSchema = (): FormSchema => ({
             ]
         },
         {
-            type: "input",
+            type: 'select',
             label: "地址",
             field: "province",
             value: '',
-            props: {
-                placeholder: "请输入地市"
-            },
-            rules: [
-                {
-                    required: true,
-                    message: "地市不能为空"
-                }
-            ]
         },
         {
             type: "input",
@@ -125,19 +108,22 @@ export const getFormSchema = (): FormSchema => ({
         {
             type: "radio",
             label: "业务分成性质",
-            field: "title",
-            value: '',
-        //     asyncValue:async()=>{
-        //         const params = { dictType:'business_share_scale' }
-        //         const res = await adminDictDedpByType(params)
-        //         console.log('本次',res)
-
-        //     }
+            field: "shareScale",
+            value: 0,
+            asyncOptions: async () => {
+                const params = { dictType:'business_share_scale' }
+                const res = await getSystemDictDataByType (params)
+                return res.data.map((item) => ({
+                    label: item.dictLabel,
+                    value: Number(item.dictValue)
+                }))
+                
+            }
         },
         {
             type: "input",
             label: "分成比例",
-            field: "email",
+            field: "shareRatio",
             value: '',
             props: {
                 placeholder: ""

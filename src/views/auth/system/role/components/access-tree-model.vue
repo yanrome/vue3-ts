@@ -1,11 +1,10 @@
 <template>
   <a-spin :spinning="spinning">
-    <a-tree style="min-height: 40px;"
-            checkable
-            checkStrictly
+    <!-- :replace-fields="replaceFields" -->
+    <a-tree checkable
+            :checkStrictly='true'
             :selectable="false"
             :tree-data="treeData"
-            :replace-fields="replaceFields"
             v-model:checkedKeys="checkedKeys"
             @check="onCheck">
     </a-tree>
@@ -16,6 +15,8 @@
 import { defineComponent, reactive, toRefs, computed, onMounted } from 'vue'
 import { Tree, Spin } from 'ant-design-vue'
 import { systemMenuTemplateRoleMenuTreeData } from '@/api/system/menu/index'
+import { concat } from 'lodash'
+import { number } from 'echarts'
 
 export default defineComponent({
   name: 'access-tree',
@@ -30,28 +31,26 @@ export default defineComponent({
   setup(props, { emit }) {
     const state = reactive({
       treeData: [] as any,
-      spinning: false,
-      replaceFields: {
-        key: 'id'
-      }
+      checkedKeys: [] as any,
+      spinning: false
     })
-    // 已勾选的节点
-    const checkedKeys = computed({
-      get: () => props.value,
-      set: (val: any) =>
-        emit('update:value', Array.isArray(val) ? val : val.checked)
-    })
+
     onMounted(async () => {
       // 获取权限资源列表
       state.spinning = true
       const res = await systemMenuTemplateRoleMenuTreeData(props.value).finally(
         () => (state.spinning = false)
       )
+      let checkedChilds = res.data.map((item) => {
+        if (item.checked == true) {
+          return item.id
+        }
+      })
+      state.checkedKeys = checkedChilds.filter(Boolean)
       state.treeData = list2tree(res.data)
-      console.log('查询角色对应所有模板菜单列表树', list2tree(res.data))
+      // console.log('查询角色对应所有模板菜单列表树', list2tree(res.data))
+      console.log('原来的length=====111>', state.checkedKeys)
     })
-    // console.log('已勾选的节点checkedKeys ', checkedKeys)
-
     // 列表转树
     const list2tree = (arr) => {
       let temp = {}
@@ -95,7 +94,7 @@ export default defineComponent({
     // 获取所有子节点的key
     const getChildrenKeys = (treeNode, arr: number[] = []) => {
       if (treeNode?.children.length > 0) {
-        console.log(treeNode.children, 'children')
+        // console.log(treeNode.children, 'children')
         return treeNode.children.reduce((prev, curr) => {
           if (curr.children.length > 0) {
             prev.push(...getChildrenKeys(curr, prev), [])
@@ -108,41 +107,44 @@ export default defineComponent({
 
     // 勾选事件处理函数
     const onCheck = (keys, { node, checked }) => {
-      let tempKeys: number[] = checkedKeys.value
-      // 子节点选中，父节点必然要选中
-      if (checked) {
-        tempKeys = [
-          ...new Set([
-            ...checkedKeys.value,
-            ...keys.checked,
-            ...getParentsKey(node.vcTreeNode),
-            ...getChildrenKeys(node.dataRef)
-          ])
-        ]
-      } else {
-        const childrenKeys = getChildrenKeys(node.dataRef)
-        console.log(childrenKeys, 'childrenKeys')
-        if (childrenKeys.length > 0) {
-          tempKeys = keys.checked.filter((item) => !childrenKeys.includes(item))
-        } else {
-          tempKeys = keys.checked
-        }
-        // 获取所有同级节点
-        const children =
-          node.vcTreeNode?.dataRef?.children?.map((item) => item.id) || []
-        // 如果当前所有选中的节点中没有包含任何一个直属子节点
-        if (!children.some((item) => tempKeys.includes(item))) {
-          tempKeys = tempKeys.filter(
-            (item) => item != node.vcTreeNode?.eventKey
-          )
-        }
-      }
-      checkedKeys.value = tempKeys
+      console.log('原来的length=====>', state.checkedKeys.checked)
+      emit('update:value', state.checkedKeys)
+      // console.log('111=====>',keys.length)
+      // console.log('222=====>',{ node, checked })
+      // let tempKeys: number[] = checkedKeys.value
+      // // 子节点选中，父节点必然要选中
+      // if (checked) {
+      //   tempKeys = [
+      //     ...new Set([
+      //       ...checkedKeys.value,
+      //       ...keys.checked,
+      //       ...getParentsKey(node.vcTreeNode),
+      //       ...getChildrenKeys(node.dataRef)
+      //     ])
+      //   ]
+      // } else {
+      //   const childrenKeys = getChildrenKeys(node.dataRef)
+      //   console.log(childrenKeys, 'childrenKeys')
+      //   if (childrenKeys.length > 0) {
+      //     tempKeys = keys.checked.filter((item) => !childrenKeys.includes(item))
+      //   } else {
+      //     tempKeys = keys.checked
+      //   }
+      //   // 获取所有同级节点
+      //   const children =
+      //     node.vcTreeNode?.dataRef?.children?.map((item) => item.id) || []
+      //   // 如果当前所有选中的节点中没有包含任何一个直属子节点
+      //   if (!children.some((item) => tempKeys.includes(item))) {
+      //     tempKeys = tempKeys.filter(
+      //       (item) => item != node.vcTreeNode?.eventKey
+      //     )
+      //   }
+      // }
+      // checkedKeys.value = tempKeys
     }
 
     return {
       ...toRefs(state),
-      checkedKeys,
       onCheck
     }
   }

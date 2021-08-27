@@ -6,6 +6,8 @@
            size="middle"
            :data-source="data"
            :pagination="pageOptions"
+           v-if="data.length"
+           :defaultExpandAllRows='pageOptions.isAll == true?true:false'
            bordered
            :customRow="customRow"
            v-bind="$attrs"
@@ -165,10 +167,8 @@ export default defineComponent({
       Object.assign(pageOptions.value, {
         total: ~~total || 10
       })
-      // state.data = data
-      // console.log('=======================>statestatestate我的我的我的', state)
-      // console.log('=======================>我的我的我的', state.data)
       state.data = list_tree(data)
+      // console.log('=======================>我的我的我的', list_tree(data))
       // 是否可以拖拽行
       props.dragRowEnable && (state.customRow = useDragRow<any>(state.data)!)
     }
@@ -181,7 +181,7 @@ export default defineComponent({
       let tree = {}
       // 数组转 键值对
       arr.forEach((item) => {
-        item.title = item.deptName
+        // item.title = item.deptName
         item.key = item.id
         temp[item.id] = item
       })
@@ -215,7 +215,7 @@ export default defineComponent({
       }
     }
 
-    watch(props.pageOption,(val)=>{
+    watch(props.pageOption, (val) => {
       refreshTableData()
     })
 

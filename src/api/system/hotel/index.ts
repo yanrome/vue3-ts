@@ -10,10 +10,11 @@ enum Api {
  * 根据当前用户角色和权限获取酒店列表
  * @param params
  */
-export function getBusinessHotelList(searchValue) {
+export function getBusinessHotelList(params) {
     return http.request({
-        url: [Api.businessHotelList,searchValue].join('/') ,
-        method: RequestEnum.GET,
+        url: Api.businessHotelList,
+        method: RequestEnum.POST,
+        params:params,
     }, {
         isTransformRequestResult: false
     });
