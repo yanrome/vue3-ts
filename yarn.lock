@@ -3475,6 +3475,11 @@ check-types@^8.0.3:
   resolved "https://registry.npmjs.org/check-types/-/check-types-8.0.3.tgz#3356cca19c889544f2d7a95ed49ce508a0ecf552"
   integrity sha512-YpeKZngUmG65rLudJ4taU7VLkOCTMhNl/u4ctNC56LQS/zJTyNH0Lrtwm1tfTsbLlwvlfsA2d1c8vCf/Kh2KwQ==
 
+china-division@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.nlark.com/china-division/download/china-division-2.4.0.tgz#c9f0efc4b0857d65dfb6205bd1127c1f379a7db2"
+  integrity sha1-yfDvxLCFfWXftiBb0RJ8HzeafbI=
+
 "chokidar@>=3.0.0 <4.0.0", chokidar@^3.3.0, chokidar@^3.4.1:
   version "3.5.1"
   resolved "https://registry.npmjs.org/chokidar/-/chokidar-3.5.1.tgz#ee9ce7bbebd2b79f49f304799d5468e31e14e68a"

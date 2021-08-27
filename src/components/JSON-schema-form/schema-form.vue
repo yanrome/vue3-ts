@@ -2,7 +2,7 @@
   <a-form ref="schemaFormRef"
           class="scroll"
           v-bind="formItemLayout">
-    <template v-for="(formItem, index) in formSchema.formItem.filter(item => !item.hidden)"
+    <template v-for="(formItem, index) in dynamicValidateForm.formItem.filter(item => !item.hidden)"
               :key="formItem.field">
       <a-spin :spinning="formItem.loading || false">
         <a-form-item :help="formItem.help"
@@ -18,7 +18,7 @@
       </a-spin>
     </template>
     <template v-if="$slots['operate-button']">
-      <a-form-item :wrapper-col="{ span: formItemLayout.wrapperCol.span, offset: formItemLayout.labelCol.span,  }">
+      <a-form-item :wrapper-col="{ span: formItemLayout?.wrapperCol?.span, offset: formItemLayout?.labelCol?.span,  }">
         <slot name="operate-button" />
       </a-form-item>
     </template>
@@ -41,6 +41,7 @@ import { Form, Spin } from 'ant-design-vue'
 import { isString, isFunction, isAsyncFunction } from '@/utils/is'
 import components from './components'
 import { FormItem, FormSchema } from '@/types/schema'
+import {toRefs} from "@vueuse/core";
 
 const useForm = Form.useForm
 
@@ -65,6 +66,10 @@ export default defineComponent({
     }
   },
   setup(props, ctx) {
+    const state = reactive({
+      // dynamicValidateForm: cloneDeep(props.formSchema)
+      dynamicValidateForm: props.formSchema
+    })
     // a-form
     const schemaFormRef = ref<any>(null)
     // 表单实例
@@ -72,8 +77,8 @@ export default defineComponent({
 
     // 表单布局
     const formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 20 },
+      // labelCol: { span: 4 },
+      // wrapperCol: { span: 20 },
       ...props.formSchema.formItemLayout
     }
 
@@ -96,17 +101,42 @@ export default defineComponent({
     // 如果有默认值，则覆盖
     props.fields && Object.assign(modelRef, props.fields)
 
+    // state.dynamicValidateForm.formItem.forEach(async item=>{
+    //   if (item?.hasOwnProperty('loading')) {
+    //     item.loading = true
+    //   }
+    //
+    //   if (isFunction(item.asyncOptions) || isAsyncFunction(item.asyncOptions)) {
+    //
+    //     item.options = await item.asyncOptions(item, formInstance)
+    //             .finally(() => {
+    //               item.loading = false
+    //             })
+    //
+    //     console.log('item======',item.options)
+    //   }
+    // })
+
     // 异步设置默认数据
-    props.formSchema.formItem.forEach(async (item: FormItem) => {
+    props.formSchema.formItem.forEach(async (item: FormItem,index) => {
+
       // 是否需要loading
       if (item?.hasOwnProperty('loading')) {
         item.loading = true
       }
       // 异步选项
       if (isFunction(item.asyncOptions) || isAsyncFunction(item.asyncOptions)) {
+        state.dynamicValidateForm.formItem[index].options = await item
+                .asyncOptions(item, formInstance)
+                .finally(() => {
+                  state.dynamicValidateForm.formItem[index].loading = false
+                })
         item.options = await item
           .asyncOptions(item, formInstance)
-          .finally(() => (item.loading = false))
+          .finally(() => {
+            item.loading = false
+          })
+        console.log('item======',item.options)
       } else if (
         isFunction(item.asyncValue) ||
         isAsyncFunction(item.asyncValue)
@@ -219,6 +249,7 @@ export default defineComponent({
     }
 
     return {
+      ...toRefs(state),
       formItemLayout,
       validate,
       resetFields,
@@ -235,17 +266,20 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .ant-form {
-  .ant-input-group {
-    display: flex;
-  }
+  /*.ant-input-group {*/
+  /*  display: flex;*/
+  /*}*/
 
   .ant-checkbox-wrapper {
     //margin-left: 0;
   }
 }
 .scroll {
-  max-height: 500px;
   position: relative;
+  max-height: 500px;
   overflow: auto;
+  }
+::v-deep(.ant-form-item-label) {
+  width: 80px;
 }
 </style>

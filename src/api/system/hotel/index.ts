@@ -31,3 +31,14 @@ export function getBusinessHotelHotelId(param){
     })
 }
 
+/**
+ * @description 修改酒店信息
+ * @params params
+ * */
+export function postHotelEdit(params) {
+    return http.request({
+        url:[Api.businessHotelHotelId,'edit'].join('/'),
+        method:RequestEnum.POST,
+        params
+    })
+}

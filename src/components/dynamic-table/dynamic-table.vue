@@ -71,7 +71,7 @@
               <a-popconfirm :key="index"
                             placement="leftTop"
                             @confirm="actionEvent(slotProps.record, action.func, 'del')">
-                <template #title> 您确定要删除吗？ </template>
+                <template #title>  {{action?.props?.title ?action?.props?.title  : '您确定要删除吗？' }}  </template>
                 <a-button v-permission="action.permission"
                           v-bind="{ ...buttonProps, ...action.props }">
                   {{ action.text }}
@@ -167,8 +167,12 @@ export default defineComponent({
       Object.assign(pageOptions.value, {
         total: ~~total || 10
       })
-      state.data = list_tree(data)
-      // console.log('=======================>我的我的我的', list_tree(data))
+
+      // state.data = data
+      // console.log('=======================>statestatestate我的我的我的', state)
+      // console.log('=======================>我的我的我的', state.data)
+      state.data = data.length && data[0].hasOwnProperty('parentId') ? list_tree(data) : data
+
       // 是否可以拖拽行
       props.dragRowEnable && (state.customRow = useDragRow<any>(state.data)!)
     }
@@ -217,6 +221,8 @@ export default defineComponent({
 
     watch(props.pageOption, (val) => {
       refreshTableData()
+    },{
+      deep:true
     })
 
     // 分页改变
@@ -245,7 +251,7 @@ export default defineComponent({
 
     // dataIndex 可以为 a.b.c
     // const getDataIndexVal = (dataIndex, record) => dataIndex.split('.').reduce((pre, curr) => pre[curr], record)
-
+    //只听秦川再度悠悠开口说道：“冰封决和”
     const buttonProps = {
       size: 'small'
     }

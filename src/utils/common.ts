@@ -8,7 +8,7 @@ import any = defaultResult.any;
  * @param isArray 如果传true，传回处理好的数据
  * @param isObj XX累赘，待改进
  * */
-export const changeDict = (emun, isArray: boolean = false, isObj: boolean = true) => {
+export const changeDict = (emun, isArray = false, isObj = true) => {
     const returns = {}
     const list = emun.map(item => {
         returns[item['dictValue']] = item['dictLabel']
@@ -136,7 +136,7 @@ export const toJSON = (obj) => {
  * @description 将字符串/对象 转为数组
  * @param {any}
  * */
-export const toObj = (obj: string | object , toArray: boolean = false) => {
+export const toObj = (obj: string | object , toArray = false) => {
     if(!obj) return
     obj = typeof obj === "string" ? JSON.parse(obj) : obj
     if(toArray && obj){
