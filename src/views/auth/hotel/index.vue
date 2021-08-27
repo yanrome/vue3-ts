@@ -123,11 +123,7 @@
                 // console.log('router',router)
                 // const uRouter = useRouter()
                 // const uRoute = useRoute()
-<<<<<<< HEAD
-=======
-                // debugger
-                return
->>>>>>> 67a2307eb0a45f8b4d3f345654ceec57a709d72b
+
                 const component =  ()=>import('./edit.vue')
                 const addRouter = {
                     component:component,
