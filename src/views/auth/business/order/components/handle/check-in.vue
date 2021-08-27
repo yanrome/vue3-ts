@@ -159,7 +159,6 @@
             //获取订单房间状态
             const getDictFn = async ()=>{
                 const data = await getDict('business_payment','businessOrderroomStatus',false)
-
                 state.businessPayment =data
             }
             getDictFn()
