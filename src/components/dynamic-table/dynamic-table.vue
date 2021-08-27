@@ -172,7 +172,6 @@ export default defineComponent({
       // console.log('=======================>statestatestate我的我的我的', state)
       // console.log('=======================>我的我的我的', state.data)
       state.data = data.length && data[0].hasOwnProperty('parentId') ? list_tree(data) : data
-
       // 是否可以拖拽行
       props.dragRowEnable && (state.customRow = useDragRow<any>(state.data)!)
     }

@@ -2,9 +2,13 @@
   <a-spin :spinning="spinning">
     <a-tree-select v-model:value="label"
                    style="width: 100%;"
+                   :treeDataSimpleMode="true"
+                   :treeDefaultExpandAll="true"
                    :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
                    :tree-data="treeData"
-                   @select='onSelect' />
+                   @select='onSelect' >
+                   
+  </a-tree-select>
   </a-spin>
 </template>
 
@@ -47,11 +51,17 @@ export default defineComponent({
       const res = await adminDeptTreeData().finally(
         () => (state.spinning = false)
       )
+      res.data = res.data.map(item=>{
+        item.key = item.id
+        item.value = item.name
+        return item
+      })
       let pId = props.value
         ? res.data?.find((item) => item.id == props.value).pId
         : '未选择'
       state.label = res.data?.find((item) => item.id == pId).name || '未选择'
       state.treeData = list2tree(res.data)
+      debugger
     })
 
     // 列表转树

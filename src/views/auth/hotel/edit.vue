@@ -96,6 +96,7 @@
         emits:['success'],
         setup(props,{emit}) {
             let hotelMassage = JSON.parse(JSON.stringify(props.hotelMsg))
+            console.log('123',hotelMassage)
             const state = reactive({
                 hotelMassage:hotelMassage
             })

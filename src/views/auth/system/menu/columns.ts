@@ -35,7 +35,7 @@ export const columns: TableColumn[] = [
         },
         slotsFunc:  (record)=>{
             return createVNode(Tag,{
-                color:menuSceneStatus[record.menuScene].color
+                // color: menuSceneStatus[record.menuScene].color || 'red'
             },menuSceneStatus[record.menuScene].txt)
         }
         // slotsFunc: async ()=>{
@@ -57,7 +57,7 @@ export const columns: TableColumn[] = [
         },
         slotsFunc:  (record)=>{
             return createVNode(Tag,{
-                color:menuTypeStatus[record.menuType].color
+                // color:menuTypeStatus[record.menuType].color  || 'red'
             },menuTypeStatus[record.menuType].txt)
         }
     },
@@ -70,7 +70,7 @@ export const columns: TableColumn[] = [
         },
         slotsFunc:  (record)=>{
             return createVNode(Tag,{
-                color:menuVisibleStatus[record.visible].color
+                // color:menuVisibleStatus[record.visible].color || 'red'
             },menuVisibleStatus[record.visible].txt)
         }
     },

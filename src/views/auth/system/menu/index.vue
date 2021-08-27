@@ -82,8 +82,9 @@ interface FormState {
   menuName: string
   url: string
   perms: string
-  orderNum: number | string
-  icon: string
+  orderNum: number | string,
+  isAll:boolean,
+  icon: string,
   visible: string
 }
 interface Param {
@@ -103,7 +104,7 @@ export default defineComponent({
       pageNum: 1,
       pageSize: 10
     })
-    const formState: UnwrapRef<FormState> = reactive({
+    const formState = reactive({
       parentId: '0',
       menuType: '',
       menuScene: '',
