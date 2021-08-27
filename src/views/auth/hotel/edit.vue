@@ -91,10 +91,15 @@
             [Form.Item.name]: Form.Item
         },
         props: {
-            hotelMsg: Object
+            hotelMsg: {
+                type:Object,
+                default: {}
+            }
         },
         emits:['success'],
         setup(props,{emit}) {
+            console.log('props',props.hotelMsg)
+
             let hotelMassage = JSON.parse(JSON.stringify(props.hotelMsg))
             const state = reactive({
                 hotelMassage:hotelMassage
