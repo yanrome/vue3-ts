@@ -75,13 +75,13 @@ export const columns = (dictData): TableColumn[] => [
                         fields: {
                             id:record.id,
                             devName:record.devName,
-                            devDomain: record.devDomain,
-                            devType: record.devType,
+                            devDomain: record.devDomain.toString(),
+                            devType: record.devType.toString(),
                             sort:record.sort,
                         },
                         formSchema:formModal(dictData),
                         handleOk:async (data)=>{
-                            debugger
+                            console.log(data)
                         }
                     })
                 }
