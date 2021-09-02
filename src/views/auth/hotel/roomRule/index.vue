@@ -14,7 +14,15 @@
     </a-card>
     <a-card>
         <dynamic-table :pageOption="pageOption" rowKey="id" :columns="columns(getFn)"
-                       :get-list-func="postBusinessPoliceList">
+                       :get-list-func="postBusinessRoomRuleList">
+            <template v-slot:title>
+                <a-button
+                        @click="addItem"
+                          type="primary">
+                    添加
+                </a-button>
+            </template>
+
         </dynamic-table>
     </a-card>
 </template>
@@ -27,12 +35,12 @@
     import {formSearch} from './form-search'
     import {DynamicTable} from '@/components/dynamic-table'
     import {toRefs} from "@vueuse/core";
-    import { postBusinessPoliceList } from "@/api/system/hotel/police";
+    import { postBusinessRoomRuleList } from "@/api/system/hotel/roomRule";
     import {columns} from "./columns"
     import {getDict} from "@/hooks/dict-list";
     import moment from 'moment'
     import {useFormModal} from "@/hooks";
-    import {formModal} from "@/views/auth/hotel/roomdev/form-modal";
+    import {formModal} from "./form-modal";
     import {useStore} from "@/store";
     import {transFormStr} from "@/utils/common";
     import {DictActions} from "@/store/modules/dict/actions";
@@ -52,24 +60,23 @@
                 status:{},
             })
             const getDictFn = async () => {
-                const status = await store.dispatch(DictActions.getDict,{dictType:'business_room_dev_type'})
-                const devDomain =  await store.dispatch(DictActions.getDict,{dictType:'business_room_dev_domain'})
+                const status = await store.dispatch(DictActions.getDict,{dictType:'business_room_rule_type'})
                 return {
                     status: status,
-                    devDomain:devDomain,
                 }
             }
             const getFn = getDictFn()
 
             const addItem = () =>{
                 useFormModal({
-                    title: '编辑账号',
+                    title: '编辑',
                     formSchema:formModal(getFn),
                     handleOk:async (data)=>{
                         debugger
                     }
                 })
             }
+
             const confirm = () => {
                 console.log(dynamicForm.value.modelRef.time)
                 if(dynamicForm.value.modelRef.time){
@@ -98,7 +105,7 @@
                 cancel,
                 dynamicForm,
                 formSchema: formSearch(getFn),
-                postBusinessPoliceList,
+                postBusinessRoomRuleList,
                 columns
             }
         },
