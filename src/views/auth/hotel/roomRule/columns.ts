@@ -10,7 +10,7 @@ import {formatDict} from "@/utils/common";
 export const columns = (dictData): TableColumn[] => [
 
     {
-        title: '设备范畴',
+        title: '类型',
         dataIndex: 'roomRuleType',
         slotsType:"component",
         slots: {
@@ -28,6 +28,7 @@ export const columns = (dictData): TableColumn[] => [
             })
         }
     },
+
     {
         title: '内容',
         dataIndex: 'content',
@@ -35,6 +36,10 @@ export const columns = (dictData): TableColumn[] => [
     {
         title: '提示',
         dataIndex: 'tip',
+    },
+    {
+        title: '状态',
+        dataIndex: 'status',
     },
     {
         title: '操作',
