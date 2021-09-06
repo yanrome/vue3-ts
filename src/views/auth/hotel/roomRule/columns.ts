@@ -8,41 +8,18 @@ import { formModal } from './form-modal'
 import {formatDict} from "@/utils/common";
 
 export const columns = (dictData): TableColumn[] => [
-    {
-        title: '设施设备名称',
-        dataIndex: 'devName',
-    },
 
     {
         title: '设备范畴',
-        dataIndex: 'devDomain',
+        dataIndex: 'roomRuleType',
         slotsType:"component",
         slots: {
-            customRender: 'devDomain'
+            customRender: 'roomRuleType'
         },
         slotsFunc:(record)=>{
             return createVNode(antTag,{
-                txt:record.devDomain,
-                color:tagColor[record.devDomain],
-                getTypeFun:()=>{
-                    return dictData.then(res=>{
-                        return formatDict(res.devDomain)
-                    })
-                }
-            })
-        }
-    },
-    {
-        title: '付款结果',
-        dataIndex: 'status',
-        slotsType:"component",
-        slots: {
-            customRender: 'status'
-        },
-        slotsFunc:(record)=>{
-            return createVNode(antTag,{
-                txt:record.devType,
-                color:tagColor[record.devType],
+                txt:record.roomRuleType,
+                color:tagColor[record.roomRuleType],
                 getTypeFun:()=>{
                     return dictData.then(res=>{
                         return formatDict(res.status)
@@ -52,8 +29,12 @@ export const columns = (dictData): TableColumn[] => [
         }
     },
     {
-        title: '创建时间',
-        dataIndex: 'createTime',
+        title: '内容',
+        dataIndex: 'content',
+    },
+    {
+        title: '提示',
+        dataIndex: 'tip',
     },
     {
         title: '操作',
@@ -72,12 +53,12 @@ export const columns = (dictData): TableColumn[] => [
                 func: ({record}, refreshTableData) =>{
                     return useFormModal({
                         title: '编辑',
+                        hiddenFields: ['content'],
                         fields: {
                             id:record.id,
-                            devName:record.devName,
-                            devDomain: record.devDomain.toString(),
-                            devType: record.devType.toString(),
-                            sort:record.sort,
+                            roomRuleType:record.roomRuleType.toString(),
+                            status: record.status.toString(),
+                            tip:record.tip,
                         },
                         formSchema:formModal(dictData),
                         handleOk:async (data)=>{
