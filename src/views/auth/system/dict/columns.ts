@@ -42,7 +42,7 @@ export const columns: TableColumn[] = [ // 字典表格
                     title: '编辑字典',
                     fields: record,
                     formSchema: getFormSchema(),
-                    handleOk: async (modelRef, state) => 
+                    handleOk: async (modelRef, state) =>
                     await adminDictEdit(modelRef).then(_ => refreshTableData())
                 })
             },
@@ -53,11 +53,11 @@ export const columns: TableColumn[] = [ // 字典表格
                     type: 'warning'
                 },
                 func:({record}, refreshTableData)=>{
-                    router.push({ 
-                        path: '/system/dict/list/index',
+                    router.push({
+                        path: '/system/dict/list',
                         // query: {
                         //     id:'111'
-                        // } 
+                        // }
                     })
                 },
                 // func: ({record}, refreshTableData) => useFormModal({

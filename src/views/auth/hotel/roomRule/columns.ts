@@ -1,11 +1,13 @@
 import {TableColumn} from "@/types/tableColumn";
 import {createVNode} from 'vue'
 import {antTag} from '@/components/tag'
+import {Tag} from "ant-design-vue";
 import {tagColor} from "@/utils/dict";
 import {postBusinessRoomDevRemove} from "@/api/system/hotel/roomdev";
+import {postBusinessRoomRuleEdit,postBusinessRoomRuleRemove} from "@/api/system/hotel/roomRule";
 import {useFormModal} from "@/hooks";
 import { formModal } from './form-modal'
-import {formatDict} from "@/utils/common";
+import {formatDate, formatDict} from "@/utils/common";
 
 export const columns = (dictData): TableColumn[] => [
 
@@ -40,6 +42,15 @@ export const columns = (dictData): TableColumn[] => [
     {
         title: '状态',
         dataIndex: 'status',
+        slotsType:"component",
+        slots: {
+            customRender: 'status'
+        },
+        slotsFunc:(record)=>{
+            return createVNode(Tag,{
+                color:tagColor[record.status],
+            },record.status == 1 ? '已生效' : '未生效')
+        }
     },
     {
         title: '操作',
@@ -67,7 +78,9 @@ export const columns = (dictData): TableColumn[] => [
                         },
                         formSchema:formModal(dictData),
                         handleOk:async (data)=>{
-                            console.log(data)
+                            const {id,roomRuleType,tip,status} = data
+                            const params = {id,roomRuleType,tip,status}
+                            await postBusinessRoomRuleEdit(params).then(() => refreshTableData())
                         }
                     })
                 }
@@ -78,7 +91,7 @@ export const columns = (dictData): TableColumn[] => [
                     type: 'danger' // 按钮类型
                 },
                 text: '删除',
-                func: async ({record}, refreshTableData) => await postBusinessRoomDevRemove(record.id).then(() => refreshTableData()),
+                func: async ({record}, refreshTableData) => await postBusinessRoomRuleRemove(record.id).then(() => refreshTableData()),
             },
         ]
     }

@@ -34,8 +34,8 @@ export const formModal = (dictData): FormSchema => ({
 
         {
             type: "select",
-            label: "类型",
-            field: "roomRuleType",
+            label: "状态",
+            field: "status",
             value: '1',
             options:[{label: '已生效', value: '1'}, {label: '未生效', value: '0'}]
         },

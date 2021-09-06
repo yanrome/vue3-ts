@@ -18,3 +18,26 @@ export function postBusinessRoomRuleList(params) {
     });
 }
 
+/**
+ * @description  编辑入住规则
+ * @param
+ * */
+export function postBusinessRoomRuleEdit(params) {
+    return http.request({
+        url: [Api.businessRoom,'rule/edit'].join('/') ,
+        method: RequestEnum.POST,
+        params
+    });
+}
+
+/**
+ * @description  删除入住规则
+ * @param
+ * */
+export function postBusinessRoomRuleRemove(id) {
+    return http.request({
+        url: [Api.businessRoom,'rule/remove',id].join('/') ,
+        method: RequestEnum.POST,
+    });
+}
+

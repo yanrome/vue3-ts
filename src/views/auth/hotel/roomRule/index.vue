@@ -69,7 +69,7 @@
 
             const addItem = () =>{
                 useFormModal({
-                    title: '编辑',
+                    title: '新增',
                     formSchema:formModal(getFn),
                     handleOk:async (data)=>{
                         debugger
