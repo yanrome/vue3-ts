@@ -175,6 +175,7 @@ export default defineComponent({
       tableRef,
       getAdminRole,
       isDisabled,
+      // 方法
       addItem,
       formState,
       deleteItems,

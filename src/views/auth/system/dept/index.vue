@@ -29,11 +29,6 @@
       </a-form-item>
     </a-form>
   </a-card>
-  <!-- <a-table :columns="columns"
-           :data-source="dataList"
-           :row-selection="rowSelection" /> -->
-  <!-- <access-tree></access-tree> -->
-
   <dynamic-table ref="tableRef"
                  :columns="columns"
                  :pageOption="formState"
@@ -55,13 +50,7 @@
   </dynamic-table>
 </template>
 <script lang="ts">
-import {
-  defineComponent,
-  reactive,
-  toRefs,
-  UnwrapRef,
-  ref
-} from 'vue'
+import { defineComponent, reactive, toRefs, UnwrapRef, ref } from 'vue'
 import { DynamicTable } from '@/components/dynamic-table'
 import { adminDept, adminDeptAdd } from '@/api/system/dept/index'
 import { columns } from './columns'
@@ -69,7 +58,6 @@ import { useFormModal } from '@/hooks/useFormModal'
 import { getFormSchema } from './form-schema'
 import { Moment } from 'moment'
 import { DatePicker } from 'ant-design-vue'
-import AccessTree from './components/access-tree-select.vue'
 
 interface FormState {
   name: string
@@ -92,8 +80,7 @@ export default defineComponent({
   name: 'system-dept',
   components: {
     DynamicTable,
-    aRangePicker: DatePicker.RangePicker,
-    AccessTree
+    aRangePicker: DatePicker.RangePicker
   },
   setup() {
     const formState: UnwrapRef<FormState> = reactive({
@@ -107,7 +94,7 @@ export default defineComponent({
       deptName: '',
       starTime: '',
       endTime: '',
-      isAll:true
+      isAll: true
     })
 
     const tableRef = ref<any>(null)
@@ -142,12 +129,27 @@ export default defineComponent({
         title: '添加用户',
         formSchema: getFormSchema(),
         handleOk: async (modelRef, state) => {
-          const { description, title, accessIdsList } = modelRef
-
+          const {
+            deptName,
+            province,
+            orderNum,
+            leader,
+            phone,
+            email,
+            shareScale,
+            shareRatio,
+            id
+          } = modelRef
           const params = {
-            description,
-            title,
-            accessIdsList: accessIdsList.toString()
+            deptName,
+            province,
+            orderNum,
+            leader,
+            phone,
+            email,
+            shareScale,
+            shareRatio,
+            parentId: id
           }
           console.log('添加用户-params', params)
           await adminDeptAdd(params)

@@ -1,5 +1,6 @@
 import {createVNode} from 'vue'
 import AccessTreeSelect from './components/access-tree-select.vue'
+import Cascader from './components/cascader.vue'
 import {FormSchema} from "@/types/schema";
 import { getSystemDictDataByType } from "@/api/system/user/index";
 import { Tree } from 'ant-design-vue';
@@ -22,7 +23,13 @@ export const getFormSchema = (): FormSchema => ({
             type: createVNode(AccessTreeSelect),
             label: "上级部门",
             field: "id",
-            value: ''
+            value: '',
+            // rules: [
+            //     {
+            //         required: 'parentId',
+            //         message: "用户名不能为空",
+            //     }
+            // ]
         },
         {
             type: "input",
@@ -40,9 +47,9 @@ export const getFormSchema = (): FormSchema => ({
             ]
         },
         {
-            type: 'select',
+            type: createVNode(Cascader),
             label: "地址",
-            field: "province",
+            field: 'province',
             value: '',
         },
         {
@@ -53,12 +60,25 @@ export const getFormSchema = (): FormSchema => ({
             props: {
                 placeholder: "请输入排序"
             },
-            rules: [
-                {
-                    required: true,
-                    message: "排序不能为空"
-                }
-            ]
+            //  '/^(?:[a-z/d]+[_/-/+/.]?)*[a-z/d]+@(?:([a-z/d]+/-?)*[a-z/d]+/.)+([a-z]{2,})+$/i',
+            // rules: [
+            //     {
+            //         required: true,
+            //         message: "密码不能为空",
+            //         validator: async (rule, value) => {
+            //             // 获取二次确认密码
+            //             const {confirmPassword, password} = dynamicForm.value.modelRef
+            //             if (password === '') {
+            //                 return Promise.reject('请输入密码');
+            //             } else {
+            //                 // if (confirmPassword !== '') {
+            //                 //     dynamicForm.value.validateField('confirmPassword');
+            //                 // }
+            //                 return Promise.resolve();
+            //             }
+            //         }
+            //     }
+            // ]
         },
         {
             type: "input",
@@ -134,20 +154,7 @@ export const getFormSchema = (): FormSchema => ({
                     message: ""
                 }
             ]
-        },
-        // {
-        //     type: createVNode(AccessTree),
-        //     label: "资源",
-        //     field: "accessIdsList",
-        //     value: [],
-        //     asyncValue: async (currentValue, formInstance) => {
-        //         const {id} = formInstance?.props.fields as any
-        //         // 获取角色列表
-        //         const data = await  adminDeptAdd (id)
-        //         // 设置角色复选框选项
-        //         return data.map(item => item.accessId)
-        //     }
-        // }
+        }
     ]
 })
 

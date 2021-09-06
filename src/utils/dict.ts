@@ -1,4 +1,4 @@
-import { Radio } from "ant-design-vue"
+import { Radio } from 'ant-design-vue'
 
 export const tagColor = {
     1: 'pink',
@@ -6,10 +6,10 @@ export const tagColor = {
     3: 'orange',
     4: 'green',
     5: 'cyan',
-    6:"blue",
-    7:"purple",
-    8:"pink",
-    9:"red",
+    6: 'blue',
+    7: 'purple',
+    8: 'pink',
+    9: 'red',
 }
 
 export const publicColor = {
@@ -18,10 +18,10 @@ export const publicColor = {
     3: '#FA7D41',
     4: '#F95252',
     5: '#1890ff',
-    6:"#87d068",
-    7:"#ff5500",
-    8:"#389e0d",
-    9:"#531dab",
+    6: '#87d068',
+    7: '#ff5500',
+    8: '#389e0d',
+    9: '#531dab',
 }
 
 export const accountType = {

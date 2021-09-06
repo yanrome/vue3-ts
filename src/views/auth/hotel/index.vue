@@ -120,27 +120,27 @@
             //跳转编辑
             const edit = ()=>{
                 state.hotelStatus = 'edit'
-                // console.log('router',router)
+                console.log('router',uRouter)
                 // const uRouter = useRouter()
                 // const uRoute = useRoute()
-
-                const component =  ()=>import('./edit.vue')
-                const addRouter = {
-                    component:component,
-                    meta: {
-                        title: '编辑',
-                        icon: 'icon-zhuomian',
-                        keepAlive: true,
-                        reload: false,
-                        componentName: component.name,
-                        hidden: true
-                    },
-                    name: '/hotel/edit' || '',
-                    path: '/hotel/edit',
-                    props: false
-                }
-                uRouter.addRoute('/hotel',addRouter)
-                uRouter.push({path:'/hotel/edit'})
+                // return
+                // const component =  ()=>import('./edit.vue')
+                // const addRouter = {
+                //     component:component,
+                //     meta: {
+                //         title: '编辑',
+                //         icon: 'icon-zhuomian',
+                //         keepAlive: true,
+                //         reload: false,
+                //         componentName: component.name,
+                //         hidden: true
+                //     },
+                //     name: '/hotel/edit' || '',
+                //     path: '/hotel/edit',
+                //     props: false
+                // }
+                // uRouter.addRoute('hotel',addRouter)
+                // uRouter.push({path:'/hotel/edit'})
             }
 
             //修改成功

@@ -24,16 +24,7 @@ export const getFormSchema = (): FormSchema => ({
             type: createVNode(AccessTree),
             label: '上级菜单',
             field: 'id',
-            value: []
-            // asyncValue: async (currentValue, formInstance) => {
-            //     // console.log('currentValuecurrentValue',formInstance)
-            //     // const { id } = formInstance?.props.fields as any
-            //     // 获取角色列表
-                // console.log('查询角色对应所有模板菜单列表树',currentValue)
-            //     const data = await systemMenuMenuTreeData()
-            //     // 设置角色复选框选项
-            //     return data.map((item) => item.accessId)
-            // }
+            value: null
         },
         {
             type: "radio",

@@ -5,11 +5,13 @@ import { getFormSchema } from "./form-schema";
 import { getFormSchemaRole } from "./form-schema-role";
 import { getSystemDictDataByType } from '@/api/system/user/index'
 import tag from './components/tag.vue'
+import {antTag} from '@/components/tag'
 import { createVNode, render, VNode} from 'vue'
+import {tagColor} from "@/utils/dict";
 import { Tag } from "ant-design-vue";
 import { sysUserSource } from "@/utils/dict";
 
-export const columns: TableColumn[] = [ // 角色列表
+export const columns=(dictData): TableColumn[] => [ // 角色列表
     {
         title: '用户ID',
         dataIndex: 'id'
@@ -33,10 +35,16 @@ export const columns: TableColumn[] = [ // 角色列表
         slots: {
             customRender: 'userSource'
         },
-        slotsFunc:  (record)=>{
-            return createVNode(Tag,{
-                color:sysUserSource[record.userSource].color
-            },sysUserSource[record.userSource].txt)
+        slotsFunc:(record)=>{
+            return createVNode(antTag,{
+                txt:record.userSource,
+                color:tagColor[record.userSource],
+                getTypeFun:()=>{
+                    return dictData.then(res=>{
+                        return res.sysUserSource
+                    })
+                }
+            })
         }
     },
     {

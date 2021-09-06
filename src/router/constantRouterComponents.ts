@@ -19,7 +19,8 @@ export const constantRouterComponents = {
     '/system/dept': () => import(/* webpackChunkName: "system-dept" */ '@/views/auth/system/dept/index.vue'), // 部门管理
     '/system/user': () => import(/* webpackChunkName: "system-user" */ '@/views/auth/system/user/index.vue'), // 人员管理
     '/system/dict': () => import(/* webpackChunkName: "system-dict" */ '@/views/auth/system/dict/index.vue'), // 数据管理
-    '/system/list': () => import(/* webpackChunkName: "system-dict" */ '@/views/auth/hotel/index.vue'), // 数据字典
+    '/system/dict-list': () => import(/* webpackChunkName: "system-dict" */
+    '@/views/auth/system/dict/dict-list/index.vue'), // 数据字典
 
     // 财务中心
     '/finance/index': () => import(/* webpackChunkName: "finance" */ '@/views/auth/finance/index.vue'),

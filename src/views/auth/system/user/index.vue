@@ -56,7 +56,7 @@
         </a-form>
       </a-card>
       <dynamic-table ref="tableRef"
-                     :columns="columns"
+                     :columns="columns(getDictFn())"
                      :get-list-func="adminUser"
                      rowKey="id"
                      :pageOption="formState"
@@ -87,6 +87,7 @@ import { useFormModal } from '@/hooks/useFormModal'
 import { getFormSchema } from './form-schema'
 import { Moment } from 'moment'
 import { DatePicker, Tree } from 'ant-design-vue'
+import { getDict } from '@/hooks/dict-list'
 import { setupCustomComponents } from '@/plugins'
 import { CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons-vue'
 interface FormState {
@@ -220,19 +221,29 @@ export default defineComponent({
       formState.deptId = obj.deptId
       adminUser(formState)
     }
+
+    const getDictFn = async () => {
+      let sysUserSource = await getDict('sys_user_source', '', false)
+      return {
+        sysUserSource: sysUserSource
+      }
+    }
+
     return {
       ...toRefs(state),
       columns,
       tableRef,
       adminUser,
       formState,
-      addItem,
-      value,
       show,
-      search,
+      value,
       visible,
-      reSet,
       ChooseTime,
+      // 方法
+      getDictFn,
+      addItem,
+      search,
+      reSet,
       afterVisibleChange,
       abc
     }

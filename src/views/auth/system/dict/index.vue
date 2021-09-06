@@ -67,6 +67,7 @@ import { hasPermission } from '@/utils/permission/hasPermission'
 import { useFormModal } from '@/hooks/useFormModal/'
 import { Moment } from 'moment'
 import { DatePicker } from 'ant-design-vue'
+import router from '@/router';
 
 interface FormState {
   name: string
@@ -116,7 +117,7 @@ export default defineComponent({
 
     const state = reactive({
       tableLoading: false,
-      rangeTime:ref<Moment[]>([]),
+      rangeTime: ref<Moment[]>([]),
       rowSelection: {
         onChange: (selectedRowKeys, selectedRows) => {
           state.rowSelection.selectedRowKeys = selectedRowKeys
@@ -160,11 +161,17 @@ export default defineComponent({
     }
     // 重置后
     const reSet = () => {
-      formState.dictName = ''
-      formState.dictType = ''
-      formState.starTime = ''
-      formState.endTime = ''
-      state.rangeTime = []
+      router.push({
+        path: '/system/dict/list/index'
+        // query: {
+        //     id:'111'
+        // }
+      })
+      // formState.dictName = ''
+      // formState.dictType = ''
+      // formState.starTime = ''
+      // formState.endTime = ''
+      // state.rangeTime = []
     }
 
     return {

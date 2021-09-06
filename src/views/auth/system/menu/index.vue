@@ -18,10 +18,6 @@
         </a-form-item>
       </div>
       <a-form-item>
-        <!-- <a-button type="primary"
-                  @click="search">
-          搜索
-        </a-button> -->
         <a-button type="primary"
                   style="margin-left: 10px;"
                   @click="reSet">
@@ -31,7 +27,7 @@
     </a-form>
   </a-card>
   <dynamic-table ref="tableRef"
-                 :columns="columns"
+                 :columns="columns(getDictFn())"
                  :pageOption="formState"
                  :get-list-func="adminMenu"
                  :row-selection="rowSelection"
@@ -70,6 +66,7 @@ import { useFormModal } from '@/hooks/useFormModal'
 import { getFormSchema } from './form-schema'
 import { getSystemDictDataByType } from '@/api/system/user/index'
 import { useExpandLoading } from '@/components/dynamic-table/hooks'
+import { getDict } from '@/hooks/dict-list'
 import { createVNode } from 'vue'
 import AddModal from './add-modal.vue'
 import { useCreateModal } from '@/hooks'
@@ -82,9 +79,9 @@ interface FormState {
   menuName: string
   url: string
   perms: string
-  orderNum: number | string,
-  isAll:boolean,
-  icon: string,
+  orderNum: number | string
+  isAll: boolean
+  icon: string
   visible: string
 }
 interface Param {
@@ -104,6 +101,7 @@ export default defineComponent({
       pageNum: 1,
       pageSize: 10
     })
+
     const formState = reactive({
       parentId: '0',
       menuType: '',
@@ -115,29 +113,33 @@ export default defineComponent({
       icon: '',
       visible: '2'
     })
-    // const state = reactive({
-    //   expandedRowKeys: [] as string[],
-    //   tableLoading: false,
-    //   rowSelection: {
-    //     onChange: (selectedRowKeys, selectedRows) => {
-    //       state.rowSelection.selectedRowKeys = selectedRowKeys
-    //     },
-    //     selectedRowKeys: []
-    //   }
-    // })
-    // const isDisabled = computed(
-    //   () => state.rowSelection.selectedRowKeys.length == 0
-    // )
+
+    const state = reactive({
+      aaaaaaaaaaa: null
+    })
+
     // 添加菜单
     const addItem = () => {
       useFormModal({
         title: '添加菜单',
         formSchema: getFormSchema(),
         handleOk: async (modelRef, state) => {
+          delete modelRef.id
           // console.log('添加菜单', modelRef)
           // console.log('添加菜单', formState)
-          // console.log('添加菜单', {...formState,...modelRef})
-          await adminMenuAdd({...formState,...modelRef})
+          // const params_ = {
+          //   parentId: id,
+          //   menuType,
+          //   menuScene,
+          //   menuName,
+          //   url,
+          //   perms,
+          //   orderNum,
+          //   icon,
+          //   visible
+          // }
+          // console.log('添加菜单', { ...formState, ...modelRef })
+          await adminMenuAdd({ ...formState, ...modelRef })
           tableRef.value.refreshTableData()
         }
       })
@@ -167,16 +169,30 @@ export default defineComponent({
       formState.visible = '2'
     }
 
+    // 字典查询
+    const getDictFn = async () => {
+      let sysMenuType = await getDict('sys_menu_type', '', false)
+      let sysMenuScene = await getDict('sys_menu_scene', '', false)
+      let sysShowHide = await getDict('sys_show_hide', '', false)
+      return {
+        sysMenuType: sysMenuType,
+        sysMenuScene: sysMenuScene,
+        sysShowHide: sysShowHide
+      }
+    }
+
     return {
       columns,
       tableRef,
       adminMenu,
-      addItem,
       formState,
+      // 方法
+      addItem,
       adminMenuRemove,
       reSet,
       isOpen,
-      expand
+      expand,
+      getDictFn
     }
   }
 })

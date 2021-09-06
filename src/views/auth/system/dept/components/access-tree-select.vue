@@ -6,9 +6,9 @@
                    :treeDefaultExpandAll="true"
                    :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
                    :tree-data="treeData"
-                   @select='onSelect' >
-                   
-  </a-tree-select>
+                   @select='onSelect'>
+
+    </a-tree-select>
   </a-spin>
 </template>
 
@@ -42,8 +42,21 @@ export default defineComponent({
     const state = reactive({
       treeData: [] as any,
       spinning: false,
+      parentId: null,
       label: ''
     })
+
+    const z_modelRef: string | null = window.localStorage.getItem('z_modelRef')
+    if (z_modelRef) {
+      JSON.parse(z_modelRef)
+      if (JSON.parse(z_modelRef).parentId) {
+        // 编辑
+        state.parentId = JSON.parse(z_modelRef).parentId
+      } else {
+        // 新增
+        state.parentId = JSON.parse(z_modelRef).id
+      }
+    }
 
     onMounted(async () => {
       // 查询所有菜单列表树
@@ -51,17 +64,16 @@ export default defineComponent({
       const res = await adminDeptTreeData().finally(
         () => (state.spinning = false)
       )
-      res.data = res.data.map(item=>{
+      res.data = res.data.map((item) => {
         item.key = item.id
         item.value = item.name
         return item
       })
-      let pId = props.value
-        ? res.data?.find((item) => item.id == props.value).pId
-        : '未选择'
-      state.label = res.data?.find((item) => item.id == pId).name || '未选择'
+      // let pId = props.value
+      //   ? res.data?.find((item) => item.id == props.value).pId
+      //   : '未选择'
+      state.label = res.data?.find((item) => item.id == state.parentId).name || '未选择'
       state.treeData = list2tree(res.data)
-      debugger
     })
 
     // 列表转树
@@ -97,7 +109,7 @@ export default defineComponent({
     const onSelect = (value, label, extra) => {
       // console.log('1111111111111111',value)
       // console.log('1111111111111111',label)
-      console.log('1111111111111111',extra)
+      // console.log('1111111111111111',extra)
       // state.label = extra.selectedNodes[0].props.name
       emit('update:value', {
         deptId: extra.selectedNodes[0].props.pId,

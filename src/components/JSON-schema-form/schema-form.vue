@@ -160,6 +160,7 @@ export default defineComponent({
     )
 
     console.log(modelRef, '表单')
+    localStorage.setItem('z_modelRef',JSON.stringify(modelRef))
     console.log(rulesRef, '表单验证规则')
 
     // const watchCallback = props.formSchema.watchCallback ?? (() => ({}))

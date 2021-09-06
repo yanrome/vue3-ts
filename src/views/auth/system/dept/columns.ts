@@ -48,9 +48,11 @@ export const columns: TableColumn[] = [ // 角色列表
                     fields: record,
                     formSchema: getFormSchema(),
                     handleOk: async (modelRef, state) => {
-                        // console.log('编辑部门---参数',modelRef)
-                        const {deptName, province, orderNum, leader, phone, email, shareScale, shareRatio, id} = modelRef
-                        const params = {deptName, province, orderNum, leader, phone, email, shareScale, shareRatio, id:id.id, deptId:id.deptId, }
+                        const { province, orderNum, leader, phone, email, shareScale, shareRatio, deptName, id, parentId, key} = modelRef
+                        const params = { province:province.province,
+                            city:province.city, county:province.county, orderNum, 
+                            leader, phone, email, shareScale, shareRatio, deptName:deptName, id: key,
+                            parentId:id.id || parentId, }
                         return await adminDeptEdit(params).then(() => refreshTableData())
                     }
                 })
@@ -64,12 +66,13 @@ export const columns: TableColumn[] = [ // 角色列表
                 func: async ({record}, refreshTableData) => 
                 useFormModal({
                     title: '新增部门',
-                    fields: record,
+                    fields: {id:record.id},
                     formSchema: getFormSchema(),
                     handleOk: async (modelRef, state) => {
-                        // console.log('新增部门---参数',modelRef)
+                        console.log('新增部门---参数',modelRef)
                         const {deptName, province, orderNum, leader, phone, email, shareScale, shareRatio, id} = modelRef
-                        const params = {deptName, province, orderNum, leader, phone, email, shareScale, shareRatio, parentId:id, }
+                        const params = {province:province.province || null,
+                            city:province.city || null, county:province.county || null, deptName, orderNum, leader, phone, email, shareScale, shareRatio, parentId:id, }
                         return await adminDeptAdd(params).then(() => refreshTableData())
                     }
                 })

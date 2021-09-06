@@ -54,10 +54,10 @@ export const columns: TableColumn[] = [ // 字典表格
                 },
                 func:({record}, refreshTableData)=>{
                     router.push({ 
-                        name: '/dict/list',
-                        query: {
-                            id:'111'
-                        } 
+                        path: '/system/dict/list/index',
+                        // query: {
+                        //     id:'111'
+                        // } 
                     })
                 },
                 // func: ({record}, refreshTableData) => useFormModal({

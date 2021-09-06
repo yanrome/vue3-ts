@@ -9,10 +9,12 @@ import { formatDate } from '@/utils/common'
 import { message } from 'ant-design-vue'
 import { IconFont } from '@/components/iconfont'
 import { createVNode } from 'vue'
+import {antTag} from '@/components/tag'
+import {tagColor} from "@/utils/dict";
 import { Tag } from "ant-design-vue";
 import { menuSceneStatus, menuTypeStatus, menuVisibleStatus } from "@/utils/dict";
 
-export const columns: TableColumn[] = [
+export const columns = (dictData): TableColumn[] => [
     // 资源管理
     {
         title: '',
@@ -33,16 +35,17 @@ export const columns: TableColumn[] = [
         slots: {
             customRender: 'menuScene'
         },
-        slotsFunc:  (record)=>{
-            return createVNode(Tag,{
-                // color: menuSceneStatus[record.menuScene].color || 'red'
-            },menuSceneStatus[record.menuScene].txt)
+        slotsFunc:(record)=>{
+            return createVNode(antTag,{
+                txt:record.menuScene,
+                color:tagColor[record.menuScene],
+                getTypeFun:()=>{
+                    return dictData.then(res=>{
+                        return res.sysMenuScene
+                    })
+                }
+            })
         }
-        // slotsFunc: async ()=>{
-        //     const res = await getSystemDictDataByType ({ dictType:'sys_menu_type' })
-        //     console.log('231214124141你到家我的女own', res )
-        //     // return res.data.map(item => item)
-        // },
     },
     {
         title: '请求地址',
@@ -55,10 +58,16 @@ export const columns: TableColumn[] = [
         slots: {
             customRender: 'menuType'
         },
-        slotsFunc:  (record)=>{
-            return createVNode(Tag,{
-                // color:menuTypeStatus[record.menuType].color  || 'red'
-            },menuTypeStatus[record.menuType].txt)
+        slotsFunc:(record)=>{
+            return createVNode(antTag,{
+                txt:record.menuType,
+                color:tagColor[record.menuType],
+                getTypeFun:()=>{
+                    return dictData.then(res=>{
+                        return res.sysMenuType
+                    })
+                }
+            })
         }
     },
     {
@@ -68,10 +77,16 @@ export const columns: TableColumn[] = [
         slots: {
             customRender: 'visible'
         },
-        slotsFunc:  (record)=>{
-            return createVNode(Tag,{
-                // color:menuVisibleStatus[record.visible].color || 'red'
-            },menuVisibleStatus[record.visible].txt)
+        slotsFunc:(record)=>{
+            return createVNode(antTag,{
+                txt:record.visible,
+                color:tagColor[record.visible],
+                getTypeFun:()=>{
+                    return dictData.then(res=>{
+                        return res.sysShowHide
+                    })
+                }
+            })
         }
     },
     {
@@ -98,11 +113,12 @@ export const columns: TableColumn[] = [
                         fields: record,
                         formSchema: getFormSchema(),
                         handleOk: async (modelRef, state) => {
+                            // console.log('编辑菜单-参数',modelRef)
                             const {
-                                id,parentId , menuType, menuScene, menuName,
+                                id, key, parentId , menuType, menuScene, menuName,
                                 url, perms, orderNum, icon, visible} = modelRef
                             const params = {
-                                id,parentId , menuType, menuScene, menuName,
+                                id:key, parentId:key == id?parentId:id , menuType, menuScene, menuName,
                                 url, perms, orderNum, icon, visible
                             }
                             // console.log('编辑菜单-参数',params)
@@ -121,17 +137,17 @@ export const columns: TableColumn[] = [
                 func: ({ record }, refreshTableData) =>{
                     useFormModal({
                         title: '新增菜单',
-                        fields: record,
+                        fields: {id:record.id},
                         formSchema: getFormSchema(),
                         handleOk: async (modelRef, state) => {
                             const {
-                                id, menuType, menuScene, menuName,
+                                id , menuType, menuScene, menuName,
                                 url, perms, orderNum, icon, visible} = modelRef
                             const params = {
-                                parentId:id , menuType, menuScene, menuName,
+                                parentId: id , menuType, menuScene, menuName,
                                 url, perms, orderNum, icon, visible
                             }
-                            console.log('新增菜单-参数',params)
+                            // console.log('新增菜单-参数',params)
                             return await adminMenuAdd(params).then(() => refreshTableData())
                         }
                     })
@@ -153,7 +169,7 @@ export const columns: TableColumn[] = [
                     if (record.id < 6) {
                         return message.warn('系统预置菜单，不能删除！')
                     }
-                    console.log('，，，',record.id)
+                    // console.log('，，，',record.id)
                     return await adminMenuRemove(record.id).then(() => refreshTableData())
                 }
             }

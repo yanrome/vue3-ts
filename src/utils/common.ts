@@ -180,12 +180,35 @@ export const formatDate = (time, str = 'YYYY-MM-DD HH:mm:ss') => dayjs(time).for
  * @param id
  * @param link
  */
-export const generateTree = (items, id = 0, link = 'parent') => {
-    return items.filter(item => item[link] == id).map(item => ({
-        ...item,
-        slots: {title: 'name'},
-        children: generateTree(items, item.departmentid)
-    }))
+export const generateTree = (arr) => {
+    let temp = {}
+    let tree = {}
+    // 数组转 键值对
+    arr.forEach(item => {
+      temp[item.id] = item
+      item.name = item.menuName
+      item.key = item.id
+    })
+
+    let tempKeys = Object.keys(temp)
+    tempKeys.forEach(key => {
+      // 获取当前项
+      let item = temp[key]
+      // 当前项 parentId
+      let _itemPId = item.parentId
+      // 获取父级项
+      let parentItemByPid = temp[_itemPId]
+      if (parentItemByPid) {
+        if (!parentItemByPid.children) {
+          parentItemByPid.children = []
+        }
+        parentItemByPid.children.push(item)
+      } else {
+        tree[item.id] = item
+      }
+    })
+    // 对象转数组并返回
+    return Object.keys(tree).map(key => tree[key])
 }
 /**
  * @description 将带有_的数据转为驼峰

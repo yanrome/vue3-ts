@@ -49,27 +49,57 @@ export default defineComponent({
     const state = reactive({
       treeData: [] as any,
       spinning: false,
+      parentId: '',
       label: ''
     })
 
     // console.log('=============>', props.value)
 
+    const z_modelRef: string | null = window.localStorage.getItem('z_modelRef')
+    if (z_modelRef) {
+      if (JSON.parse(z_modelRef).parentId >= '0' && JSON.parse(z_modelRef).id) {
+        // 编辑
+        state.parentId = JSON.parse(z_modelRef).parentId
+      } else if (
+        !JSON.parse(z_modelRef).parentId &&
+        JSON.parse(z_modelRef).id
+      ) {
+        // 新增
+        state.parentId = JSON.parse(z_modelRef).id
+      } else if (!JSON.parse(z_modelRef).id) {
+        // 新增
+        state.parentId = '99999'
+      }
+    }
+    // if (z_modelRef) {
+    //   JSON.parse(z_modelRef)
+    //   if (JSON.parse(z_modelRef).parentId >= '0') {
+    //     // 编辑
+    //     state.parentId = JSON.parse(z_modelRef).parentId
+    //   } else {
+    //     // 新增
+    //     state.parentId = JSON.parse(z_modelRef).id
+    //   }
+    // }
+    // alert(state.parentId)
     onMounted(async () => {
       // 查询所有菜单列表树
       state.spinning = true
       const res = await systemMenuMenuTreeData().finally(
         () => (state.spinning = false)
       )
-      let pId = props.value
-        ? res.data?.find((item) => item.id == props.value).pId
-        : '主目录'
-      // console.log('=============>', pId)
-      state.label =
-        pId != '主目录'
-          ? res.data?.find((item) => item.pId == pId).name
-          : '主目录'
+      if (state.parentId == '0') {
+        state.label = '无'
+      } else if (state.parentId == '99999') {
+        state.label = '主目录'
+      } else {
+        state.label = res.data?.find((item) =>
+          state.parentId
+            ? item.id == state.parentId
+            : item.pId == state.parentId
+        ).name
+      }
       state.treeData = list2tree(res.data)
-      // console.log('-----', list2tree(res.data))
     })
 
     // 列表转树
