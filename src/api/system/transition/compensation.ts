@@ -16,3 +16,14 @@ export function postCompensationList(params) {
         params
     });
 }
+
+/**
+ * @description  支付
+ * */
+export function postCompensationPay(id) {
+    return http.request({
+        url: [Api.accountFlowList,'pay',id].join('/'),
+        method: RequestEnum.POST,
+    });
+}
+

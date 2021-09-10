@@ -13,7 +13,7 @@
         </schema-form>
     </a-card>
     <a-card>
-        <dynamic-table :pageOption="pageOption" rowKey="id" :columns="columns(getFn)"
+        <dynamic-table ref="dynamicTable" :pageOption="pageOption" rowKey="id" :columns="columns(getFn)"
                        :get-list-func="postBusinessRoomRuleList">
             <template v-slot:title>
                 <a-button
@@ -35,7 +35,11 @@
     import {formSearch} from './form-search'
     import {DynamicTable} from '@/components/dynamic-table'
     import {toRefs} from "@vueuse/core";
-    import { postBusinessRoomRuleList } from "@/api/system/hotel/roomRule";
+    import {
+        postBusinessRoomRuleList,
+        postBusinessRoomRuleAdd,
+        postBusinessRoomRuleEdit
+    } from "@/api/system/hotel/roomRule";
     import {columns} from "./columns"
     import {getDict} from "@/hooks/dict-list";
     import moment from 'moment'
@@ -54,6 +58,7 @@
         },
         setup() {
             const store = useStore()
+            const dynamicTable = ref<any>(null)
             const dynamicForm = ref<any>(null)
             let state = reactive({
                 pageOption: {},
@@ -72,7 +77,12 @@
                     title: '新增',
                     formSchema:formModal(getFn),
                     handleOk:async (data)=>{
-                        debugger
+                        const {roomRuleType,tip,status,content} = data
+                        const obj = {
+                            content : content && content[1].replace('市','')
+                        }
+                        const params = {roomRuleType,tip,status,...obj}
+                        await postBusinessRoomRuleAdd(params).then(()=>dynamicTable.value.refreshTableData())
                     }
                 })
             }
@@ -103,7 +113,7 @@
                 addItem,
                 confirm,
                 cancel,
-                dynamicForm,
+                dynamicForm,dynamicTable,
                 formSchema: formSearch(getFn),
                 postBusinessRoomRuleList,
                 columns

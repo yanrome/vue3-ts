@@ -3,6 +3,7 @@ import {createVNode} from 'vue'
 import {antTag} from '@/components/tag'
 import {tagColor} from "@/utils/dict";
 import {message, Tag} from "ant-design-vue";
+import {postCompensationPay} from "@/api/system/transition/compensation";
 import {Popconfirm} from "ant-design-vue";
 
 export const columns = (dictData): TableColumn[] => [
@@ -90,11 +91,11 @@ export const columns = (dictData): TableColumn[] => [
                 type: 'popconfirm', // 控制类型，默认为a,可选： select | button | text
                 props:{
                     title:'您确定要支付吗？',
-                    type: 'danger' // 按钮类型
+                    type: 'danger'
                 },
                 text: '支付',
-                func: ({ record }, callback) =>{
-
+                func: ({ record }, refreshTableData) =>{
+                    postCompensationPay( record.id).then(()=>refreshTableData())
                 }
             },
         ]

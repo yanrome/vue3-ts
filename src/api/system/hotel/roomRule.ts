@@ -41,3 +41,14 @@ export function postBusinessRoomRuleRemove(id) {
     });
 }
 
+/**
+ * @description 添加入住规则
+ * */
+export function postBusinessRoomRuleAdd(params) {
+    return http.request({
+        url: [Api.businessRoom,'rule/add'].join('/') ,
+        method: RequestEnum.POST,
+        params
+    });
+}
+
