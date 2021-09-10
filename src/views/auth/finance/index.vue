@@ -19,15 +19,7 @@ export default defineComponent({
   },
   setup() {
     const value = ref<string>('1')
-    // 方法
-    //watch监听
-    // watch(
-    //   () => activeKey,
-    //   (val, oldValue) => {
-    //     console.log('新的', val)
-    //     console.log('旧的', oldValue)
-    //   }
-    // )
+    
     return {
       value
       // 方法

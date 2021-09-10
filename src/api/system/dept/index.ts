@@ -8,7 +8,7 @@ enum Api {
   adminDeptRemove = '/system/dept/remove',
   adminDeptAccess = '/admin/dept_access',
   adminDeptTreeData = '/system/dept/treeData',
-  adminDictDedpByType = '/system/dict/dept/byType',
+  adminDictDeptByType = '/system/dict/dept/byType',
 }
 
 /**
@@ -94,9 +94,9 @@ export function adminDeptAdd(params) {
  * 获取部门权限资源列表
  * @param params
  */
- export function adminDictDedpByType(params) {
+ export function adminDictDeptByType(params) {
   return http.request({
-    url: Api.adminDictDedpByType,
+    url: Api.adminDictDeptByType,
     method: RequestEnum.GET,
     params,
   });

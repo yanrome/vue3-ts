@@ -54,7 +54,6 @@ export default defineComponent({
       dynamicValidateForm: props.formSchema
     })
 
-
     props.hiddenFields.forEach(
       (field) =>
         (state.dynamicValidateForm.formItem.find(

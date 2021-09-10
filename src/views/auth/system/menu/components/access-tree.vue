@@ -1,15 +1,5 @@
 <template>
   <a-spin :spinning="spinning">
-    <!-- :replace-fields="replaceFields" -->
-    <!-- checkable -->
-    <!-- <a-tree-select style="min-height: 40px;"
-                   :checkStrictly='true'
-                   :selectable="false"
-                   :dropdown-style="{ maxHeight: '400px', overflow: 'auto'}"
-                   :tree-data="treeData"
-                   v-model:checkedKey="checkedKey"
-                   @change="onSelect">
-    </a-tree-select> -->
     <a-tree-select v-model:value="label"
                    style="width: 100%;"
                    :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
@@ -52,8 +42,6 @@ export default defineComponent({
       parentId: '',
       label: ''
     })
-
-    // console.log('=============>', props.value)
 
     const z_modelRef: string | null = window.localStorage.getItem('z_modelRef')
     if (z_modelRef) {

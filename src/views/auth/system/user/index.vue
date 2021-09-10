@@ -182,19 +182,13 @@ export default defineComponent({
         title: '添加用户',
         formSchema: getFormSchema(),
         handleOk: async (modelRef, state) => {
-          console.log('添加用户-参数', modelRef)
           modelRef.status = modelRef.status == true ? '1' : '0'
           await adminUserAdd(modelRef)
           tableRef.value.refreshTableData()
         }
       })
-      // useCreateModal(OperateModal, {
-      //   callback: () => tableRef.value.refreshTableData()
-      // })
     }
-    // const isDisabled = computed(
-    //   () => state.rowSelection.selectedRowKeys.length == 0
-    // )
+    
     // 选择时间-处理
     const ChooseTime = (time) => {
       formState.starTime = time[0]

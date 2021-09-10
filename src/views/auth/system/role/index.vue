@@ -131,12 +131,10 @@ export default defineComponent({
     }
     // 添加角色
     const addItem = () => {
-      console.log('添加用户modelRef-1')
       useFormModal({
         title: '添加用户',
         formSchema: getFormSchema(),
         handleOk: async (modelRef, state) => {
-          console.log('添加用户-参数', modelRef)
           modelRef.status = modelRef.status == true ? '1' : '0'
           await adminRoleAdd(modelRef)
           tableRef.value.refreshTableData()
@@ -151,13 +149,6 @@ export default defineComponent({
       formState.starTime = time[0]
       formState.endTime = time[1]
     }
-    // // 搜索后
-    // const search = () => {
-    //   const mergeParam = { ...formState, ...param.value }
-    //   const res = getAdminRole(mergeParam)
-    //   console.log('搜索后', res)
-    //   // columns.values = res.data
-    // }
     // 重置后
     const reSet = () => {
       formState.roleName = ''
@@ -165,8 +156,6 @@ export default defineComponent({
       formState.starTime = ''
       formState.endTime = ''
       state.rangeTime = []
-      // const res = getAdminRole(param.value)
-      // console.log('重置后', res)
     }
 
     return {

@@ -40,7 +40,6 @@ export default defineComponent({
       spinning: false,
       label: '',
     })
-    // console.log('value=============>', props.value)
 
     onMounted(async () => {
       // 查询所有菜单列表树
@@ -51,7 +50,6 @@ export default defineComponent({
       state.label = props.value
         ? res.data?.find((item) => item.id == props.value).name
         : '未选择'
-      // console.log('================>', state.treeData)
       state.treeData = list2tree(res.data)
     })
 
@@ -86,11 +84,6 @@ export default defineComponent({
       return Object.keys(tree).map((key) => tree[key])
     }
     const onSelect = (value, label, extra) => {
-      // console.log('value===============>', value)
-      // console.log('label===============>', label)
-      // console.log('111================>', extra)
-      // console.log('pId================>', extra.selectedNodes[0].props.pId)
-      // console.log('id================>', extra.selectedNodes[0].props.id)
       state.label = extra.selectedNodes[0].props.name
       emit('update:value', {
         deptId: extra.selectedNodes[0].props.pId,
