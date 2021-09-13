@@ -151,18 +151,11 @@ export default defineComponent({
             shareRatio,
             parentId: id
           }
-          console.log('添加用户-params', params)
           await adminDeptAdd(params)
           tableRef.value.refreshTableData()
         }
       })
-      // useCreateModal(OperateModal, {
-      //   callback: () => tableRef.value.refreshTableData()
-      // })
     }
-    // const isDisabled = computed(
-    //   () => state.rowSelection.selectedRowKeys.length == 0
-    // )
     // 选择时间-处理
     const ChooseTime = (time) => {
       formState.starTime = time[0]

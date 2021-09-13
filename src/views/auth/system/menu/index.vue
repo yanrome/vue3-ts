@@ -125,20 +125,6 @@ export default defineComponent({
         formSchema: getFormSchema(),
         handleOk: async (modelRef, state) => {
           delete modelRef.id
-          // console.log('添加菜单', modelRef)
-          // console.log('添加菜单', formState)
-          // const params_ = {
-          //   parentId: id,
-          //   menuType,
-          //   menuScene,
-          //   menuName,
-          //   url,
-          //   perms,
-          //   orderNum,
-          //   icon,
-          //   visible
-          // }
-          // console.log('添加菜单', { ...formState, ...modelRef })
           await adminMenuAdd({ ...formState, ...modelRef })
           tableRef.value.refreshTableData()
         }

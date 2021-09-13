@@ -48,7 +48,6 @@ export default defineComponent({
       state.spinning = true
       const res = await adminDept().finally(() => (state.spinning = false))
       state.treeData = list2tree(res.data)
-      // console.log('===============>', list2tree(res.data))
     })
 
     // 列表转树
@@ -94,7 +93,6 @@ export default defineComponent({
     // 获取所有子节点的key
     const getChildrenKeys = (treeNode, arr: number[] = []) => {
       if (treeNode?.children.length > 0) {
-        console.log(treeNode.children, 'children')
         return treeNode.children.reduce((prev, curr) => {
           if (curr.children.length > 0) {
             prev.push(...getChildrenKeys(curr, prev), [])
@@ -120,7 +118,6 @@ export default defineComponent({
         ]
       } else {
         const childrenKeys = getChildrenKeys(node.dataRef)
-        console.log(childrenKeys, 'childrenKeys')
         if (childrenKeys.length > 0) {
           tempKeys = keys.checked.filter((item) => !childrenKeys.includes(item))
         } else {

@@ -118,7 +118,6 @@ export const columns: TableColumn[] = [ // 角色列表
                     fields: record,
                     formSchema: getFormSchemaData(),
                     handleOk: async (modelRef, state) => {
-                        console.log('123',modelRef)
                         const params = {
                             id:modelRef.id,
                             dataScope: modelRef.dataScope,

@@ -21,14 +21,6 @@ export const getFormSchemaModel = (): FormSchema => ({
             label: "模板菜单权限",
             field: 'key',
             value: [],
-            // asyncValue: async (currentValue, formInstance) => {
-            //     const { id } = formInstance?.props.fields as any
-            //     // 获取角色列表
-            //     const data = await systemMenuTemplateRoleMenuTreeData(id)
-            //     console.log('获取角色列表',data)
-            //     // 设置角色复选框选项
-            //     return data.map((item) => item.id)
-            // }
         }
     ]
 })

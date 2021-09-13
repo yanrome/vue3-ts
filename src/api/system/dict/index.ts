@@ -104,9 +104,9 @@ export function adminDictAdd(params) {
  * 删除数据字典
  * @param params
  */
-export function adminDataDictRemove(id: string) {
+export function adminDataDictRemove(id) {
   return http.request({
-    url: [Api.adminDictRemove, id].join('/'),
+    url: [Api.adminDataDictRemove, id].join('/'),
     method: RequestEnum.POST,
   }, {
     isShowErrorMessage: true, // 是否显示错误提示信息

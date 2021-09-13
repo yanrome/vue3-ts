@@ -155,5 +155,34 @@ export const fromIcons = {
         8:require('@/assets/icons/icon-qne.png'),
 }
 
+// 酒店管理---会员等级
+export const memberDeposit = [
+    { value: 0, label:'不免押金' },
+    { value: 1, label:'免押金' }
+]
+
+// 酒店管理---默认等级
+export const memberLevel = [
+    { value: 0, label:'不是默认等级' },
+    { value: 1, label:'默认等级' }
+]
+
+// 系统管理-数据字典-字典列表---系统默认
+export const dictDefault = [
+    { value: 1, label:'是' },
+    { value: 0, label:'否' }
+]
+
+// 系统管理-数据字典-字典列表---系统默认
+export const dictListClass = [
+    { value: '', label:'---请选择---' },
+    { value: 'danger ', label:'危险' },
+    { value: 'default', label:'默认' },
+    { value: 'primary', label:'主要' },
+    { value: 'success', label:'成功' },
+    { value: 'info', label:'信息' },
+    { value: 'warning', label:'警告' },
+]
+
 
 

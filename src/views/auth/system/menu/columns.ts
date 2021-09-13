@@ -113,7 +113,6 @@ export const columns = (dictData): TableColumn[] => [
                         fields: record,
                         formSchema: getFormSchema(),
                         handleOk: async (modelRef, state) => {
-                            // console.log('编辑菜单-参数',modelRef)
                             const {
                                 id, key, parentId , menuType, menuScene, menuName,
                                 url, perms, orderNum, icon, visible} = modelRef
@@ -121,7 +120,6 @@ export const columns = (dictData): TableColumn[] => [
                                 id:key, parentId:key == id?parentId:id , menuType, menuScene, menuName,
                                 url, perms, orderNum, icon, visible
                             }
-                            // console.log('编辑菜单-参数',params)
                             return await adminMenuEdit(params).then(() => refreshTableData())
                         }
                     })
@@ -147,7 +145,6 @@ export const columns = (dictData): TableColumn[] => [
                                 parentId: id , menuType, menuScene, menuName,
                                 url, perms, orderNum, icon, visible
                             }
-                            // console.log('新增菜单-参数',params)
                             return await adminMenuAdd(params).then(() => refreshTableData())
                         }
                     })
@@ -169,7 +166,6 @@ export const columns = (dictData): TableColumn[] => [
                     if (record.id < 6) {
                         return message.warn('系统预置菜单，不能删除！')
                     }
-                    // console.log('，，，',record.id)
                     return await adminMenuRemove(record.id).then(() => refreshTableData())
                 }
             }

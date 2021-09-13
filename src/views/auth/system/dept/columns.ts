@@ -69,7 +69,6 @@ export const columns: TableColumn[] = [ // 角色列表
                     fields: {id:record.id},
                     formSchema: getFormSchema(),
                     handleOk: async (modelRef, state) => {
-                        console.log('新增部门---参数',modelRef)
                         const {deptName, province, orderNum, leader, phone, email, shareScale, shareRatio, id} = modelRef
                         const params = {province:province.province || null,
                             city:province.city || null, county:province.county || null, deptName, orderNum, leader, phone, email, shareScale, shareRatio, parentId:id, }

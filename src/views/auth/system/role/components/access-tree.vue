@@ -51,8 +51,6 @@ export default defineComponent({
       })
       state.checkedKeys = checkedChilds.filter(Boolean)
       state.treeData = list2tree(res.data)
-      // console.log('查询角色对应所有模板菜单列表树', list2tree(res.data))
-      // console.log('原来的length=====111>', state.checkedKeys)
     })
     // 列表转树
     const list2tree = (arr) => {
@@ -109,7 +107,6 @@ export default defineComponent({
 
     // 勾选事件处理函数
     const onCheck = (keys, { node, checked }) => {
-      console.log('原来的length=====>', state.checkedKeys.checked)
       emit('update:value', state.checkedKeys)
     }
 

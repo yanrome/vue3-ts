@@ -107,10 +107,6 @@ export default defineComponent({
       return Object.keys(tree).map((key) => tree[key])
     }
     const onSelect = (value, label, extra) => {
-      // console.log('1111111111111111',value)
-      // console.log('1111111111111111',label)
-      // console.log('1111111111111111',extra)
-      // state.label = extra.selectedNodes[0].props.name
       emit('update:value', {
         deptId: extra.selectedNodes[0].props.pId,
         id: extra.selectedNodes[0].props.id,

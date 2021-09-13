@@ -67,25 +67,7 @@ import { hasPermission } from '@/utils/permission/hasPermission'
 import { useFormModal } from '@/hooks/useFormModal/'
 import { Moment } from 'moment'
 import { DatePicker } from 'ant-design-vue'
-import router from '@/router';
-
-interface FormState {
-  name: string
-  region: string | undefined
-  delivery: boolean
-  type: string[]
-  resource: string
-  desc: string
-  dictName: string
-  dictType: string
-  starTime: string
-  endTime: string
-}
-
-interface Param {
-  pageNum: number
-  pageSize: number
-}
+import router from '@/router'
 
 export default defineComponent({
   name: 'system-dict',
@@ -94,7 +76,7 @@ export default defineComponent({
     aRangePicker: DatePicker.RangePicker
   },
   setup() {
-    const formState: UnwrapRef<FormState> = reactive({
+    const formState = reactive({
       name: '',
       region: undefined,
       date1: undefined,
@@ -106,11 +88,6 @@ export default defineComponent({
       dictType: '',
       starTime: '',
       endTime: ''
-    })
-
-    const param = ref<Param>({
-      pageNum: 1,
-      pageSize: 10
     })
 
     const tableRef = ref<any>(null)
@@ -126,52 +103,31 @@ export default defineComponent({
       }
     })
 
-    // 删除多项
-    const deleteItems = () => {
-      Modal.confirm({
-        title: '提示',
-        icon: createVNode(QuestionCircleOutlined),
-        content: '您确定要删除所有选中吗？',
-        onOk: async () => {
-          await adminDictRemove(state.rowSelection.selectedRowKeys.toString())
-          tableRef.value.refreshTableData()
-          state.rowSelection.selectedRowKeys = []
-        }
-      })
-    }
     // 添加字典
     const addItem = () => {
       useFormModal({
         title: '添加字典',
         formSchema: getFormSchema(),
         handleOk: async (modelRef, state) => {
-          console.log('添加字典-参数', modelRef)
           await adminDictAdd(modelRef)
           tableRef.value.refreshTableData()
         }
       })
     }
-    const isDisabled = computed(
-      () => state.rowSelection.selectedRowKeys.length == 0
-    )
+    
     // 选择时间-处理
     const ChooseTime = (time) => {
       formState.starTime = time[0]
       formState.endTime = time[1]
     }
+
     // 重置后
     const reSet = () => {
-      router.push({
-        path: '/system/dict/list/index'
-        // query: {
-        //     id:'111'
-        // }
-      })
-      // formState.dictName = ''
-      // formState.dictType = ''
-      // formState.starTime = ''
-      // formState.endTime = ''
-      // state.rangeTime = []
+      formState.dictName = ''
+      formState.dictType = ''
+      formState.starTime = ''
+      formState.endTime = ''
+      state.rangeTime = []
     }
 
     return {
@@ -179,10 +135,8 @@ export default defineComponent({
       columns,
       tableRef,
       adminDict,
-      isDisabled,
       addItem,
       formState,
-      deleteItems,
       reSet,
       ChooseTime
     }

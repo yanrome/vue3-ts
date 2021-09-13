@@ -4,162 +4,135 @@
             :label-col="labelCol"
             :wrapper-col="wrapperCol">
       <div class="flex">
-        <a-form-item label="字典名称111"
+        <a-form-item label="字典名称"
                      class="w50 mr20">
-          <a-input v-model:value="formState.name" />
-        </a-form-item>
-        <a-form-item label="字典类型111"
-                     class="w50">
-          <a-input v-model:value="formState.name" />
-        </a-form-item>
-      </div>
-      <div class="flex">
-        <a-form-item label="创建时间111"
-                     class="w50 mr20">
-          <a-select v-model:value="formState.region"
-                    placeholder="please select your zone">
-            <a-select-option value="shanghai">Zone one</a-select-option>
-            <a-select-option value="beijing">Zone two</a-select-option>
+          <a-select @change="changeDictType"
+                    v-model:value="formState.dictType">
+            <a-select-option v-for="(item,i) in dictTypaAll"
+                             :value='item.dictType'
+                             :label='item.dictName'
+                             :key="i">{{ item.dictName }}</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item>
-          <a-button type="primary">
-            <template v-slot:title>
-              <SearchOutlined />
-            </template>
-            搜索111
-          </a-button>
+        <a-form-item label="字典标签"
+                     class="w50">
+          <a-input v-model:value="formState.dictLabel" />
         </a-form-item>
-        <a-form-item>
-          <a-button type="primary">
-            <template v-slot:title>
-              <RetweetOutlined />
-            </template>
-            重置111
-          </a-button>
-        </a-form-item>
-        <!-- <a-form-item label="创建时间">
-          <a-range-picker v-model:value="formState.date1"
-                          show-time
-                          type="date"
-                          placeholder="Pick a date"
-                          style="width: 100%;" />
-        </a-form-item> -->
       </div>
+      <a-form-item>
+        <a-button @click="reSet"
+                  style="margin-left: 10px;"
+                  type="primary">
+          重置
+        </a-button>
+      </a-form-item>
     </a-form>
   </a-card>
   <dynamic-table ref="tableRef"
                  :columns="columns"
                  :get-list-func="adminDataDict"
                  rowKey="id"
+                 :pageOption="formState"
                  :row-selection="rowSelection">
     <template v-slot:title>
       <a-button @click="addItem"
                 type="primary">
-        新增111
+        新增
       </a-button>
     </template>
   </dynamic-table>
 </template>
 <script lang="ts">
-import {
-  defineComponent,
-  reactive,
-  toRefs,
-  createVNode,
-  computed,
-  UnwrapRef,
-  ref
-} from 'vue'
-import { Modal } from 'ant-design-vue'
-import { QuestionCircleOutlined } from '@ant-design/icons-vue'
+import { defineComponent, reactive, toRefs, ref } from 'vue'
 import { DynamicTable } from '@/components/dynamic-table'
 import {
   adminDataDictRemove,
   adminDataDict,
-  adminDataDictEdit
+  adminDataDictAdd
 } from '@/api/system/dict'
-// import { getFormSchema } from './list-schema'
-// import { columns } from './list-columns'
-import { hasPermission } from '@/utils/permission/hasPermission'
+import { getFormSchema } from './form-schema'
+import { columns } from './columns'
 import { useFormModal } from '@/hooks/useFormModal/'
-
-interface FormState {
-  name: string
-  region: string | undefined
-  delivery: boolean
-  type: string[]
-  resource: string
-  desc: string
-}
+import { adminDict } from '@/api/system/dict'
 
 export default defineComponent({
-  name: 'system-dict',
+  name: 'system-dict-data',
   components: {
     DynamicTable
   },
   setup() {
-    const columns = ref()
-
-    const formState: UnwrapRef<FormState> = reactive({
-      name: '',
-      region: undefined,
-      date1: undefined,
-      delivery: false,
-      type: [],
-      resource: '',
-      desc: ''
+    const state = reactive({
+      tableLoading: false,
+      dataSource: [],
+      dictTypaAll: [],
+      dictType: null,
+      z_dict: {
+        dictName: '',
+        dictType: ''
+      }
     })
 
     const tableRef = ref<any>(null)
 
-    const state = reactive({
-      tableLoading: false,
-      rowSelection: {
-        onChange: (selectedRowKeys, selectedRows) => {
-          state.rowSelection.selectedRowKeys = selectedRowKeys
-        },
-        selectedRowKeys: []
-      }
+    const formState = reactive({
+      dictLabel: '',
+      dictType: '',
+      pageSize: '10',
+      pageNum: '1',
+      orderByColumn: 'createTime',
+      isAsc: 'desc'
     })
 
-    // 删除多项
-    const deleteItems = () => {
-      Modal.confirm({
-        title: '提示',
-        icon: createVNode(QuestionCircleOutlined),
-        content: '您确定要删除所有选中吗？',
-        onOk: async () => {
-          await adminDataDictRemove(state.rowSelection.selectedRowKeys.toString())
+    const z_dict: string | null = window.localStorage.getItem('z_dict')
+    if (z_dict) {
+      state.z_dict = JSON.parse(z_dict)
+      state.dictType = JSON.parse(z_dict).dictName
+      formState.dictType = JSON.parse(z_dict).dictType
+    }
+
+    // 添加字典
+    const addItem = () => {
+      useFormModal({
+        title: '添加字典',
+        formSchema: getFormSchema(),
+        fields: { dictType: state.z_dict.dictType },
+        handleOk: async (modelRef, state) => {
+          await adminDataDictAdd(modelRef)
           tableRef.value.refreshTableData()
-          state.rowSelection.selectedRowKeys = []
         }
       })
     }
-    // 添加字典
-    const addItem = () => {
-      // useFormModal({
-      //   title: '添加字典',
-      //   formSchema: getFormSchema(),
-      //   handleOk: async (modelRef, state) => {
-      //     await adminDataDictEdit(modelRef)
-      //     tableRef.value.refreshTableData()
-      //   }
-      // })
+
+    // 字典名称
+    const changeDictType = (value, e) => {
+      state.z_dict.dictName = e.label
+      state.z_dict.dictType = value
+      localStorage.setItem('z_dict', JSON.stringify(state.z_dict))
     }
-    const isDisabled = computed(
-      () => state.rowSelection.selectedRowKeys.length == 0
-    )
+
+    // 重置
+    const reSet = () => {
+      formState.dictLabel = ''
+      formState.dictType = state.z_dict.dictType
+    }
+
+    const getDictInfo = async () => {
+      let res_dict = await adminDict('')
+      state.dictTypaAll = res_dict.data
+    }
+    getDictInfo()
 
     return {
       ...toRefs(state),
+      formState,
       columns,
+      // 方法
+      changeDictType,
       tableRef,
       adminDataDict,
-      isDisabled,
       addItem,
-      formState,
-      deleteItems,
+      confirm,
+      reSet
     }
   }
 })
