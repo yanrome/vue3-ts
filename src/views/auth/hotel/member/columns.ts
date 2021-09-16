@@ -10,19 +10,27 @@ import {formatDict} from "@/utils/common";
 export const columns = (dictData): TableColumn[] => [
     {
         title: '名称',
+        width: 200,
         dataIndex: 'levelName',
     },
     {
         title: '门槛间夜',
+        width: 100,
         dataIndex: 'thresholdDay',
     },
     {
         title: '创建时间',
+        width: 200,
         dataIndex: 'createTime',
     },
     {
         title: '图片',
+        width: 200,
         dataIndex: 'bgUrl',
+        key: 'bgUrl',
+        slots: {
+            customRender: 'pic'
+        }
     },
     {
         title: '操作',

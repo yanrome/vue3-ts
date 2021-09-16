@@ -18,6 +18,7 @@
       <slot :name="key"
             v-bind="slotProps"></slot>
     </template>
+
     <!-- 自定义slots end -->
 
     <!-- 是否有自定义显示slots start -->
@@ -51,6 +52,13 @@
         </template>
         <!-- 非操作 end -->
 
+        <!-- 自定义---加载图片 -->
+        <span v-if="slotItem.slots?.customRender == 'pic'"
+              :key="slotItem.slots.customRender">
+          <img :src="slotProps.record.domainName + slotProps.record.bgUrl"
+               style="width: 120px;height: 80px;">
+        </span>
+
         <!-- 操作start -->
         <div v-if="slotItem.slots?.customRender == 'action'"
              :key="slotItem.slots.customRender"
@@ -71,7 +79,7 @@
               <a-popconfirm :key="index"
                             placement="leftTop"
                             @confirm="actionEvent(slotProps.record, action.func, 'del')">
-                <template #title>  {{action?.props?.title ?action?.props?.title  : '您确定要删除吗？' }}  </template>
+                <template #title> {{action?.props?.title ?action?.props?.title  : '您确定要删除吗？' }} </template>
                 <a-button v-permission="action.permission"
                           v-bind="{ ...buttonProps, ...action.props }">
                   {{ action.text }}
@@ -171,7 +179,10 @@ export default defineComponent({
       // state.data = data
       // console.log('=======================>statestatestate我的我的我的', state)
       // console.log('=======================>我的我的我的', state.data)
-      state.data = data.length && data[0].hasOwnProperty('parentId') ? list_tree(data) : data
+      state.data =
+        data.length && data[0].hasOwnProperty('parentId')
+          ? list_tree(data)
+          : data
       // 是否可以拖拽行
       props.dragRowEnable && (state.customRow = useDragRow<any>(state.data)!)
     }
@@ -218,11 +229,15 @@ export default defineComponent({
       }
     }
 
-    watch(props.pageOption, (val) => {
-      refreshTableData()
-    },{
-      deep:true
-    })
+    watch(
+      props.pageOption,
+      (val) => {
+        refreshTableData()
+      },
+      {
+        deep: true
+      }
+    )
 
     // 分页改变
     const paginationChange = (

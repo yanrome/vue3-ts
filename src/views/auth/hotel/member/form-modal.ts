@@ -1,6 +1,7 @@
 import {FormSchema} from "@/types/schema";
 import { memberDeposit, memberLevel } from "@/utils/dict";
-import {getDict} from "@/hooks/dict-list";
+import {createVNode} from 'vue'
+import Aupload from "./components/aupload.vue";
 import {formatDict} from "@/utils/common";
 
 // 与vue2的里面的data一样，函数返回新对象防止多处共用同一对象,造成数据混乱
@@ -49,9 +50,9 @@ export const formModal = (dictData): FormSchema => ({
             }
         },
         {
-            type: "input",
+            type: createVNode(Aupload),
             label: "图片",
-            field: "bgUrl",
+            field: 'bgUrl',
             value: '',
         },
     ]

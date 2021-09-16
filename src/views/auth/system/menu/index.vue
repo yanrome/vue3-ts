@@ -111,12 +111,11 @@ export default defineComponent({
       perms: '',
       orderNum: '',
       icon: '',
-      visible: '2'
+      visible: '2',
+      isAll: false
     })
 
-    const state = reactive({
-      aaaaaaaaaaa: null
-    })
+    const state = reactive({})
 
     // 添加菜单
     const addItem = () => {
@@ -132,7 +131,9 @@ export default defineComponent({
     }
     // 全部展开与折叠
     const isOpen = () => {
-      console.log('2312全部展开与折叠')
+      formState.isAll = !formState.isAll
+      console.log('2312全部展开与折叠', formState.isAll)
+      tableRef.value.refreshTableData()
     }
     // 点击展开图标
     const expand = async (expanded, record) => {

@@ -27,21 +27,21 @@ export const columns = (dictData): TableColumn[] => [
     {
         title: '状态',
         dataIndex: 'status',
-        // slotsType:'component',
-        // slots: {
-        //     customRender: 'status'
-        // },
-        // slotsFunc:(record)=>{
-        //     return createVNode(antTag,{
-        //         txt:record.status,
-        //         color:tagColor[record.status],
-        //         getTypeFun:()=>{
-        //             return dictData.then(res=>{
-        //                 return res.businessOtaStatus
-        //             })
-        //         }
-        //     })
-        // }
+        slotsType:'component',
+        slots: {
+            customRender: 'status'
+        },
+        slotsFunc:(record)=>{
+            return createVNode(antTag,{
+                txt:record.status,
+                color:tagColor[record.status],
+                getTypeFun:()=>{
+                    return dictData.then(res=>{
+                        return res.businessOtaStatus
+                    })
+                }
+            })
+        }
     },
     {
         title: '创建时间',
