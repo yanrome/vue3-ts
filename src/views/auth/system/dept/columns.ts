@@ -7,27 +7,33 @@ import { getFormSchema } from "./form-schema";
 export const columns: TableColumn[] = [ // 角色列表
     {
         title: '部门名称',
-        dataIndex: 'deptName'
+        dataIndex: 'deptName',
+        width:200,
     },
     {
         title: '省份',
         dataIndex: 'province',
+        width:150,
     },
     {
         title: '地市',
-        dataIndex: 'city'
+        dataIndex: 'city',
+        width:150,
     },
     {
         title: '排序',
-        dataIndex: 'orderNum'
+        dataIndex: 'orderNum',
+        width:50,
     },
     {
         title: '联系方式',
-        dataIndex: 'phone'
+        dataIndex: 'phone',
+        width:150,
     },
     {
         title: '创建时间',
-        dataIndex: 'createTime'
+        dataIndex: 'createTime',
+        width:150,
     },
     {
         title: '操作',

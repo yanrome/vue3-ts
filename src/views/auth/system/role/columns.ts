@@ -14,19 +14,23 @@ import { roleStatus } from "@/utils/dict";
 export const columns: TableColumn[] = [ // 角色列表
     {
         title: '角色名称',
-        dataIndex: 'roleName'
+        dataIndex: 'roleName',
+        width:150,
     },
     {
         title: '角色标志',
-        dataIndex: 'name'
+        dataIndex: 'name',
+        width:200,
     },
     {
         title: '显示顺序',
-        dataIndex: 'orderNum'
+        dataIndex: 'orderNum',
+        width:100,
     },
     {
         title: '状态',
         dataIndex: 'status',
+        width:100,
         slotsType:'component',
         slots:{
             customRender: 'status'
@@ -39,12 +43,13 @@ export const columns: TableColumn[] = [ // 角色列表
     },
     {
         title: '备注',
-        dataIndex: 'remark'
+        dataIndex: 'remark',
+        width:150,
     },
     {
         title: '操作',
         dataIndex: 'action',
-        width: 200,
+        width: 400,
         slots: {
             customRender: 'action'
         },

@@ -32,13 +32,19 @@ export default defineComponent({
     const state = reactive({
       treeData: [] as any,
       checkedKeys: [] as any,
+      roleId: null,
       spinning: false
     })
+
+    const z_modelRef: string | null = window.localStorage.getItem('z_modelRef')
+    if (z_modelRef) {
+      state.roleId = JSON.parse(z_modelRef).id
+    }
 
     onMounted(async () => {
       // 获取权限资源列表
       state.spinning = true
-      const res = await systemMenuRoleMenuTreeData(props.value).finally(
+      const res = await systemMenuRoleMenuTreeData(state.roleId).finally(
         () => (state.spinning = false)
       )
       let checkedChilds = res.data.map((item) => {

@@ -53,11 +53,13 @@ export const columns=(dictData): TableColumn[] => [ // 角色列表
     },
     {
         title: '创建时间',
-        dataIndex: 'createTime'
+        dataIndex: 'createTime',
+        width:150,
     },
     {
         title: '关联公众号',
-        dataIndex: 'wxOpenId'
+        dataIndex: 'wxOpenId',
+        width:100,
     },
     {
         title: '操作',

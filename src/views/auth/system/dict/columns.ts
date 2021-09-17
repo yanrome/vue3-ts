@@ -11,18 +11,22 @@ export const columns: TableColumn[] = [ // 字典表格
     {
         title: '字典名称',
         dataIndex: 'dictName',
+        width:150,
     },
     {
         title: '字典类型',
         dataIndex: 'dictType',
+        width:200,
     },
     {
         title: '备注',
         dataIndex: 'category',
+        width:100,
     },
     {
         title: '创建时间',
         dataIndex: 'createTime',
+        width:150,
     },
     {
         title: '操作',

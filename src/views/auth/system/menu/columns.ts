@@ -19,17 +19,20 @@ export const columns = (dictData): TableColumn[] => [
     {
         title: '',
         dataIndex: 'menuName',
+        width:50,
         slots: {
             customRender: 'moduleName'
         }
     },
     {
         title: '菜单名称',
-        dataIndex: 'menuName'
+        dataIndex: 'menuName',
+        width:150,
     },
     {
         title: '场景',
         dataIndex: 'menuScene',
+        width:150,
         actions: [],
         slotsType:'component',
         slots: {
@@ -49,11 +52,13 @@ export const columns = (dictData): TableColumn[] => [
     },
     {
         title: '请求地址',
-        dataIndex: 'url'
+        dataIndex: 'url',
+        width:150,
     },
     {
         title: '类型',
         dataIndex: 'menuType',
+        width:100,
         slotsType:'component',
         slots: {
             customRender: 'menuType'
@@ -73,6 +78,7 @@ export const columns = (dictData): TableColumn[] => [
     {
         title: '可见',
         dataIndex: 'visible',
+        width:100,
         slotsType:'component',
         slots: {
             customRender: 'visible'
@@ -91,7 +97,8 @@ export const columns = (dictData): TableColumn[] => [
     },
     {
         title: '权限标识',
-        dataIndex: 'perms'
+        dataIndex: 'perms',
+        width:150,
     },
     {
         title: '操作',
