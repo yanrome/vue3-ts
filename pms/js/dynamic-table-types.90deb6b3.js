@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([["dynamic-table-types"],{"7bf5":function(n,p,s){"use strict";s.r(p)}}]);

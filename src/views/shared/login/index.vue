@@ -57,8 +57,8 @@
             const state = reactive({
                 loading: false,
                 formInline: {
-                    username: 'admin',
-                    password: '12345678',
+                    username: '',
+                    password: '',
                     validateCode: 'aiyoyoufang'
                 }
             })
