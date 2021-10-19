@@ -2,7 +2,6 @@
     <div class="login-box">
         <div class="login-logo">
             <svg-icon icon-class="logo"/>
-            <!--      <img src="~@/assets/images/logo.png" alt="">-->
             <h1>哎哟有房</h1>
         </div>
         <a-form layout="horizontal" :model="formInline" @submit.prevent="handleSubmit">

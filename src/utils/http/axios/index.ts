@@ -110,7 +110,8 @@ const transform: AxiosTransform = {
     beforeRequestHook: (config, options) => {
         const {apiUrl, joinPrefix, joinParamsToUrl, formatDate, isParseToJson} = options;
 
-        config.url = isDev ? `/api${config.url}` :  `${process.env.VUE_APP_API_URL1}${config.url}` // `${apiUrl || ''}${config.url}`;
+        // config.url = isDev ? `/api${config.url}` :  `${process.env.VUE_APP_API_URL1}${config.url}` // `${apiUrl || ''}${config.url}`;
+        config.url =`/api${config.url}`  //:  `${process.env.VUE_APP_API_URL1}${config.url}` // `${apiUrl || ''}${config.url}`;
         console.log('process',process.env)
         if (config.method === RequestEnum.GET) {
             const now = new Date().getTime();

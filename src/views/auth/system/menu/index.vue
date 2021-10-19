@@ -123,8 +123,9 @@ export default defineComponent({
         title: '添加菜单',
         formSchema: getFormSchema(),
         handleOk: async (modelRef, state) => {
+          let id = modelRef.id
           delete modelRef.id
-          await adminMenuAdd({ ...formState, ...modelRef })
+          await adminMenuAdd({ ...formState, ...modelRef,parentId:id||0 })
           tableRef.value.refreshTableData()
         }
       })
