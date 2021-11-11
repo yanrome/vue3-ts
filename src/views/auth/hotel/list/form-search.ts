@@ -12,11 +12,11 @@ export const formSearch = (dictData): FormSchema => ({
     formItem: [
         {
             type: "input",
-            label: "姓名名称",
-            field: "realName",
+            label: "酒店名称",
+            field: "hotelName",
             value: '',
             props: {
-                placeholder: "请输入编号",
+                placeholder: "请输入",
             },
 
         },

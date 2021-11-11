@@ -80,7 +80,7 @@ export default function useModal (props, {emit, attrs}: SetupContext) {
         maxRef.value.onclick = function () {
             const {left,top} = getComputedStyle(oDrag)
             const {width,height} = getComputedStyle(modalBody.value)
-            console.log({width,height,left,top})
+            // console.log({width,height,left,top})
             // 最大化时，保存原来的位置大小
             modalWidth = width
             modalHeight = height

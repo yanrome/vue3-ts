@@ -35,7 +35,7 @@ export default defineComponent({
     value: undefined as any // 表单项值
   },
   setup(props, { attrs, emit }) {
-    console.log('props', props.formItem.options)
+    // console.log('props', props.formItem.options)
     const modelValue = computed({
       get: () => props.value,
       set: (val) => emit('update:value', val)

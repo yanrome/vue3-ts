@@ -3,7 +3,8 @@ import {RequestEnum} from '@/enums/httpEnum'
 
 enum Api {
     businessHotelList = '/business/hotel/list' ,
-    businessHotelHotelId = `/business/hotel`
+    businessHotelHotelId = `/business/hotel`,
+    wxHotel = `/wx/hotel`
 }
 
 /**
@@ -30,6 +31,20 @@ export function getBusinessHotelHotelId(param){
         method:RequestEnum.GET
     })
 }
+
+/**
+ * @description 根据酒店id获取酒店信息
+ * @param params
+ * */
+export function getWxHotel(param){
+    return http.request({
+        url:`${Api.wxHotel}/${param.hotelId}`,
+        method:RequestEnum.GET
+    })
+}
+
+
+
 
 /**
  * @description 修改酒店信息

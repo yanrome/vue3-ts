@@ -1,5 +1,5 @@
 <template>
-  <a-form ref="schemaFormRef" 
+  <a-form ref="schemaFormRef"
           v-bind="formItemLayout">
     <template
       v-for="(formItem, index) in formSchema.formItem.filter((item) => !item.hidden)"
@@ -133,8 +133,8 @@ export default defineComponent({
         }, {})
     )
 
-    console.log(modelRef, '表单')
-    console.log(rulesRef, '表单验证规则')
+    // console.log(modelRef, '表单')
+    // console.log(rulesRef, '表单验证规则')
 
     // const watchCallback = props.formSchema.watchCallback ?? (() => ({}))
     //

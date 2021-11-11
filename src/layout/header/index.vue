@@ -108,7 +108,7 @@ export default defineComponent({
     };
 
     const store = useStore()
-    console.log('12312312',store.getters.hotel)
+    // console.log('12312312',store.getters.hotel)
     //初始化获取酒店列表
     store.commit(MutationType.SetHotel,storage.get(HOTEL_USER))
     store.commit(MutationType.setHotelId,storage.get(HOTEL_USER_ID))
