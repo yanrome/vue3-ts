@@ -35,8 +35,8 @@
                 <a-row type="flex" align="middle">
                     <a-col :span="3">选择房间:</a-col>
                     <a-col :span="21">
-                        <div class="s-room-item" :class="orderRoomMsg.roomId === room.id ? 'active' : ''"
-                             @click="orderRoomMsg.roomId = room.id" v-for="room in options" :key="room.id">
+                        <div class="s-room-item" :class=" roomInParams.toRoomId=== room.id ? 'active' : ''"
+                             @click="roomInParams.toRoomId = room.id" v-for="room in options" :key="room.id">
                             {{room.roomSn}}
                         </div>
                     </a-col>
@@ -80,7 +80,12 @@
             const roomValue =  ref<string[]>([props?.orderRoomMsg?.roomScaleId,props?.orderRoomMsg?.virtualRoomScaleId])
             const state = reactive({
                 options:[] as any,
-                roomOptions: ref<Option[]>([])
+                roomOptions: ref<Option[]>([]),
+                roomInParams: {
+                    toRoomId: '',
+                    toVirtualRoomScaleId:'',
+                    toScaleId:''
+                },
             })
 
             const getBusinessRoom = async (params= {}) =>{
@@ -101,11 +106,18 @@
             }
             getBusinessRoom()
 
-            //办理退房
+            //
             const handleOk = () =>{
                 const params = {
-                    orderRoomId:props?.orderRoomMsg?.id
+                    orderRoomId:props?.orderRoomMsg?.id,
+                    orderId:props?.orderRoomMsg?.orderId,
+                    toScaleId:roomValue.value[0],
+                    toVirtualRoomScaleId:roomValue.value[1],
+                    toRoomId:state.roomInParams.toRoomId,
                 }
+                console.log(state)
+                console.log(roomValue.value)
+                console.log(params)
                 postOrderRoomChange(params).then(res=>{
                     setTimeout(() => {
                         message.info(res.msg)

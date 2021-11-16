@@ -4,6 +4,7 @@
                    style="width: 100%;"
                    :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
                    :tree-data="treeData"
+                   :replaceFields="{key:'id',title:'name',value:'id'}"
                    :treeNodeLabelProp='id'
                    @select='onSelect' />
   </a-spin>
@@ -122,7 +123,7 @@ export default defineComponent({
     }
 
     const onSelect = (value, label, extra) => {
-      emit('update:value', extra.selectedNodes[0].props.id)
+      emit('update:value', value)
     }
 
     return {

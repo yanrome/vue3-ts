@@ -23,7 +23,7 @@ const list2tree = (children) => {
                 path = url.startsWith(pathPrefix) ? path : pathPrefix + path
                 path = [...new Set(path.split('/'))].join('/')
             }
-            const hidden = perms === 'metaHidden'
+            const hidden = perms.includes('metaHidden')
             const component =  constantRouterComponents[path] || Empty || (() => import('@/views/shared/error/404.vue'))
             return {
                 children: list2tree(child),

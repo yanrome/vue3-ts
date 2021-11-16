@@ -29,8 +29,8 @@ export const btnCheckIn = (item) =>{
     }
     let result = false
     if (item.status <= 2 && !item.roomSn) {
-        if ( isOn(item.startTime || item.order.startTime, item.endTime || item.order.endTime, item.hotel
-            .roomTime)) {
+        if ( isOn(item.startTime || item.order.startTime, item.endTime || item.order.endTime, item.hotel && item.hotel
+            .roomTime || '08:00')) {
             result = true
         }
 

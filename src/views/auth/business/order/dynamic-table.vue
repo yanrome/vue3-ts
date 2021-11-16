@@ -50,10 +50,13 @@
                                 <a-button class="u-aim-more-btn u-aim-before" @click="navDetails(item.id)" type="link">
                                     查看详情
                                 </a-button>
-                                <a-dropdown class="u-aim-more-btn">
+                                <a-dropdown v-if="buttonFilter(item).length>0" class="u-aim-more-btn">
                                     <template #overlay>
                                         <a-menu>
-                                            <a-menu-item key="1"></a-menu-item>
+                                            <handle :list="buttonFilter(item)"
+                                                    :orderRoomMsg="item"
+                                                    :fun="refreshTableData"
+                                            ></handle>
                                         </a-menu>
                                     </template>
                                     <a-button type="link">
@@ -151,6 +154,8 @@
         },
         emits: ['change','watchChange'],
         setup(props, {emit}) {
+
+
             // const {: pageOptions} = usePages()
             const {pageOption: pageOptions} = Object.assign(usePages({
                 pageChangeFn: (data) => {
@@ -251,7 +256,20 @@
 
             //发生改变
 
-            //
+            const buttonFilter  = (orderRoomMsg)=>{
+                const d =  buttonList.filter(item=>{
+                    return item.author?.includes(orderRoomMsg?.status) && item.fun(orderRoomMsg)
+                })
+                return d
+            }
+
+                /**
+                 *  const state = reactive({
+                list: buttonList.filter(item=>{
+                    return item.author?.includes(props?.orderRoomMsg?.status)
+                })
+            })
+                 * */
 
 
 
@@ -259,7 +277,7 @@
                 ...toRefs(state),
                 pageOptions,
                 navDetails,
-                buttonProps, buttonList,
+                buttonProps, buttonList,buttonFilter,
                 formatDate,
                 actionEvent,
                 refreshTableData,

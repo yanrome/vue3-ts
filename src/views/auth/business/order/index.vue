@@ -11,14 +11,6 @@
       <a-row type="flex"
              align="middle"
              :gutter="[72,16]">
-        <!--                <a-col :xs="12" :sm="12" :md="8" :lg="6" :xl="6">-->
-        <!--                    <a-row  type="flex" align="middle">-->
-        <!--                        <a-col :span="6">房间号:</a-col>-->
-        <!--                        <a-col :span="18">-->
-        <!--                            <a-input placeholder="请输入"></a-input>-->
-        <!--                        </a-col>-->
-        <!--                    </a-row>-->
-        <!--                </a-col>-->
         <a-col :xs="12"
                :sm="12"
                :md="8"

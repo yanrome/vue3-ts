@@ -5,6 +5,7 @@ enum Api {
     businessHotelList = '/business/orderroom/list',
     businessOrderRoomOrderRoomId = `/business/orderroom`,
     businessOrderOperLogByOrderRoomOrderRoomId = `/business/order/oper/log/byorderroom`,
+    businessOrder = '/business/order'
 }
 
 /**
@@ -42,6 +43,18 @@ return http.request({
     params:param
 })
 }
+
+/**
+ * @description 同步订单
+ * */
+export  function postBusinessOrderExternalSyn(param) {
+    return http.request({
+        url:[Api.businessOrder,'external/syn'].join('/'),
+        method:RequestEnum.POST,
+        params:param
+    })
+}
+
 
 /**
  * @description 房东换房

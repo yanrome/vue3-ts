@@ -6,14 +6,14 @@
         </div>
         <a-form layout="horizontal" :model="formInline" @submit.prevent="handleSubmit">
             <a-form-item>
-                <a-input v-model:value="formInline.username" size="large" placeholder="admin">
+                <a-input v-model:value="formInline.username" size="large" placeholder="请输入账号">
                     <template v-slot:prefix>
                         <user-outlined type="user"/>
                     </template>
                 </a-input>
             </a-form-item>
             <a-form-item>
-                <a-input v-model:value="formInline.password" size="large" type="password" placeholder="123456"
+                <a-input v-model:value="formInline.password" size="large" type="password" placeholder="请输入密码"
                          autocomplete="new-password">
                     <template v-slot:prefix>
                         <lock-outlined type="user"/>

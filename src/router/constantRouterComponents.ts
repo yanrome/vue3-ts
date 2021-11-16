@@ -23,15 +23,17 @@ export const constantRouterComponents = {
 
     // 会员等级
     '/business/member/level-template':()=>import('@/views/auth/hotel/member/index.vue'),
-    
+
     // ota
     '/business/ota/index':()=>import('@/views/auth/hotel/ota/index.vue'),
 
     // 财务中心
     '/finance/index': () => import(/* webpackChunkName: "finance" */ '@/views/auth/finance/index.vue'),
 
+    //订单中心
     '/business/order': () => import(/* webpackChunkName: "business" */ '@/views/auth/business/order/index.vue'), // 订单管理
     '/business/details': () => import(/* webpackChunkName: "business" */ '@/views/auth/business/order/details/index.vue'), // 订单详情
+    '/business/order/entry':()=>import('@/views/auth/business/order-entry/index.vue'),
     '/hotel/index': () => import(/* webpackChunkName: "business" */ '@/views/auth/hotel/index.vue'), // 酒店信息
     '/roomState/index':()=>import('@/views/auth/room-state/state/index.vue'),
     '/roomState/price':()=>import('@/views/auth/room-state/price/index.vue'),

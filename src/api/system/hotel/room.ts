@@ -59,6 +59,17 @@ export function businessRoomScaleByHotel(param) {
 }
 
 /**
+ * @description 根据酒店获取基础房型以及房态
+ * */
+export function businessRoomScaleStateByHotel(params) {
+    return http.request({
+        url:[Api.businessRoomScale,'state/byhotel',params.hotelId].join('/'),
+        method:RequestEnum.GET,
+        params
+    })
+}
+
+/**
  * @description 房型日历模块 -- 批量新增产品房型日历房态
  * @url   /business/roomscale/state/batch/add
  * @params  str  |  'state/batch/add' | 批量新增
@@ -109,6 +120,17 @@ return http.request({
     method:RequestEnum.GET,
     params:param
 })
+}
+
+/**
+ * @description 根据基础房型获取产品房型信息
+ * */
+export function businessVirtualStateRoomScale(param) {
+    return http.request({
+        url:[Api.businessVirtualRoomScale,'state/byroomscale',param.roomScaleId].join('/'),
+        method:RequestEnum.GET,
+        params:param
+    })
 }
 
 

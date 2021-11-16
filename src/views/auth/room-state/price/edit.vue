@@ -112,6 +112,9 @@
 
             //房型修改
             const stateEdit = async () => {
+                if(!state.statusTime[0])
+                    message.error('请选择日期')
+                    return
                 let params = {
                     roomScaleId: props.id,
                     maxSaleRoom: state.isOpen ? -1 : state.roomNum,
@@ -138,6 +141,13 @@
 
             //日历房价修改
             const priceEdit = async () => {
+                if(!state.time[0])
+                    message.error('请选择日期')
+                return
+                if(!state.price){
+                    message.error('请输入价格')
+                    return
+                }
                 let params = {
                     roomScaleId: props.id,
                     maxSaleRoom: state.isOpen ? -1 : state.roomNum,
