@@ -79,7 +79,7 @@ export default defineComponent({
     watch(
       () => props.collapsed,
       (newVal) => {
-        debugger
+
         state.openKeys = newVal ? [] : getOpenKeys()
         state.selectedKeys = [currentRoute.name]
       }

@@ -10,7 +10,8 @@ export type State = {
     roles: any[];
     info: any;
     hotel:any;
-    hotelId:any
+    hotelId:any,
+    qiniuToken:string
 };
 
 export const state: State = {
@@ -21,5 +22,6 @@ export const state: State = {
     roles: [],
     info: Storage.get(CURRENT_USER, {}),
     hotel:Storage.get(HOTEL_USER,{}),
-    hotelId: null
+    hotelId: null,
+    qiniuToken:''
 };

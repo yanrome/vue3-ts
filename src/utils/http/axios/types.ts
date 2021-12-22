@@ -22,6 +22,8 @@ export interface RequestOptions {
   successMessageText?: string;
   // 是否显示成功信息
   isShowSuccessMessage?: boolean;
+  //完成之后操作函数
+  endFunc?: Function;
   // 是否显示失败信息
   isShowErrorMessage?: boolean;
   // 错误的文本信息

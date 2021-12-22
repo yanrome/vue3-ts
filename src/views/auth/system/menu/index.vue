@@ -99,7 +99,7 @@ export default defineComponent({
     const itemRefs = ref({})
     const param = ref<Param>({
       pageNum: 1,
-      pageSize: 10
+      pageSize: 50
     })
 
     const formState = reactive({
@@ -112,7 +112,9 @@ export default defineComponent({
       orderNum: '',
       icon: '',
       visible: '2',
-      isAll: false
+      isAll: false,
+      pageNum: 1,
+      pageSize: 100
     })
 
     const state = reactive({})

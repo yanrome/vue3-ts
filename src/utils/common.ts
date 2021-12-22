@@ -5,6 +5,17 @@ import any = defaultResult.any;
 import {isArray} from "@/utils/is";
 
 /**
+ * @description 获取随机数
+ * */
+export const getPrimaryKey = () => {
+    function S4() {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    }
+
+    return S4() + '-' + S4() + '-' + S4() + '-' + +new Date();
+};
+
+/**
  * @description 处理数据字典
  * @param isArray 如果传true，传回处理好的数据
  * @param isObj XX累赘，待改进
@@ -15,7 +26,7 @@ export const changeDict = (emun, isArray = false, isObj = true) => {
         returns[item['dictValue']] = item['dictLabel']
         return !isArray ? item : {
             label: item['dictLabel'],
-            value: item['dictValue']
+            value: Number( item['dictValue'])
         }
     })
     return (isObj && !isArray) ? returns : list

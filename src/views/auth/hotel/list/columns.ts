@@ -6,8 +6,9 @@ import {postBusinessRoomDevRemove} from "@/api/system/hotel/roomdev";
 import {useFormModal} from "@/hooks";
 import { formModal } from './form-modal'
 import {formatDict} from "@/utils/common";
-
-export const columns = (dictData): TableColumn[] => [
+import {postBusinessRoomRuleEdit, postBusinessRoomRuleRemove} from "@/api/system/hotel/roomRule";
+import router from "@/router";
+export const columns = (dictData,uRouter): TableColumn[] => [
     {
         title: '酒店编号',
         dataIndex: 'hotelSn',
@@ -37,5 +38,71 @@ export const columns = (dictData): TableColumn[] => [
         dataIndex: 'createTime',
     },
 
+    {
+        title: '操作',
+        dataIndex: 'action',
+        width: 200,
+        slots: {
+            customRender: 'action'
+        },
+        actions: [
+
+            {
+                type: 'button',
+                text: '房型管理',
+                props: {
+                    type: 'link'
+                },
+                func:({record}, refreshTableData)=>{
+                    router.push({path:'/business/hotel/scale',query:{id:record.id}})
+                },
+            },
+            {
+                type: 'button',
+                text: '相册',
+                props: {
+                    type: 'link'
+                },
+                func:({record}, refreshTableData)=>{
+                    router.push({path:'/business/hotel/picture',query:{id:record.id}})
+                },
+            },
+            {
+                type: 'button',
+                text: '大门',
+                props: {
+                    type: 'link'
+                },
+                func:({record}, refreshTableData)=>{
+                    router.push({path:'/business/hotel/gate',query:{id:record.id}})
+                },
+            },
+        ]
+    }
+
 
 ]
+
+
+
+    /***
+     *
+     * const uRouter = useRouter()
+     const component =  ()=>import('./components/room-scale.vue')
+     const addRouter = {
+                            component:component,
+                            meta: {
+                                title: '编辑',
+                                icon: 'icon-zhuomian',
+                                keepAlive: true,
+                                reload: false,
+                                componentName: component.name,
+                                hidden: true
+                            },
+                            name: '/hotel/scale' || '',
+                            path: '/hotel/scale',
+                            props: false
+                        }
+     uRouter.addRoute('hotel',addRouter)
+     uRouter.push({path:'/hotel/scale'})
+     */

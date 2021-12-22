@@ -8,7 +8,8 @@ export enum MutationType {
     SetRoles = 'SET_ROLES',
     SetInfo = 'SET_INFO',
     SetHotel = 'SET_HOTEL',
-    setHotelId = 'SET_HOTEL_ID'
+    setHotelId = 'SET_HOTEL_ID',
+    setQiuniuToken = 'SET_QIUNIU_TOKEN'
 }
 export type Mutations<S = State> = {
     [MutationType.SetToken](state: S, payload: string): void;
@@ -17,6 +18,8 @@ export type Mutations<S = State> = {
     [MutationType.SetInfo](state: S, payload: any): void;
     [MutationType.SetHotel](state: S, payload: any): void;
     [MutationType.setHotelId](state: S, payload: any): void;
+    [MutationType.setQiuniuToken](state: S, payload: any): void;
+
 }
 
 export const mutations: MutationTree<State> & Mutations = {
@@ -38,5 +41,9 @@ export const mutations: MutationTree<State> & Mutations = {
     [MutationType.setHotelId]: (state, id) => {
         state.hotelId = id
     },
+    [MutationType.setQiuniuToken]: (state, id) => {
+        state.qiniuToken = id
+    },
+
 
 }

@@ -28,9 +28,9 @@ const transform: AxiosTransform = {
      * @description: 处理请求数据
      */
     transformRequestData: (res: AxiosResponse<Result>, options: RequestOptions) => {
-        const {isTransformRequestResult, isShowMessage = true, isShowErrorMessage, isShowSuccessMessage, successMessageText, errorMessageText} = options;
+        const {isTransformRequestResult, isShowMessage = true, isShowErrorMessage, isShowSuccessMessage, successMessageText, errorMessageText,endFunc} = options;
 
-        const reject = Promise.reject
+        const reject = Promise.reject;
 
         const {data} = res;
         //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
@@ -43,11 +43,17 @@ const transform: AxiosTransform = {
             if (hasSuccess && (successMessageText || isShowSuccessMessage)) { // 是否显示自定义信息提示
                 Message.success(successMessageText || message || '操作成功！')
             } else if (!hasSuccess && (errorMessageText || isShowErrorMessage)) { // 是否显示自定义信息提示
-                Message.error( data || message || errorMessageText || '操作失败！')
+                Message.error( result || message || errorMessageText || '操作失败！')
             } else if (!hasSuccess && options.errorMessageMode === 'modal') { // errorMessageMode=‘custom-modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
                 Modal.confirm({title: '错误提示', content: message});
             }
         }
+
+        if(endFunc){
+            endFunc()
+        }
+
+
         // 不进行任何处理，直接返回
         // 用于页面代码可能需要直接获取code，data，message这些信息时开启
         if (!isTransformRequestResult) {
@@ -66,14 +72,20 @@ const transform: AxiosTransform = {
         // 接口请求错误，统一提示错误信息
         if (code === ResultEnum.ERROR) {
             if (message) {
-                Message.error(data.data || data.msg);
-                Promise.reject(new Error(message));
+                Message.error(result || message);
+                Promise.reject(new Error(message)).catch(e => {
+                    console.log(e)
+                });
             } else {
                 const msg = '操作失败,系统异常!';
                 Message.error(msg);
-                Promise.reject(new Error(msg));
+                Promise.reject(new Error(msg)).catch(e => {
+                    console.log(e)
+                });
             }
-            return reject();
+            return reject().catch(e=>{
+                console.log(e)
+            });
         }
 
         // 登录超时
@@ -95,7 +107,9 @@ const transform: AxiosTransform = {
                     storage.clear()
                 }
             });
-            return reject(new Error(timeoutMsg))
+            return reject(new Error(timeoutMsg)).catch(e => {
+                console.log(e)
+            });
         }
 
         // 这里逻辑可以根据项目进行修改

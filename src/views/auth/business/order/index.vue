@@ -56,7 +56,6 @@
 import { defineComponent, reactive, ref, toRefs, watch } from 'vue'
 import { columns } from './utils/columns'
 import OrderDynamicTable from './dynamic-table.vue'
-import { OrderList } from '@/components/order-list'
 import { postBusinessOrderRoomList } from '@/api/system/order'
 import store, { useStore } from '@/store'
 import { usePages } from '@/hooks'
@@ -74,7 +73,6 @@ export default defineComponent({
     [Input.name]: Input,
     [Button.name]: Button,
     OrderDynamicTable,
-    OrderList
   },
   setup() {
     const store = useStore()
@@ -117,7 +115,7 @@ export default defineComponent({
       tableRef.value.refreshTableData()
     }
     const emitSonfn = () => {
-      debugger
+
     }
 
     //watch监听

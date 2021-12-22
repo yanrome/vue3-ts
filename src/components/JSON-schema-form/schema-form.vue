@@ -1,6 +1,7 @@
 <template>
   <a-form ref="schemaFormRef"
           class="scroll"
+          :style="formSchema?.style"
           v-bind="formItemLayout">
     <template v-for="(formItem, index) in dynamicValidateForm.formItem.filter(item => !item.hidden)"
               :key="formItem.field">
@@ -63,9 +64,13 @@ export default defineComponent({
       // 预置字段默认值
       type: Object,
       default: () => ({})
-    }
+    },
+    style:{
+      type:Object
+    },
   },
   setup(props, ctx) {
+
     const state = reactive({
       // dynamicValidateForm: cloneDeep(props.formSchema)
       dynamicValidateForm: props.formSchema
@@ -81,6 +86,7 @@ export default defineComponent({
       // wrapperCol: { span: 20 },
       ...props.formSchema.formItemLayout
     }
+
 
     // 表单项
     const modelRef = reactive(

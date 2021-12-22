@@ -15,7 +15,7 @@ type ActionAugments = Omit<ActionContext<State, RootState>, 'commit'> & {
     ): ReturnType<Mutations[K]>;
 }
 export type Actions = {
-    [DictActions.getDict](context: ActionAugments,param:any): void;
+    [DictActions.getDict](context: ActionAugments,param:any): Promise<any>;
 }
 
 export const actions:ActionTree<State, RootState> & Actions = {

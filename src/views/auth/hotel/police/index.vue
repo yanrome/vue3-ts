@@ -66,7 +66,6 @@
                     title: '编辑账号',
                     formSchema:formModal(getFn),
                     handleOk:async (data)=>{
-                        debugger
                     }
                 })
             }

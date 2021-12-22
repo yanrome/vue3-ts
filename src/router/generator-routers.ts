@@ -51,7 +51,6 @@ const list2tree = (children) => {
 export const generatorDynamicRouter = (): Promise<RouteRecordRaw[]> => {
     return new Promise((resolve, reject) => {
         adminMenus({}).then(result => {
-
             console.log('result', result)
             const menuNav: any = []
             const childrenNav = []

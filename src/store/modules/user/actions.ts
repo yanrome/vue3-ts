@@ -8,12 +8,14 @@ import {ACCESS_TOKEN, CURRENT_USER, IS_LOCKSCREEN, HOTEL_USER, HOTEL_USER_ID} fr
 import {storage} from "@/utils/Storage";
 import {LockscreenMutationType} from '@/store/modules/lockscreen/mutations'
 import store from "@/store";
+import {getQiNiuToken} from "@/api/index/qiniu";
 
 export enum UserActionTypes {
     Login = 'LOGIN',
     GetInfo = 'GET_INFO',
     Logout = 'LOGOUT',
-    GetHotel = 'GET_HOTEL'
+    GetHotel = 'GET_HOTEL',
+    GetQiuniuToken="GET_QINIU_TOKEN"
 }
 
 type ActionAugments = Omit<ActionContext<State, RootState>, 'commit'> & {
@@ -28,6 +30,7 @@ export type Actions = {
     [UserActionTypes.GetInfo](context: ActionAugments): Promise<any>;
     [UserActionTypes.Logout](context: ActionAugments): Promise<any>;
     [UserActionTypes.GetHotel](context: ActionAugments,hotel:any): Promise<any>;
+    [UserActionTypes.GetQiuniuToken](context: ActionAugments,param:any): Promise<any>;
 }
 
 
@@ -121,5 +124,20 @@ export const actions: ActionTree<State, RootState> & Actions = {
         } catch (e) {
             return Promise.reject(e)
         }
+    },
+
+    //获取七牛云token
+    [UserActionTypes.GetQiuniuToken]({commit,state},params){
+        return new Promise(resolve => {
+            if(state.qiniuToken){
+                resolve(state.qiniuToken)
+            }else {
+                getQiNiuToken({}).then(res=>{
+                    commit(MutationType.setQiuniuToken,res.data)
+                    resolve(res.data)
+                })
+            }
+        })
     }
+
 }

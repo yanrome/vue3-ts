@@ -21,7 +21,7 @@ export const columns = (dictData): TableColumn[] => [
         dataIndex: 'menuName',
         width:50,
         slots: {
-            customRender: 'moduleName'
+            customRender: 'moduleName',
         }
     },
     {
@@ -130,7 +130,7 @@ export const columns = (dictData): TableColumn[] => [
                             return await adminMenuEdit(params).then(() => refreshTableData())
                         }
                     })
-                } 
+                }
             },
             {
                 type: 'button', // 控制类型，默认为a,可选： select | button | text

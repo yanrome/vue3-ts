@@ -59,15 +59,7 @@
             }
             const getFn = getDictFn()
 
-            const addItem = () =>{
-                useFormModal({
-                    title: '编辑账号',
-                    formSchema:formModal(getFn),
-                    handleOk:async (data)=>{
-                        debugger
-                    }
-                })
-            }
+
             const confirm = () => {
                 console.log(dynamicForm.value.modelRef.time)
                 if(dynamicForm.value.modelRef.time){
@@ -91,7 +83,6 @@
             return {
                 ...toRefs(state),
                 getFn,
-                addItem,
                 confirm,
                 cancel,
                 dynamicForm,

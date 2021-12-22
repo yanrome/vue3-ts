@@ -1,6 +1,7 @@
 // create-api.ts
 import { createVNode, render, VNode} from 'vue'
 import FormModal from './form-modal.vue'
+import FormDrawer from './form-drawer.vue'
 import {FormSchema} from "@/types/schema";
 
 interface ModalInstance {
@@ -22,7 +23,7 @@ interface Options {
  * @param formOptions
  */
 export const useFormModal = (options: Options): VNode<ModalInstance> => {
-    
+
     // 组件实例
     let formModal
     const container = document.createElement('div')
@@ -32,7 +33,7 @@ export const useFormModal = (options: Options): VNode<ModalInstance> => {
         render(null, container)
         container.remove()
     }
-    formModal = createVNode(FormModal, {...options,remove})
+    formModal = createVNode( options?.type === 'drawer' ? FormDrawer : FormModal, {...options,remove})
     render(formModal, container)
     return formModal
 }

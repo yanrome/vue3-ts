@@ -26,9 +26,9 @@
             <a-select style="width: 300px"  v-model:value="orderEntry.orderSource" >
                 <template v-for="option in getFn"
                           :key="option.dictValue">
-                    <Option :value="option.dictValue">
+                    <a-select-option :value="option.dictValue">
                         {{ option.dictLabel }}
-                    </Option>
+                    </a-select-option>
                 </template>
             </a-select>
         </a-form-item>
@@ -48,9 +48,9 @@
             <a-select style="width: 300px"  v-model:value="orderEntry.payment" >
                 <template v-for="option in businessPayment"
                           :key="option.dictValue">
-                    <Option :value="option.dictValue">
+                    <a-select-option :value="option.dictValue">
                         {{ option.dictLabel }}
-                    </Option>
+                    </a-select-option>
                 </template>
             </a-select>
         </a-form-item>
