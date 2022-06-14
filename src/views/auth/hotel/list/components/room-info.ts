@@ -69,6 +69,18 @@ export const roomInfo = (dictData={}): FormSchema => ({
             },
         },
         {
+            type: "radio",
+            label: "锁类型",
+            field: "lockType",
+            value: 1,
+            asyncOptions:async () =>{
+                const roomLevel =  await store.dispatch(DictActions.getDict,{dictType:'business_lock_type'})
+                return  changeDict(roomLevel,true)
+            },
+        },
+
+
+        {
             type: "input-number",
             label: "分房排序",
             field: "roomSort",

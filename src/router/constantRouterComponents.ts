@@ -34,6 +34,7 @@ export const constantRouterComponents = {
     '/business/order': () => import(/* webpackChunkName: "business" */ '@/views/auth/business/order/index.vue'), // 订单管理
     '/business/details': () => import(/* webpackChunkName: "business" */ '@/views/auth/business/order/details/index.vue'), // 订单详情
     '/business/order/entry':()=>import('@/views/auth/business/order-entry/index.vue'),
+    '/business/order/user':()=>import('@/views/auth/business/order-user/index.vue'),
     '/hotel/index': () => import(/* webpackChunkName: "business" */ '@/views/auth/hotel/index.vue'), // 酒店信息
     '/roomState/index':()=>import('@/views/auth/room-state/state/index.vue'),
     '/roomState/price':()=>import('@/views/auth/room-state/price/index.vue'),

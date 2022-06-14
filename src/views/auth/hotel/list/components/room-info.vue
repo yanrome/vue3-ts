@@ -50,9 +50,9 @@
             const editFunc = (info) => {
                 getBusinessRoomById({id:info.id}).then(res=>{
                     const {
-                        roomName,id,roomSn,buildNum,unit,floor,roomLevel,roomSort,mac,lockAppId,lockAppSecret,lockUserName,lockUserPwd,lockSn,ammeterNo,ammeterPassword,ammeterAccount
+                        roomName,id,roomSn,buildNum,lockType,unit,floor,roomLevel,roomSort,mac,lockAppId,lockAppSecret,lockUserName,lockUserPwd,lockSn,ammeterNo,ammeterPassword,ammeterAccount
                     } = res.data
-                    const modalData = { roomName,id,roomSn,buildNum,unit,floor,roomLevel,roomSort,mac,lockAppId,lockAppSecret,lockUserName,lockUserPwd,lockSn,ammeterNo,ammeterPassword,ammeterAccount}
+                    const modalData = { roomName,id,roomSn,lockType,buildNum,unit,floor,roomLevel,roomSort,mac,lockAppId,lockAppSecret,lockUserName,lockUserPwd,lockSn,ammeterNo,ammeterPassword,ammeterAccount}
                     useFormModal({
                         title:'编辑房间',
                         type:'drawer',

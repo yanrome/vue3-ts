@@ -8,6 +8,7 @@ import {RequestEnum} from '@/enums/httpEnum'
 
 enum Api {
     businessOrderRoomUser = `/business/orderroomuser`
+
 }
 
 /**
@@ -17,6 +18,18 @@ enum Api {
 export function getBusinessOrderRoomUser(params) {
     return http.request({
         url: `${Api.businessOrderRoomUser}/byorderroom/${params.orderRoomId}`,
+        method: RequestEnum.GET,
+        params
+    });
+}
+
+/**
+ * @description 查询酒店入住人信息
+ * @url /business/orderroomuser/roomin/byhotel/{hotelId
+ * */
+export function getBusinessOrderRoomUserByHotel(params) {
+    return http.request({
+        url: `${Api.businessOrderRoomUser}/roomin/byhotel/${params.hotelId}`,
         method: RequestEnum.GET,
         params
     });

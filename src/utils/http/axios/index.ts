@@ -205,19 +205,26 @@ const transform: AxiosTransform = {
         if (!isCancel) {
             checkStatus(error.response && error.response.status, msg);
             if (error.response.status == 401 || error.response.status == 302) {
-                Modal.warning({
-                    title: '提示',
-                    content: '登录身份已失效,请重新登录!',
-                    onOk: () => {
-                        router.replace({
-                            name: 'login',
-                            query: {
-                                redirect: router.currentRoute.value.fullPath
-                            }
-                        })
-                        storage.clear()
+                router.replace({
+                    name: 'login',
+                    query: {
+                        redirect: router.currentRoute.value.fullPath
                     }
-                });
+                })
+                storage.clear()
+                // Modal.warning({
+                //     title: '提示',
+                //     content: '登录身份已失效,请重新登录!',
+                //     onOk: () => {
+                //         router.replace({
+                //             name: 'login',
+                //             query: {
+                //                 redirect: router.currentRoute.value.fullPath
+                //             }
+                //         })
+                //         storage.clear()
+                //     }
+                // });
             }
         } else {
             console.warn(error, '请求被取消！')

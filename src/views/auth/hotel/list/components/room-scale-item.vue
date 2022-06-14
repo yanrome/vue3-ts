@@ -104,7 +104,7 @@
                 getBusinessRoom(params).then(res => {
                     let arr = res.data
                     arr.forEach((item) => {
-                        item.color = statusColor[item.status] || '#ffffff'
+                        item.color = statusColor[item.status] || '#ffffff';
                     })
                     state.roomArray = arr
                 })
